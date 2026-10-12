@@ -1,0 +1,34 @@
+CP-LAND-01 — Contrato y estructura
+Fecha: 2026-09-30 20:12:57
+PHP: PHP 8.3.26 (cli) (built: Sep 23 2025 18:38:53) (ZTS Visual C++ 2019 x64)
+
+== 1. Archivos requeridos (estructura_landing.md) ==
+Requeridos: 37 | Faltantes: 0
+  OK: todos presentes
+
+== 2. Decisiones/guides leidos ==
+  OK   AGENTS.md
+  OK   proyecto/04_decisiones/decisiones_alcance.md
+  OK   proyecto/04_decisiones/decisiones_landing.md
+  OK   .agents/guides/estructura_landing.md
+  OK   .agents/guides/reglas_landing.md
+  OK   .agents/guides/politica_imagenes_landing.md
+  OK   .agents/skills-landing-manifest.json
+  OK   .agents/state/landing-workflow.json
+  OK   .agents/workflows/07_landing_workflow.md
+
+== 3. Prohibiciones (grep en codigo: php/js/css/sql) ==
+  Frameworks/CDN prohibidos: 0
+  React/Vue/Angular: 0
+  Login/CRUD/carrito/pagos: 0
+  Numero WhatsApp inventado: 0
+  .env en .gitignore: si
+
+== 4. validate_structure.php ==
+  [0] STRUCTURE: PASSED
+
+== 5. validate_checkpoint.php CP-LAND-01 ==
+  [0] CP-LAND-01: PASSED
+
+== Veredicto ==
+CP-LAND-01: PASSED

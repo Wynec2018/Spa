@@ -1,0 +1,774 @@
+﻿+--------------+
+| section      |
++--------------+
+| ===TABLES=== |
++--------------+
++---------------------------+---------------+--------+--------------------+
+| TABLE_NAME                | TABLE_COMMENT | ENGINE | TABLE_COLLATION    |
++---------------------------+---------------+--------+--------------------+
+| auth_permiso              |               | InnoDB | utf8mb4_unicode_ci |
+| auth_rol                  |               | InnoDB | utf8mb4_unicode_ci |
+| auth_rol_permiso          |               | InnoDB | utf8mb4_unicode_ci |
+| auth_token_blacklist      |               | InnoDB | utf8mb4_unicode_ci |
+| auth_usuario              |               | InnoDB | utf8mb4_unicode_ci |
+| auth_usuario_rol          |               | InnoDB | utf8mb4_unicode_ci |
+| cat_categoria             |               | InnoDB | utf8mb4_unicode_ci |
+| cat_precio                |               | InnoDB | utf8mb4_unicode_ci |
+| cat_producto              |               | InnoDB | utf8mb4_unicode_ci |
+| cat_promocion             |               | InnoDB | utf8mb4_unicode_ci |
+| com_orden_compra          |               | InnoDB | utf8mb4_unicode_ci |
+| com_orden_compra_item     |               | InnoDB | utf8mb4_unicode_ci |
+| com_producto_promocion    |               | InnoDB | utf8mb4_unicode_ci |
+| com_proveedor             |               | InnoDB | utf8mb4_unicode_ci |
+| com_recepcion             |               | InnoDB | utf8mb4_unicode_ci |
+| com_recepcion_item        |               | InnoDB | utf8mb4_unicode_ci |
+| core_auditoria            |               | InnoDB | utf8mb4_unicode_ci |
+| core_caja_pos             |               | InnoDB | utf8mb4_unicode_ci |
+| core_cliente              |               | InnoDB | utf8mb4_unicode_ci |
+| core_configuracion        |               | InnoDB | utf8mb4_unicode_ci |
+| core_idempotency_key      |               | InnoDB | utf8mb4_unicode_ci |
+| core_sucursal             |               | InnoDB | utf8mb4_unicode_ci |
+| inv_ajuste_stock          |               | InnoDB | utf8mb4_unicode_ci |
+| inv_inventario            |               | InnoDB | utf8mb4_unicode_ci |
+| inv_movimiento_inventario |               | InnoDB | utf8mb4_unicode_ci |
+| inv_reserva               |               | InnoDB | utf8mb4_unicode_ci |
+| inv_transferencia         |               | InnoDB | utf8mb4_unicode_ci |
+| inv_transferencia_item    |               | InnoDB | utf8mb4_unicode_ci |
+| pay_outbox_evento         |               | InnoDB | utf8mb4_unicode_ci |
+| pay_transaccion_pago      |               | InnoDB | utf8mb4_unicode_ci |
+| sales_carrito_web         |               | InnoDB | utf8mb4_unicode_ci |
+| sales_carrito_web_item    |               | InnoDB | utf8mb4_unicode_ci |
+| sales_devolucion          |               | InnoDB | utf8mb4_unicode_ci |
+| sales_devolucion_item     |               | InnoDB | utf8mb4_unicode_ci |
+| sales_orden_venta         |               | InnoDB | utf8mb4_unicode_ci |
+| sales_orden_venta_item    |               | InnoDB | utf8mb4_unicode_ci |
++---------------------------+---------------+--------+--------------------+
++---------------+
+| section       |
++---------------+
+| ===COLUMNS=== |
++---------------+
++---------------------------+------------------------+----------------------------------------------------------------------------------------------------------------------------------+-------------+----------------+------------+----------------+----------------+
+| TABLE_NAME                | COLUMN_NAME            | COLUMN_TYPE                                                                                                                      | IS_NULLABLE | COLUMN_DEFAULT | COLUMN_KEY | EXTRA          | COLUMN_COMMENT |
++---------------------------+------------------------+----------------------------------------------------------------------------------------------------------------------------------+-------------+----------------+------------+----------------+----------------+
+| auth_permiso              | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| auth_permiso              | codigo                 | varchar(64)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| auth_permiso              | descripcion            | varchar(255)                                                                                                                     | YES         | NULL           |            |                |                |
+| auth_permiso              | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| auth_permiso              | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_permiso              | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_permiso              | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_permiso              | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_rol                  | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| auth_rol                  | nombre                 | varchar(80)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| auth_rol                  | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| auth_rol                  | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_rol                  | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_rol                  | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_rol                  | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_rol_permiso          | rol_id                 | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        |                |                |
+| auth_rol_permiso          | permiso_id             | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        |                |                |
+| auth_rol_permiso          | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_rol_permiso          | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_rol_permiso          | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_rol_permiso          | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_token_blacklist      | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| auth_token_blacklist      | token_hash             | varchar(64)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| auth_token_blacklist      | expira_en              | datetime                                                                                                                         | NO          | NULL           | MUL        |                |                |
+| auth_token_blacklist      | creado_en              | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_usuario              | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| auth_usuario              | nombre                 | varchar(120)                                                                                                                     | NO          | NULL           |            |                |                |
+| auth_usuario              | email                  | varchar(254)                                                                                                                     | NO          | NULL           | UNI        |                |                |
+| auth_usuario              | hash_password          | varchar(255)                                                                                                                     | NO          | NULL           |            |                |                |
+| auth_usuario              | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| auth_usuario              | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_usuario              | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_usuario              | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_usuario              | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_usuario_rol          | usuario_id             | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        |                |                |
+| auth_usuario_rol          | rol_id                 | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        |                |                |
+| auth_usuario_rol          | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_usuario_rol          | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| auth_usuario_rol          | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| auth_usuario_rol          | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_categoria             | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| cat_categoria             | nombre                 | varchar(100)                                                                                                                     | NO          | NULL           |            |                |                |
+| cat_categoria             | categoria_padre_id     | bigint unsigned                                                                                                                  | YES         | NULL           | MUL        |                |                |
+| cat_categoria             | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| cat_categoria             | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| cat_categoria             | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| cat_categoria             | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_categoria             | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_precio                | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| cat_precio                | sucursal_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| cat_precio                | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| cat_precio                | monto                  | decimal(12,2)                                                                                                                    | NO          | NULL           |            |                |                |
+| cat_precio                | moneda                 | char(3)                                                                                                                          | NO          | NULL           |            |                |                |
+| cat_precio                | vigente_desde          | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_precio                | vigente_hasta          | datetime                                                                                                                         | YES         | NULL           |            |                |                |
+| cat_precio                | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| cat_precio                | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| cat_precio                | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_precio                | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_producto              | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| cat_producto              | sku                    | varchar(64)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| cat_producto              | nombre                 | varchar(150)                                                                                                                     | NO          | NULL           |            |                |                |
+| cat_producto              | categoria_id           | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| cat_producto              | unidad                 | varchar(32)                                                                                                                      | NO          | NULL           |            |                |                |
+| cat_producto              | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| cat_producto              | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| cat_producto              | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| cat_producto              | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_producto              | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_promocion             | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| cat_promocion             | nombre                 | varchar(120)                                                                                                                     | NO          | NULL           |            |                |                |
+| cat_promocion             | reglas                 | json                                                                                                                             | NO          | NULL           |            |                |                |
+| cat_promocion             | vigente_desde          | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_promocion             | vigente_hasta          | datetime                                                                                                                         | YES         | NULL           |            |                |                |
+| cat_promocion             | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| cat_promocion             | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| cat_promocion             | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| cat_promocion             | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| cat_promocion             | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_orden_compra          | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| com_orden_compra          | numero                 | varchar(32)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| com_orden_compra          | proveedor_id           | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| com_orden_compra          | estado                 | enum('draft','enviada','recibida','cancelada')                                                                                   | NO          | draft          |            |                |                |
+| com_orden_compra          | fecha_orden            | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_orden_compra          | total                  | decimal(12,2)                                                                                                                    | NO          | 0.00           |            |                |                |
+| com_orden_compra          | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_orden_compra          | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_orden_compra          | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_orden_compra          | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_orden_compra_item     | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| com_orden_compra_item     | orden_id               | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| com_orden_compra_item     | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| com_orden_compra_item     | cantidad               | int unsigned                                                                                                                     | NO          | NULL           |            |                |                |
+| com_orden_compra_item     | precio_pactado         | decimal(12,2)                                                                                                                    | NO          | NULL           |            |                |                |
+| com_orden_compra_item     | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_orden_compra_item     | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_orden_compra_item     | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_orden_compra_item     | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_producto_promocion    | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        |                |                |
+| com_producto_promocion    | promocion_id           | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        |                |                |
+| com_producto_promocion    | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_producto_promocion    | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_producto_promocion    | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_producto_promocion    | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_proveedor             | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| com_proveedor             | nombre                 | varchar(150)                                                                                                                     | NO          | NULL           | UNI        |                |                |
+| com_proveedor             | codigo                 | varchar(32)                                                                                                                      | YES         | NULL           | UNI        |                |                |
+| com_proveedor             | contacto               | varchar(150)                                                                                                                     | YES         | NULL           |            |                |                |
+| com_proveedor             | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| com_proveedor             | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_proveedor             | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_proveedor             | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_proveedor             | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_recepcion             | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| com_recepcion             | orden_id               | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| com_recepcion             | estado                 | enum('draft','confirmada')                                                                                                       | NO          | draft          |            |                |                |
+| com_recepcion             | fecha                  | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_recepcion             | usuario_confirma       | bigint unsigned                                                                                                                  | YES         | NULL           | MUL        |                |                |
+| com_recepcion             | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_recepcion             | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_recepcion             | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_recepcion             | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_recepcion_item        | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| com_recepcion_item        | recepcion_id           | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| com_recepcion_item        | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| com_recepcion_item        | cantidad_recibida      | int unsigned                                                                                                                     | NO          | NULL           |            |                |                |
+| com_recepcion_item        | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_recepcion_item        | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| com_recepcion_item        | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| com_recepcion_item        | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_auditoria            | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| core_auditoria            | accion                 | varchar(50)                                                                                                                      | NO          | NULL           |            |                |                |
+| core_auditoria            | entidad_tipo           | varchar(80)                                                                                                                      | NO          | NULL           | MUL        |                |                |
+| core_auditoria            | entidad_id             | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_auditoria            | datos_previos          | text                                                                                                                             | YES         | NULL           |            |                |                |
+| core_auditoria            | datos_nuevos           | text                                                                                                                             | YES         | NULL           |            |                |                |
+| core_auditoria            | usuario_id             | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| core_auditoria            | motivo                 | text                                                                                                                             | YES         | NULL           |            |                |                |
+| core_auditoria            | fecha                  | datetime                                                                                                                         | NO          | NULL           | MUL        |                |                |
+| core_auditoria            | correlation_id         | varchar(64)                                                                                                                      | YES         | NULL           |            |                |                |
+| core_auditoria            | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_auditoria            | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_auditoria            | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_auditoria            | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_caja_pos             | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| core_caja_pos             | sucursal_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| core_caja_pos             | codigo                 | varchar(32)                                                                                                                      | NO          | NULL           |            |                |                |
+| core_caja_pos             | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| core_caja_pos             | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_caja_pos             | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_caja_pos             | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_caja_pos             | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_cliente              | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| core_cliente              | nombre                 | varchar(150)                                                                                                                     | NO          | NULL           |            |                |                |
+| core_cliente              | razon_social           | varchar(150)                                                                                                                     | YES         | NULL           |            |                |                |
+| core_cliente              | identificacion         | varchar(32)                                                                                                                      | YES         | NULL           | UNI        |                |                |
+| core_cliente              | email                  | varchar(254)                                                                                                                     | YES         | NULL           | MUL        |                |                |
+| core_cliente              | telefono               | varchar(32)                                                                                                                      | YES         | NULL           |            |                |                |
+| core_cliente              | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| core_cliente              | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_cliente              | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_cliente              | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_cliente              | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_configuracion        | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| core_configuracion        | clave                  | varchar(80)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| core_configuracion        | valor                  | text                                                                                                                             | NO          | NULL           |            |                |                |
+| core_configuracion        | descripcion            | varchar(255)                                                                                                                     | YES         | NULL           |            |                |                |
+| core_configuracion        | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_configuracion        | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_configuracion        | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_configuracion        | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_idempotency_key      | key                    | char(36)                                                                                                                         | NO          | NULL           | PRI        |                |                |
+| core_idempotency_key      | operacion              | varchar(80)                                                                                                                      | NO          | NULL           |            |                |                |
+| core_idempotency_key      | respuesta              | mediumtext                                                                                                                       | YES         | NULL           |            |                |                |
+| core_idempotency_key      | expiracion             | datetime                                                                                                                         | NO          | NULL           | MUL        |                |                |
+| core_idempotency_key      | creado_en              | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_sucursal             | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| core_sucursal             | nombre                 | varchar(120)                                                                                                                     | NO          | NULL           |            |                |                |
+| core_sucursal             | direccion              | varchar(255)                                                                                                                     | YES         | NULL           |            |                |                |
+| core_sucursal             | estado                 | enum('activo','inactivo')                                                                                                        | NO          | activo         |            |                |                |
+| core_sucursal             | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_sucursal             | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| core_sucursal             | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| core_sucursal             | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_ajuste_stock          | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| inv_ajuste_stock          | inventario_id          | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_ajuste_stock          | cantidad               | int                                                                                                                              | NO          | NULL           |            |                |                |
+| inv_ajuste_stock          | motivo                 | text                                                                                                                             | NO          | NULL           |            |                |                |
+| inv_ajuste_stock          | usuario_id             | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_ajuste_stock          | fecha                  | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_ajuste_stock          | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_ajuste_stock          | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_ajuste_stock          | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_ajuste_stock          | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_inventario            | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| inv_inventario            | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_inventario            | sucursal_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_inventario            | stock_available        | int unsigned                                                                                                                     | NO          | 0              |            |                |                |
+| inv_inventario            | stock_reserved         | int unsigned                                                                                                                     | NO          | 0              |            |                |                |
+| inv_inventario            | stock_sold             | int unsigned                                                                                                                     | NO          | 0              |            |                |                |
+| inv_inventario            | version                | int unsigned                                                                                                                     | NO          | 0              |            |                |                |
+| inv_inventario            | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_inventario            | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_inventario            | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_inventario            | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_movimiento_inventario | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| inv_movimiento_inventario | inventario_id          | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_movimiento_inventario | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_movimiento_inventario | sucursal_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_movimiento_inventario | tipo                   | enum('entrada','salida','reserva','liberacion','ajuste','devolucion','transferencia_salida','transferencia_entrada','recepcion') | NO          | NULL           |            |                |                |
+| inv_movimiento_inventario | cantidad               | int                                                                                                                              | NO          | NULL           |            |                |                |
+| inv_movimiento_inventario | referencia_tipo        | varchar(50)                                                                                                                      | YES         | NULL           |            |                |                |
+| inv_movimiento_inventario | referencia_id          | bigint unsigned                                                                                                                  | YES         | NULL           |            |                |                |
+| inv_movimiento_inventario | usuario_id             | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_movimiento_inventario | motivo                 | text                                                                                                                             | YES         | NULL           |            |                |                |
+| inv_movimiento_inventario | fecha                  | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_movimiento_inventario | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_movimiento_inventario | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_movimiento_inventario | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_movimiento_inventario | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_reserva               | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| inv_reserva               | orden_id               | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_reserva               | inventario_id          | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_reserva               | cantidad               | int unsigned                                                                                                                     | NO          | NULL           |            |                |                |
+| inv_reserva               | estado                 | enum('pending','confirmed','expired','cancelled')                                                                                | NO          | pending        | MUL        |                |                |
+| inv_reserva               | expira_en              | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_reserva               | creado_en              | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_reserva               | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_reserva               | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_reserva               | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_reserva               | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_transferencia         | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| inv_transferencia         | sucursal_origen_id     | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_transferencia         | sucursal_destino_id    | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_transferencia         | estado                 | enum('draft','in_transit','received','cancelled')                                                                                | NO          | draft          |            |                |                |
+| inv_transferencia         | usuario_id             | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_transferencia         | fecha_salida           | datetime                                                                                                                         | YES         | NULL           |            |                |                |
+| inv_transferencia         | fecha_recepcion        | datetime                                                                                                                         | YES         | NULL           |            |                |                |
+| inv_transferencia         | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_transferencia         | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_transferencia         | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_transferencia         | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_transferencia_item    | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| inv_transferencia_item    | transferencia_id       | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_transferencia_item    | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| inv_transferencia_item    | cantidad               | int unsigned                                                                                                                     | NO          | NULL           |            |                |                |
+| inv_transferencia_item    | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_transferencia_item    | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| inv_transferencia_item    | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| inv_transferencia_item    | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| pay_outbox_evento         | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| pay_outbox_evento         | agregado_tipo          | varchar(50)                                                                                                                      | NO          | NULL           |            |                |                |
+| pay_outbox_evento         | agregado_id            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| pay_outbox_evento         | evento_tipo            | varchar(80)                                                                                                                      | NO          | NULL           |            |                |                |
+| pay_outbox_evento         | payload                | json                                                                                                                             | NO          | NULL           |            |                |                |
+| pay_outbox_evento         | estado                 | enum('pending','processing','processed','failed')                                                                                | NO          | pending        | MUL        |                |                |
+| pay_outbox_evento         | claimed_at             | datetime                                                                                                                         | YES         | NULL           |            |                |                |
+| pay_outbox_evento         | correlation_id         | varchar(64)                                                                                                                      | NO          | NULL           | MUL        |                |                |
+| pay_outbox_evento         | creado_en              | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| pay_outbox_evento         | procesado_en           | datetime                                                                                                                         | YES         | NULL           |            |                |                |
+| pay_outbox_evento         | reintentos             | int unsigned                                                                                                                     | NO          | 0              |            |                |                |
+| pay_transaccion_pago      | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| pay_transaccion_pago      | orden_id               | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| pay_transaccion_pago      | proveedor_pago         | varchar(50)                                                                                                                      | NO          | NULL           | MUL        |                |                |
+| pay_transaccion_pago      | referencia_externa     | varchar(120)                                                                                                                     | NO          | NULL           |            |                |                |
+| pay_transaccion_pago      | monto                  | decimal(12,2)                                                                                                                    | NO          | NULL           |            |                |                |
+| pay_transaccion_pago      | estado                 | enum('initiated','authorized','failed','refunded','compensated')                                                                 | NO          | initiated      |            |                |                |
+| pay_transaccion_pago      | idempotency_key        | varchar(64)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| pay_transaccion_pago      | fecha                  | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| pay_transaccion_pago      | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| pay_transaccion_pago      | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| pay_transaccion_pago      | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| pay_transaccion_pago      | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_carrito_web         | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| sales_carrito_web         | cliente_id             | bigint unsigned                                                                                                                  | YES         | NULL           | MUL        |                |                |
+| sales_carrito_web         | sesion_key             | varchar(64)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| sales_carrito_web         | actualizado_en         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_carrito_web         | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_carrito_web         | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_carrito_web         | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_carrito_web         | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_carrito_web_item    | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| sales_carrito_web_item    | carrito_id             | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_carrito_web_item    | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_carrito_web_item    | cantidad               | int unsigned                                                                                                                     | NO          | NULL           |            |                |                |
+| sales_carrito_web_item    | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_carrito_web_item    | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_carrito_web_item    | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_carrito_web_item    | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_devolucion          | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| sales_devolucion          | orden_original_id      | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_devolucion          | cliente_id             | bigint unsigned                                                                                                                  | YES         | NULL           | MUL        |                |                |
+| sales_devolucion          | usuario_id             | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_devolucion          | estado                 | enum('draft','aprobada','rechazada','completada')                                                                                | NO          | draft          |            |                |                |
+| sales_devolucion          | motivo                 | text                                                                                                                             | YES         | NULL           |            |                |                |
+| sales_devolucion          | monto                  | decimal(12,2)                                                                                                                    | NO          | 0.00           |            |                |                |
+| sales_devolucion          | fecha                  | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_devolucion          | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_devolucion          | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_devolucion          | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_devolucion          | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_devolucion_item     | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| sales_devolucion_item     | devolucion_id          | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_devolucion_item     | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_devolucion_item     | producto_orden_item_id | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_devolucion_item     | cantidad               | int unsigned                                                                                                                     | NO          | NULL           |            |                |                |
+| sales_devolucion_item     | monto                  | decimal(12,2)                                                                                                                    | NO          | NULL           |            |                |                |
+| sales_devolucion_item     | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_devolucion_item     | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_devolucion_item     | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_devolucion_item     | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_orden_venta         | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| sales_orden_venta         | numero                 | varchar(32)                                                                                                                      | NO          | NULL           | UNI        |                |                |
+| sales_orden_venta         | canal                  | enum('pos','web')                                                                                                                | NO          | NULL           |            |                |                |
+| sales_orden_venta         | cliente_id             | bigint unsigned                                                                                                                  | YES         | NULL           | MUL        |                |                |
+| sales_orden_venta         | sucursal_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_orden_venta         | estado                 | enum('pending','pagada','confirmada','cancelada','devuelta')                                                                     | NO          | pending        | MUL        |                |                |
+| sales_orden_venta         | total                  | decimal(12,2)                                                                                                                    | NO          | 0.00           |            |                |                |
+| sales_orden_venta         | idempotency_key        | varchar(64)                                                                                                                      | YES         | NULL           | UNI        |                |                |
+| sales_orden_venta         | fulfillment_type       | enum('entrega','retiro')                                                                                                         | YES         | NULL           |            |                |                |
+| sales_orden_venta         | fulfillment_direccion  | varchar(255)                                                                                                                     | YES         | NULL           |            |                |                |
+| sales_orden_venta         | fecha_entrega          | datetime                                                                                                                         | YES         | NULL           |            |                |                |
+| sales_orden_venta         | creado_en              | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_orden_venta         | confirmado_en          | datetime                                                                                                                         | YES         | NULL           |            |                |                |
+| sales_orden_venta         | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_orden_venta         | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_orden_venta         | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_orden_venta         | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_orden_venta_item    | id                     | bigint unsigned                                                                                                                  | NO          | NULL           | PRI        | auto_increment |                |
+| sales_orden_venta_item    | orden_id               | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_orden_venta_item    | producto_id            | bigint unsigned                                                                                                                  | NO          | NULL           | MUL        |                |                |
+| sales_orden_venta_item    | cantidad               | int unsigned                                                                                                                     | NO          | NULL           |            |                |                |
+| sales_orden_venta_item    | precio_unitario        | decimal(12,2)                                                                                                                    | NO          | NULL           |            |                |                |
+| sales_orden_venta_item    | subtotal               | decimal(12,2)                                                                                                                    | NO          | NULL           |            |                |                |
+| sales_orden_venta_item    | user_create            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_orden_venta_item    | user_update            | bigint unsigned                                                                                                                  | NO          | NULL           |            |                |                |
+| sales_orden_venta_item    | user_created_at        | datetime                                                                                                                         | NO          | NULL           |            |                |                |
+| sales_orden_venta_item    | user_update_at         | datetime                                                                                                                         | NO          | NULL           |            |                |                |
++---------------------------+------------------------+----------------------------------------------------------------------------------------------------------------------------------+-------------+----------------+------------+----------------+----------------+
++----------+
+| section  |
++----------+
+| ===PK=== |
++----------+
++---------------------------+--------------+------------------+
+| TABLE_NAME                | COLUMN_NAME  | ORDINAL_POSITION |
++---------------------------+--------------+------------------+
+| auth_permiso              | id           |                1 |
+| auth_rol                  | id           |                1 |
+| auth_rol_permiso          | rol_id       |                1 |
+| auth_rol_permiso          | permiso_id   |                2 |
+| auth_token_blacklist      | id           |                1 |
+| auth_usuario              | id           |                1 |
+| auth_usuario_rol          | usuario_id   |                1 |
+| auth_usuario_rol          | rol_id       |                2 |
+| cat_categoria             | id           |                1 |
+| cat_precio                | id           |                1 |
+| cat_producto              | id           |                1 |
+| cat_promocion             | id           |                1 |
+| com_orden_compra          | id           |                1 |
+| com_orden_compra_item     | id           |                1 |
+| com_producto_promocion    | producto_id  |                1 |
+| com_producto_promocion    | promocion_id |                2 |
+| com_proveedor             | id           |                1 |
+| com_recepcion             | id           |                1 |
+| com_recepcion_item        | id           |                1 |
+| core_auditoria            | id           |                1 |
+| core_caja_pos             | id           |                1 |
+| core_cliente              | id           |                1 |
+| core_configuracion        | id           |                1 |
+| core_idempotency_key      | key          |                1 |
+| core_sucursal             | id           |                1 |
+| inv_ajuste_stock          | id           |                1 |
+| inv_inventario            | id           |                1 |
+| inv_movimiento_inventario | id           |                1 |
+| inv_reserva               | id           |                1 |
+| inv_transferencia         | id           |                1 |
+| inv_transferencia_item    | id           |                1 |
+| pay_outbox_evento         | id           |                1 |
+| pay_transaccion_pago      | id           |                1 |
+| sales_carrito_web         | id           |                1 |
+| sales_carrito_web_item    | id           |                1 |
+| sales_devolucion          | id           |                1 |
+| sales_devolucion_item     | id           |                1 |
+| sales_orden_venta         | id           |                1 |
+| sales_orden_venta_item    | id           |                1 |
++---------------------------+--------------+------------------+
++----------+
+| section  |
++----------+
+| ===FK=== |
++----------+
++---------------------------+------------------------------------+------------------------+------------------------+------------------------+-------------+-------------+
+| TABLE_NAME                | CONSTRAINT_NAME                    | COLUMN_NAME            | REFERENCED_TABLE_NAME  | REFERENCED_COLUMN_NAME | UPDATE_RULE | DELETE_RULE |
++---------------------------+------------------------------------+------------------------+------------------------+------------------------+-------------+-------------+
+| auth_rol_permiso          | fk_auth_rol_permiso_permiso        | permiso_id             | auth_permiso           | id                     | NO ACTION   | RESTRICT    |
+| auth_rol_permiso          | fk_auth_rol_permiso_rol            | rol_id                 | auth_rol               | id                     | NO ACTION   | RESTRICT    |
+| auth_usuario_rol          | fk_auth_usuario_rol_rol            | rol_id                 | auth_rol               | id                     | NO ACTION   | RESTRICT    |
+| auth_usuario_rol          | fk_auth_usuario_rol_usuario        | usuario_id             | auth_usuario           | id                     | NO ACTION   | RESTRICT    |
+| cat_categoria             | fk_cat_categoria_padre             | categoria_padre_id     | cat_categoria          | id                     | NO ACTION   | RESTRICT    |
+| cat_precio                | fk_cat_precio_producto             | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| cat_precio                | fk_cat_precio_sucursal             | sucursal_id            | core_sucursal          | id                     | NO ACTION   | RESTRICT    |
+| cat_producto              | fk_cat_producto_categoria          | categoria_id           | cat_categoria          | id                     | NO ACTION   | RESTRICT    |
+| com_orden_compra          | fk_com_orden_compra_proveedor      | proveedor_id           | com_proveedor          | id                     | NO ACTION   | RESTRICT    |
+| com_orden_compra_item     | fk_com_orden_item_orden            | orden_id               | com_orden_compra       | id                     | NO ACTION   | RESTRICT    |
+| com_orden_compra_item     | fk_com_orden_item_producto         | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| com_producto_promocion    | fk_com_producto_promocion_producto | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| com_producto_promocion    | fk_com_producto_promocion_promo    | promocion_id           | cat_promocion          | id                     | NO ACTION   | RESTRICT    |
+| com_recepcion             | fk_com_recepcion_orden             | orden_id               | com_orden_compra       | id                     | NO ACTION   | RESTRICT    |
+| com_recepcion             | fk_com_recepcion_usuario           | usuario_confirma       | auth_usuario           | id                     | NO ACTION   | RESTRICT    |
+| com_recepcion_item        | fk_com_recepcion_item_producto     | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| com_recepcion_item        | fk_com_recepcion_item_recepcion    | recepcion_id           | com_recepcion          | id                     | NO ACTION   | RESTRICT    |
+| core_auditoria            | fk_core_auditoria_usuario          | usuario_id             | auth_usuario           | id                     | NO ACTION   | RESTRICT    |
+| core_caja_pos             | fk_core_caja_pos_sucursal          | sucursal_id            | core_sucursal          | id                     | NO ACTION   | RESTRICT    |
+| inv_ajuste_stock          | fk_inv_ajuste_inventario           | inventario_id          | inv_inventario         | id                     | NO ACTION   | RESTRICT    |
+| inv_ajuste_stock          | fk_inv_ajuste_usuario              | usuario_id             | auth_usuario           | id                     | NO ACTION   | RESTRICT    |
+| inv_inventario            | fk_inv_inventario_producto         | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| inv_inventario            | fk_inv_inventario_sucursal         | sucursal_id            | core_sucursal          | id                     | NO ACTION   | RESTRICT    |
+| inv_movimiento_inventario | fk_inv_mov_inventario              | inventario_id          | inv_inventario         | id                     | NO ACTION   | RESTRICT    |
+| inv_movimiento_inventario | fk_inv_mov_producto                | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| inv_movimiento_inventario | fk_inv_mov_sucursal                | sucursal_id            | core_sucursal          | id                     | NO ACTION   | RESTRICT    |
+| inv_movimiento_inventario | fk_inv_mov_usuario                 | usuario_id             | auth_usuario           | id                     | NO ACTION   | RESTRICT    |
+| inv_reserva               | fk_inv_reserva_inventario          | inventario_id          | inv_inventario         | id                     | NO ACTION   | RESTRICT    |
+| inv_reserva               | fk_inv_reserva_orden               | orden_id               | sales_orden_venta      | id                     | NO ACTION   | RESTRICT    |
+| inv_transferencia         | fk_inv_trans_destino               | sucursal_destino_id    | core_sucursal          | id                     | NO ACTION   | RESTRICT    |
+| inv_transferencia         | fk_inv_trans_origen                | sucursal_origen_id     | core_sucursal          | id                     | NO ACTION   | RESTRICT    |
+| inv_transferencia         | fk_inv_trans_usuario               | usuario_id             | auth_usuario           | id                     | NO ACTION   | RESTRICT    |
+| inv_transferencia_item    | fk_inv_trans_item_producto         | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| inv_transferencia_item    | fk_inv_trans_item_trans            | transferencia_id       | inv_transferencia      | id                     | NO ACTION   | RESTRICT    |
+| pay_transaccion_pago      | fk_pay_pago_orden                  | orden_id               | sales_orden_venta      | id                     | NO ACTION   | RESTRICT    |
+| sales_carrito_web         | fk_sales_carrito_cliente           | cliente_id             | core_cliente           | id                     | NO ACTION   | RESTRICT    |
+| sales_carrito_web_item    | fk_sales_carrito_item_carrito      | carrito_id             | sales_carrito_web      | id                     | NO ACTION   | RESTRICT    |
+| sales_carrito_web_item    | fk_sales_carrito_item_producto     | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| sales_devolucion          | fk_sales_dev_cliente               | cliente_id             | core_cliente           | id                     | NO ACTION   | RESTRICT    |
+| sales_devolucion          | fk_sales_dev_orden                 | orden_original_id      | sales_orden_venta      | id                     | NO ACTION   | RESTRICT    |
+| sales_devolucion          | fk_sales_dev_usuario               | usuario_id             | auth_usuario           | id                     | NO ACTION   | RESTRICT    |
+| sales_devolucion_item     | fk_sales_dev_item_dev              | devolucion_id          | sales_devolucion       | id                     | NO ACTION   | RESTRICT    |
+| sales_devolucion_item     | fk_sales_dev_item_orden_item       | producto_orden_item_id | sales_orden_venta_item | id                     | NO ACTION   | RESTRICT    |
+| sales_devolucion_item     | fk_sales_dev_item_producto         | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
+| sales_orden_venta         | fk_sales_orden_cliente             | cliente_id             | core_cliente           | id                     | NO ACTION   | RESTRICT    |
+| sales_orden_venta         | fk_sales_orden_sucursal            | sucursal_id            | core_sucursal          | id                     | NO ACTION   | RESTRICT    |
+| sales_orden_venta_item    | fk_sales_item_orden                | orden_id               | sales_orden_venta      | id                     | NO ACTION   | RESTRICT    |
+| sales_orden_venta_item    | fk_sales_item_producto             | producto_id            | cat_producto           | id                     | NO ACTION   | RESTRICT    |
++---------------------------+------------------------------------+------------------------+------------------------+------------------------+-------------+-------------+
++--------------+
+| section      |
++--------------+
+| ===UNIQUE=== |
++--------------+
++------------------------+------------------------------------------+---------------------------------------+
+| TABLE_NAME             | INDEX_NAME                               | cols                                  |
++------------------------+------------------------------------------+---------------------------------------+
+| auth_permiso           | uq_auth_permiso_codigo                   | codigo                                |
+| auth_rol               | uq_auth_rol_nombre                       | nombre                                |
+| auth_token_blacklist   | uq_auth_token_blacklist_hash             | token_hash                            |
+| auth_usuario           | uq_auth_usuario_email                    | email                                 |
+| cat_precio             | uq_cat_precio_sucursal_producto_desde    | sucursal_id,producto_id,vigente_desde |
+| cat_producto           | uq_cat_producto_sku                      | sku                                   |
+| com_orden_compra       | uq_com_orden_compra_numero               | numero                                |
+| com_orden_compra_item  | uq_com_orden_item_orden_producto         | orden_id,producto_id                  |
+| com_proveedor          | uq_com_proveedor_codigo                  | codigo                                |
+| com_proveedor          | uq_com_proveedor_nombre                  | nombre                                |
+| com_recepcion_item     | uq_com_recepcion_item_recepcion_producto | recepcion_id,producto_id              |
+| core_caja_pos          | uq_core_caja_pos_sucursal_codigo         | sucursal_id,codigo                    |
+| core_cliente           | uq_core_cliente_identificacion           | identificacion                        |
+| core_configuracion     | uq_core_config_clave                     | clave                                 |
+| inv_inventario         | uq_inv_inventario_producto_sucursal      | producto_id,sucursal_id               |
+| inv_transferencia_item | uq_inv_trans_item_trans_producto         | transferencia_id,producto_id          |
+| pay_transaccion_pago   | uq_pay_pago_idempotency                  | idempotency_key                       |
+| pay_transaccion_pago   | uq_pay_pago_proveedor_ref                | proveedor_pago,referencia_externa     |
+| sales_carrito_web      | uq_sales_carrito_sesion                  | sesion_key                            |
+| sales_carrito_web_item | uq_sales_carrito_item_carrito_producto   | carrito_id,producto_id                |
+| sales_devolucion_item  | uq_sales_dev_item_dev_producto           | devolucion_id,producto_id             |
+| sales_orden_venta      | uq_sales_orden_idempotency               | idempotency_key                       |
+| sales_orden_venta      | uq_sales_orden_numero                    | numero                                |
+| sales_orden_venta_item | uq_sales_item_orden_producto             | orden_id,producto_id                  |
++------------------------+------------------------------------------+---------------------------------------+
++---------------+
+| section       |
++---------------+
+| ===INDEXES=== |
++---------------+
++---------------------------+------------------------------------------+------------+--------------+------------------------+------------+----------+
+| TABLE_NAME                | INDEX_NAME                               | NON_UNIQUE | SEQ_IN_INDEX | COLUMN_NAME            | INDEX_TYPE | SUB_PART |
++---------------------------+------------------------------------------+------------+--------------+------------------------+------------+----------+
+| auth_permiso              | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| auth_permiso              | uq_auth_permiso_codigo                   |          0 |            1 | codigo                 | BTREE      |          |
+| auth_rol                  | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| auth_rol                  | uq_auth_rol_nombre                       |          0 |            1 | nombre                 | BTREE      |          |
+| auth_rol_permiso          | idx_auth_rol_permiso_permiso             |          1 |            1 | permiso_id             | BTREE      |          |
+| auth_rol_permiso          | PRIMARY                                  |          0 |            1 | rol_id                 | BTREE      |          |
+| auth_rol_permiso          | PRIMARY                                  |          0 |            2 | permiso_id             | BTREE      |          |
+| auth_token_blacklist      | idx_auth_token_blacklist_expira          |          1 |            1 | expira_en              | BTREE      |          |
+| auth_token_blacklist      | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| auth_token_blacklist      | uq_auth_token_blacklist_hash             |          0 |            1 | token_hash             | BTREE      |          |
+| auth_usuario              | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| auth_usuario              | uq_auth_usuario_email                    |          0 |            1 | email                  | BTREE      |          |
+| auth_usuario_rol          | idx_auth_usuario_rol_rol                 |          1 |            1 | rol_id                 | BTREE      |          |
+| auth_usuario_rol          | PRIMARY                                  |          0 |            1 | usuario_id             | BTREE      |          |
+| auth_usuario_rol          | PRIMARY                                  |          0 |            2 | rol_id                 | BTREE      |          |
+| cat_categoria             | idx_cat_categoria_padre                  |          1 |            1 | categoria_padre_id     | BTREE      |          |
+| cat_categoria             | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| cat_precio                | fk_cat_precio_producto                   |          1 |            1 | producto_id            | BTREE      |          |
+| cat_precio                | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| cat_precio                | uq_cat_precio_sucursal_producto_desde    |          0 |            1 | sucursal_id            | BTREE      |          |
+| cat_precio                | uq_cat_precio_sucursal_producto_desde    |          0 |            2 | producto_id            | BTREE      |          |
+| cat_precio                | uq_cat_precio_sucursal_producto_desde    |          0 |            3 | vigente_desde          | BTREE      |          |
+| cat_producto              | idx_cat_producto_categoria               |          1 |            1 | categoria_id           | BTREE      |          |
+| cat_producto              | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| cat_producto              | uq_cat_producto_sku                      |          0 |            1 | sku                    | BTREE      |          |
+| cat_promocion             | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| com_orden_compra          | idx_com_orden_compra_proveedor           |          1 |            1 | proveedor_id           | BTREE      |          |
+| com_orden_compra          | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| com_orden_compra          | uq_com_orden_compra_numero               |          0 |            1 | numero                 | BTREE      |          |
+| com_orden_compra_item     | idx_com_orden_item_producto              |          1 |            1 | producto_id            | BTREE      |          |
+| com_orden_compra_item     | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| com_orden_compra_item     | uq_com_orden_item_orden_producto         |          0 |            1 | orden_id               | BTREE      |          |
+| com_orden_compra_item     | uq_com_orden_item_orden_producto         |          0 |            2 | producto_id            | BTREE      |          |
+| com_producto_promocion    | idx_com_producto_promocion_promo         |          1 |            1 | promocion_id           | BTREE      |          |
+| com_producto_promocion    | PRIMARY                                  |          0 |            1 | producto_id            | BTREE      |          |
+| com_producto_promocion    | PRIMARY                                  |          0 |            2 | promocion_id           | BTREE      |          |
+| com_proveedor             | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| com_proveedor             | uq_com_proveedor_codigo                  |          0 |            1 | codigo                 | BTREE      |          |
+| com_proveedor             | uq_com_proveedor_nombre                  |          0 |            1 | nombre                 | BTREE      |          |
+| com_recepcion             | idx_com_recepcion_orden                  |          1 |            1 | orden_id               | BTREE      |          |
+| com_recepcion             | idx_com_recepcion_usuario                |          1 |            1 | usuario_confirma       | BTREE      |          |
+| com_recepcion             | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| com_recepcion_item        | idx_com_recepcion_item_producto          |          1 |            1 | producto_id            | BTREE      |          |
+| com_recepcion_item        | idx_com_recepcion_item_recepcion         |          1 |            1 | recepcion_id           | BTREE      |          |
+| com_recepcion_item        | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| com_recepcion_item        | uq_com_recepcion_item_recepcion_producto |          0 |            1 | recepcion_id           | BTREE      |          |
+| com_recepcion_item        | uq_com_recepcion_item_recepcion_producto |          0 |            2 | producto_id            | BTREE      |          |
+| core_auditoria            | idx_core_auditoria_entidad               |          1 |            1 | entidad_tipo           | BTREE      |          |
+| core_auditoria            | idx_core_auditoria_entidad               |          1 |            2 | entidad_id             | BTREE      |          |
+| core_auditoria            | idx_core_auditoria_entidad               |          1 |            3 | fecha                  | BTREE      |          |
+| core_auditoria            | idx_core_auditoria_fecha                 |          1 |            1 | fecha                  | BTREE      |          |
+| core_auditoria            | idx_core_auditoria_usuario               |          1 |            1 | usuario_id             | BTREE      |          |
+| core_auditoria            | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| core_caja_pos             | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| core_caja_pos             | uq_core_caja_pos_sucursal_codigo         |          0 |            1 | sucursal_id            | BTREE      |          |
+| core_caja_pos             | uq_core_caja_pos_sucursal_codigo         |          0 |            2 | codigo                 | BTREE      |          |
+| core_cliente              | idx_core_cliente_email                   |          1 |            1 | email                  | BTREE      |          |
+| core_cliente              | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| core_cliente              | uq_core_cliente_identificacion           |          0 |            1 | identificacion         | BTREE      |          |
+| core_configuracion        | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| core_configuracion        | uq_core_config_clave                     |          0 |            1 | clave                  | BTREE      |          |
+| core_idempotency_key      | idx_core_idem_expiracion                 |          1 |            1 | expiracion             | BTREE      |          |
+| core_idempotency_key      | PRIMARY                                  |          0 |            1 | key                    | BTREE      |          |
+| core_sucursal             | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| inv_ajuste_stock          | idx_inv_ajuste_inventario                |          1 |            1 | inventario_id          | BTREE      |          |
+| inv_ajuste_stock          | idx_inv_ajuste_usuario                   |          1 |            1 | usuario_id             | BTREE      |          |
+| inv_ajuste_stock          | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| inv_inventario            | idx_inv_inventario_sucursal              |          1 |            1 | sucursal_id            | BTREE      |          |
+| inv_inventario            | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| inv_inventario            | uq_inv_inventario_producto_sucursal      |          0 |            1 | producto_id            | BTREE      |          |
+| inv_inventario            | uq_inv_inventario_producto_sucursal      |          0 |            2 | sucursal_id            | BTREE      |          |
+| inv_movimiento_inventario | idx_inv_mov_inventario                   |          1 |            1 | inventario_id          | BTREE      |          |
+| inv_movimiento_inventario | idx_inv_mov_inventario                   |          1 |            2 | fecha                  | BTREE      |          |
+| inv_movimiento_inventario | idx_inv_mov_producto_fecha               |          1 |            1 | producto_id            | BTREE      |          |
+| inv_movimiento_inventario | idx_inv_mov_producto_fecha               |          1 |            2 | fecha                  | BTREE      |          |
+| inv_movimiento_inventario | idx_inv_mov_sucursal_fecha               |          1 |            1 | sucursal_id            | BTREE      |          |
+| inv_movimiento_inventario | idx_inv_mov_sucursal_fecha               |          1 |            2 | fecha                  | BTREE      |          |
+| inv_movimiento_inventario | idx_inv_mov_usuario                      |          1 |            1 | usuario_id             | BTREE      |          |
+| inv_movimiento_inventario | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| inv_reserva               | idx_inv_reserva_estado_expira            |          1 |            1 | estado                 | BTREE      |          |
+| inv_reserva               | idx_inv_reserva_estado_expira            |          1 |            2 | expira_en              | BTREE      |          |
+| inv_reserva               | idx_inv_reserva_inventario               |          1 |            1 | inventario_id          | BTREE      |          |
+| inv_reserva               | idx_inv_reserva_orden                    |          1 |            1 | orden_id               | BTREE      |          |
+| inv_reserva               | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| inv_transferencia         | idx_inv_trans_destino                    |          1 |            1 | sucursal_destino_id    | BTREE      |          |
+| inv_transferencia         | idx_inv_trans_origen                     |          1 |            1 | sucursal_origen_id     | BTREE      |          |
+| inv_transferencia         | idx_inv_trans_usuario                    |          1 |            1 | usuario_id             | BTREE      |          |
+| inv_transferencia         | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| inv_transferencia_item    | idx_inv_trans_item_producto              |          1 |            1 | producto_id            | BTREE      |          |
+| inv_transferencia_item    | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| inv_transferencia_item    | uq_inv_trans_item_trans_producto         |          0 |            1 | transferencia_id       | BTREE      |          |
+| inv_transferencia_item    | uq_inv_trans_item_trans_producto         |          0 |            2 | producto_id            | BTREE      |          |
+| pay_outbox_evento         | idx_pay_outbox_correlation               |          1 |            1 | correlation_id         | BTREE      |          |
+| pay_outbox_evento         | idx_pay_outbox_estado_fecha              |          1 |            1 | estado                 | BTREE      |          |
+| pay_outbox_evento         | idx_pay_outbox_estado_fecha              |          1 |            2 | creado_en              | BTREE      |          |
+| pay_outbox_evento         | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| pay_transaccion_pago      | idx_pay_pago_orden                       |          1 |            1 | orden_id               | BTREE      |          |
+| pay_transaccion_pago      | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| pay_transaccion_pago      | uq_pay_pago_idempotency                  |          0 |            1 | idempotency_key        | BTREE      |          |
+| pay_transaccion_pago      | uq_pay_pago_proveedor_ref                |          0 |            1 | proveedor_pago         | BTREE      |          |
+| pay_transaccion_pago      | uq_pay_pago_proveedor_ref                |          0 |            2 | referencia_externa     | BTREE      |          |
+| sales_carrito_web         | idx_sales_carrito_cliente                |          1 |            1 | cliente_id             | BTREE      |          |
+| sales_carrito_web         | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| sales_carrito_web         | uq_sales_carrito_sesion                  |          0 |            1 | sesion_key             | BTREE      |          |
+| sales_carrito_web_item    | idx_sales_carrito_item_producto          |          1 |            1 | producto_id            | BTREE      |          |
+| sales_carrito_web_item    | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| sales_carrito_web_item    | uq_sales_carrito_item_carrito_producto   |          0 |            1 | carrito_id             | BTREE      |          |
+| sales_carrito_web_item    | uq_sales_carrito_item_carrito_producto   |          0 |            2 | producto_id            | BTREE      |          |
+| sales_devolucion          | idx_sales_dev_cliente                    |          1 |            1 | cliente_id             | BTREE      |          |
+| sales_devolucion          | idx_sales_dev_orden                      |          1 |            1 | orden_original_id      | BTREE      |          |
+| sales_devolucion          | idx_sales_dev_usuario                    |          1 |            1 | usuario_id             | BTREE      |          |
+| sales_devolucion          | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| sales_devolucion_item     | idx_sales_dev_item_dev                   |          1 |            1 | devolucion_id          | BTREE      |          |
+| sales_devolucion_item     | idx_sales_dev_item_orden_item            |          1 |            1 | producto_orden_item_id | BTREE      |          |
+| sales_devolucion_item     | idx_sales_dev_item_producto              |          1 |            1 | producto_id            | BTREE      |          |
+| sales_devolucion_item     | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| sales_devolucion_item     | uq_sales_dev_item_dev_producto           |          0 |            1 | devolucion_id          | BTREE      |          |
+| sales_devolucion_item     | uq_sales_dev_item_dev_producto           |          0 |            2 | producto_id            | BTREE      |          |
+| sales_orden_venta         | idx_sales_orden_cliente                  |          1 |            1 | cliente_id             | BTREE      |          |
+| sales_orden_venta         | idx_sales_orden_estado_fecha             |          1 |            1 | estado                 | BTREE      |          |
+| sales_orden_venta         | idx_sales_orden_estado_fecha             |          1 |            2 | creado_en              | BTREE      |          |
+| sales_orden_venta         | idx_sales_orden_sucursal                 |          1 |            1 | sucursal_id            | BTREE      |          |
+| sales_orden_venta         | idx_sales_orden_sucursal_fecha           |          1 |            1 | sucursal_id            | BTREE      |          |
+| sales_orden_venta         | idx_sales_orden_sucursal_fecha           |          1 |            2 | creado_en              | BTREE      |          |
+| sales_orden_venta         | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| sales_orden_venta         | uq_sales_orden_idempotency               |          0 |            1 | idempotency_key        | BTREE      |          |
+| sales_orden_venta         | uq_sales_orden_numero                    |          0 |            1 | numero                 | BTREE      |          |
+| sales_orden_venta_item    | idx_sales_item_producto                  |          1 |            1 | producto_id            | BTREE      |          |
+| sales_orden_venta_item    | PRIMARY                                  |          0 |            1 | id                     | BTREE      |          |
+| sales_orden_venta_item    | uq_sales_item_orden_producto             |          0 |            1 | orden_id               | BTREE      |          |
+| sales_orden_venta_item    | uq_sales_item_orden_producto             |          0 |            2 | producto_id            | BTREE      |          |
++---------------------------+------------------------------------------+------------+--------------+------------------------+------------+----------+
++--------------+
+| section      |
++--------------+
+| ===CHECKS=== |
++--------------+
++---------------------------+---------------------------------+-------------------------------------------------+----------+
+| TABLE_NAME                | CONSTRAINT_NAME                 | CHECK_CLAUSE                                    | ENFORCED |
++---------------------------+---------------------------------+-------------------------------------------------+----------+
+| cat_precio                | chk_cat_precio_monto            | (`monto` >= 0)                                  | YES      |
+| com_orden_compra          | chk_com_orden_compra_total      | (`total` >= 0)                                  | YES      |
+| com_orden_compra_item     | chk_com_orden_item_cantidad     | (`cantidad` > 0)                                | YES      |
+| com_orden_compra_item     | chk_com_orden_item_precio       | (`precio_pactado` >= 0)                         | YES      |
+| com_recepcion_item        | chk_com_recepcion_item_cantidad | (`cantidad_recibida` > 0)                       | YES      |
+| inv_ajuste_stock          | chk_inv_ajuste_cantidad         | (`cantidad` <> 0)                               | YES      |
+| inv_inventario            | chk_inv_inventario_available    | (`stock_available` >= 0)                        | YES      |
+| inv_inventario            | chk_inv_inventario_reserved     | (`stock_reserved` >= 0)                         | YES      |
+| inv_inventario            | chk_inv_inventario_sold         | (`stock_sold` >= 0)                             | YES      |
+| inv_movimiento_inventario | chk_inv_mov_cantidad            | (`cantidad` <> 0)                               | YES      |
+| inv_reserva               | chk_inv_reserva_cantidad        | (`cantidad` > 0)                                | YES      |
+| inv_transferencia         | chk_inv_trans_distinta          | (`sucursal_origen_id` <> `sucursal_destino_id`) | YES      |
+| inv_transferencia_item    | chk_inv_trans_item_cantidad     | (`cantidad` > 0)                                | YES      |
+| pay_transaccion_pago      | chk_pay_pago_monto              | (`monto` > 0)                                   | YES      |
+| sales_carrito_web_item    | chk_sales_carrito_item_cantidad | (`cantidad` > 0)                                | YES      |
+| sales_devolucion          | chk_sales_dev_monto             | (`monto` >= 0)                                  | YES      |
+| sales_devolucion_item     | chk_sales_dev_item_cantidad     | (`cantidad` > 0)                                | YES      |
+| sales_devolucion_item     | chk_sales_dev_item_monto        | (`monto` >= 0)                                  | YES      |
+| sales_orden_venta         | chk_sales_orden_total           | (`total` >= 0)                                  | YES      |
+| sales_orden_venta_item    | chk_sales_item_cantidad         | (`cantidad` > 0)                                | YES      |
+| sales_orden_venta_item    | chk_sales_item_precio           | (`precio_unitario` >= 0)                        | YES      |
+| sales_orden_venta_item    | chk_sales_item_subtotal         | (`subtotal` >= 0)                               | YES      |
++---------------------------+---------------------------------+-------------------------------------------------+----------+
++--------------------+
+| section            |
++--------------------+
+| ===ENUM_COLUMNS=== |
++--------------------+
++---------------------------+------------------+----------------------------------------------------------------------------------------------------------------------------------+
+| TABLE_NAME                | COLUMN_NAME      | COLUMN_TYPE                                                                                                                      |
++---------------------------+------------------+----------------------------------------------------------------------------------------------------------------------------------+
+| auth_permiso              | estado           | enum('activo','inactivo')                                                                                                        |
+| auth_rol                  | estado           | enum('activo','inactivo')                                                                                                        |
+| auth_usuario              | estado           | enum('activo','inactivo')                                                                                                        |
+| cat_categoria             | estado           | enum('activo','inactivo')                                                                                                        |
+| cat_producto              | estado           | enum('activo','inactivo')                                                                                                        |
+| cat_promocion             | estado           | enum('activo','inactivo')                                                                                                        |
+| com_orden_compra          | estado           | enum('draft','enviada','recibida','cancelada')                                                                                   |
+| com_proveedor             | estado           | enum('activo','inactivo')                                                                                                        |
+| com_recepcion             | estado           | enum('draft','confirmada')                                                                                                       |
+| core_caja_pos             | estado           | enum('activo','inactivo')                                                                                                        |
+| core_cliente              | estado           | enum('activo','inactivo')                                                                                                        |
+| core_sucursal             | estado           | enum('activo','inactivo')                                                                                                        |
+| inv_movimiento_inventario | tipo             | enum('entrada','salida','reserva','liberacion','ajuste','devolucion','transferencia_salida','transferencia_entrada','recepcion') |
+| inv_reserva               | estado           | enum('pending','confirmed','expired','cancelled')                                                                                |
+| inv_transferencia         | estado           | enum('draft','in_transit','received','cancelled')                                                                                |
+| pay_outbox_evento         | estado           | enum('pending','processing','processed','failed')                                                                                |
+| pay_transaccion_pago      | estado           | enum('initiated','authorized','failed','refunded','compensated')                                                                 |
+| sales_devolucion          | estado           | enum('draft','aprobada','rechazada','completada')                                                                                |
+| sales_orden_venta         | canal            | enum('pos','web')                                                                                                                |
+| sales_orden_venta         | estado           | enum('pending','pagada','confirmada','cancelada','devuelta')                                                                     |
+| sales_orden_venta         | fulfillment_type | enum('entrega','retiro')                                                                                                         |
++---------------------------+------------------+----------------------------------------------------------------------------------------------------------------------------------+
++----------------+
+| section        |
++----------------+
+| ===TRIGGERS=== |
++----------------+
++------------------------------+---------------------------+---------------+--------------------+--------------+
+| TRIGGER_NAME                 | EVENT_OBJECT_TABLE        | ACTION_TIMING | EVENT_MANIPULATION | ACTION_ORDER |
++------------------------------+---------------------------+---------------+--------------------+--------------+
+| trg_core_auditoria_no_delete | core_auditoria            | BEFORE        | DELETE             |            1 |
+| trg_core_auditoria_no_update | core_auditoria            | BEFORE        | UPDATE             |            1 |
+| trg_inv_movimiento_no_delete | inv_movimiento_inventario | BEFORE        | DELETE             |            1 |
+| trg_inv_movimiento_no_update | inv_movimiento_inventario | BEFORE        | UPDATE             |            1 |
++------------------------------+---------------------------+---------------+--------------------+--------------+
++-------------+
+| section     |
++-------------+
+| ===VIEWS=== |
++-------------+
++----------------+
+| section        |
++----------------+
+| ===ROUTINES=== |
++----------------+
++--------------+
+| section      |
++--------------+
+| ===COUNTS=== |
++--------------+
++-------------+-----+
+| c           | n   |
++-------------+-----+
+| tables      |  36 |
+| columns     | 338 |
+| pks         |  39 |
+| fks         |  48 |
+| unique_idxs |  24 |
+| all_indexes | 108 |
+| checks      |  22 |
+| enum_cols   |  21 |
+| triggers    |   4 |
+| views       |   0 |
+| routines    |   0 |
++-------------+-----+

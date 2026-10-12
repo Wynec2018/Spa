@@ -1,0 +1,52 @@
+CP-LAND-13 - Auditoria motion
+Fecha: 2026-09-30
+Skills: review-animations + improve-animations (ambos read-only). Referencia STANDARDS.md (valores exactos citados).
+
+== Metodo ==
+Recon completo de la superficie motion: barrido transition/animation/@keyframes/transform/prefers-reduced-motion/hover:hover
+sobre public/assets/css/*.css, public/assets/js/*.js y app/Views/**/*.php + verificacion manual de cada hallazgo en su file:line.
+Auditoria SIN cambios de codigo (regla read-only del workflow y de ambos skills).
+
+== Superficie ==
+Stack: CSS nativo + landing.js (18 lineas, rAF throttle + passive). Cero librerias de motion. Cero @keyframes. Cero animation: (solo overrides reduced-motion).
+Tokens: --dur=0.3s (variables.css:37), --ease=cubic-bezier(0.16,1,0.3,1) (variables.css:36).
+Movimientos: header shadow on scroll (landing.css:11 + landing.js:9), btn press scale(0.98) (components.css:20),
+lift tarjetas translateY(-4px) gated (landing.css:154-161/230-236), smooth scroll (base.css:6).
+A11y: reduced-motion global (base.css:51-58) + override (landing.css:412-415); hover gating (landing.css:156,232).
+
+== Hallazgos ==
+BLOCKER=0 HIGH=0 MEDIUM=3 LOW=1
+MEDIUM:
+- M1: --dur=0.3s en hover de tarjetas esta en el limite, no bajo 300ms (STANDARDS/Duration); hover de catalogo = decenas/dia
+  -> reducir a 180ms en .cat-card__link y .prod-card. (landing.css:154,230 + variables.css:37) -> CP-LAND-15
+- M2: press feedback 300ms simetrico + scale(0.98) (components.css:18-20)
+  -> transform 160ms + scale(0.97) + background-color 200ms (STANDARDS/Physicality: press 100-160ms) -> CP-LAND-15
+- M3: reduced-motion con transition-duration: 0.01ms global = cero, no "gentler" (STANDARDS/Accessibility); contradice
+  comentario landing.css:411 (sombra 'conservada' pero a 0.01ms) -> quitar blanket, matar movimiento con reglas dirigidas
+  (landing.css:412-415 + .btn:active{transform:none}) y conservar transiciones de color. (base.css:56) -> CP-LAND-15
+LOW:
+- L1: transition box-shadow no-GPU en header sticky con backdrop-filter blur(8px) (landing.css:9,11) durante scroll;
+  riesgo bajo (toggle unico por umbral) -> opcional en CP-LAND-15.
+
+== OK verificados ==
+Sin transition:all / ease-in / scale(0) / transform-origin centralizado / keyframes en triggers rapidos.
+Hover gated (hover:hover)+pointer:fine. Interruptibilidad: todo transitions, cero keyframes.
+smooth-scroll off bajo reduce (base.css:52). Scroll handler rAF+passive (landing.js:12-17).
+scale(0.98) dentro de rango 0.95-0.98. Easing fuerte custom. Sin motion en acciones de teclado/100+dia.
+
+== Oportunidades perdidas (aditivas) ==
+1. Cero motion de entrada (stagger 30-80ms canonico) - quietud deliberada por decisiones_visuales ('Plano por Defecto');
+   decision del humano, no defecto.
+2. Sin feedback :active en tarjetas (touch no da respuesta visual).
+
+== Entregable ==
+.agents/reviews/landing-animation-review.md (tabla Before/After/Why + veredicto por tier + oportunidades perdidas).
+
+== Verificacion ==
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-13 => CP-LAND-13: PASSED
+Ningun BLOCKER/HIGH que resolver (regla cumplida: 0 pendientes).
+Incertidumbre de feel anotada: DevTools Animations panel / slow-motion 2-5x + dispositivo real antes de aprobacion visual.
+
+== Veredicto ==
+CP-LAND-13: PASSED (APPROVE) - MEDIUM/LOW con dueno CP-LAND-15

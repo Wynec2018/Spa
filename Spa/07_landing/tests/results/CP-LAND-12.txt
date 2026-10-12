@@ -1,0 +1,42 @@
+﻿CP-LAND-12 - Auditoria visual post-create
+Fecha: 2026-09-30 22:20:47
+Skill obligatorio: impeccable - cargado paso 0. Referencias leidas: init, brand, layout, typeset, clarify, adapt.
+
+== Setup ==
+PRODUCT.md creado en root (registro: brand; fuente: brief_landing + decisiones_visuales + 01_requisitos; sin entrevista).
+context.mjs: NO_PRODUCT_MD resuelto. UPDATE_AVAILABLE v3.9.1 -> v4.3.1 (notificado al humano, no bloquea).
+.impeccable/live/config.json no existe (no requerido para estas pasadas).
+
+== Metodo ==
+Render Chrome headless: desktop 1400 (full-page), mobile 390, DOM dump (texto completo), revision de tokens CSS.
+Pasadas acotadas: layout / typeset / clarify / adapt. AUDITORIA SIN CAMBIOS DE CODIGO (segun workflow).
+
+== Hallazgos ==
+BLOCKER=0 HIGH=0 MEDIUM=2 LOW=5 INFO=1
+MEDIUM:
+- L1: grid categorias 5 col con 7 items -> cola 5+2, 3 celdas vacias (hueco ~60%).
+- C1: 'demostrativo' x4 en intros adyacentes (sub-hero/sub-cat/sub-prod/disclaimer+footer).
+LOW:
+- L2: grid productos 6 col con 10 items -> cola 6+4 (5 col daria 10=5x2 exacto).
+- C2: H1 'a precios en Bs' -> sugerido 'con precios en Bs'.
+- C3: stat '0 cuenta o registro requerido' -> plural 'requeridos' o label 'sin cuenta ni registro'.
+- A2: viewport sin viewport-fit/safe-area en footer (notch).
+INFO:
+- A3: 78 imgs, 0 srcset/sizes (delegado a CP-LAND-15 optimize).
+OK verificados: Outfit unica familia, tokens rem+clamp ratio ~1.4, body 16px, squint test, anti-slop
+(sin hero centrado/3 tarjetas/hero-metric/tarjetas anidadas), CTAs especificos, terminologia consistente,
+testimonios marcados ficticios, overflow=0 y smallTargets=0 en 360/768/1280 (CP-10), hover gated (CP-11),
+reduced-motion 2 bloques, mobile-first sin dependencia de hover.
+
+== Entregable ==
+.agents/reviews/landing-design-review.md (tabla de hallazgos con severidad y dueno CP-LAND-15).
+PRODUCT.md (raiz).
+
+== Verificacion ==
+index HTTP 200 (servidor 127.0.0.1:8110 activo).
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-12 => CP-LAND-12: PASSED
+Evidencia visual: cp12_desktop.png, cp12_mobile.png, cp12_full.png (temp).
+
+== Veredicto ==
+CP-LAND-12: PASSED

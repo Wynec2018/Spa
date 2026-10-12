@@ -1,0 +1,25 @@
+﻿CP-LAND-09 — Beneficios + prueba social + CTA final
+Fecha: 2026-09-30 22:01:46
+Skill: design-taste-frontend (beneficios como strip tipografico con valores reales, no 3 tarjetas iguales)
+
+== Código ==
+app/Views/sections/beneficios.php: 4 beneficios con datos REALES del sitio (count(), suma de productos) — sin claims falsos.
+app/Views/sections/prueba_social.php: 2 testimonios marcados como 'Testimonios de demostración: son ficticios...' (obligatorio del workflow).
+app/Views/sections/llamada_accion.php: banda CTA final con CTA primario/secundario desde config, aviso demo.
+public/index.php: 50 lineas; calcula numeros reales antes de render; try/catch previo.
+CSS: landing.css (.beneficios, .testimonios, .cta-final con banda acento y botones adaptados).
+
+== Verificación HTTP (php -S 127.0.0.1:8109) ==
+index HTTP 200 (69234 bytes)
+beneficios = 4 | testimonios = 2 | cta-final = 1
+'Testimonios de demostración' presente = True
+numeros reales 7 categorías y 70 productos = True
+prod-card sigue = 70 | sin login/contrase = True
+Ajuste: copy de beneficio 'registro o login requerido' -> 'cuenta o registro requerido' (auditoría cero-login).
+
+== Validadores ==
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-09 => CP-LAND-09: PASSED
+
+== Veredicto ==
+CP-LAND-09: PASSED

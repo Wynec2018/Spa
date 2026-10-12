@@ -1,0 +1,7 @@
+transacciones_negocio_por_hora_objetivo: 50
+multiplicador_pico: 2.0
+factor_crecimiento_a_evaluar: 10
+usuarios_concurrentes_estimados: 10
+disponibilidad_objetivo_porcentaje: null
+rpo_minutos: null
+rto_minutos: null

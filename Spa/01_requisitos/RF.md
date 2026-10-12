@@ -1,0 +1,18 @@
+# Requisitos funcionales
+- RF-001. Administrar usuarios, roles y permisos.
+- RF-002. Administrar clientes.
+- RF-003. Registrar Serivicio, tiempo, usuario, cama y promociones.
+- RF-004. Registrar recepción de pago del cliente al usuario y servicio.
+- RF-005. Registrar entradas, salidas, reservas, ajustes y transferencias.
+- RF-006. Registrar promociones.
+- RF-007. Registrar devoluciones parciales o totales.
+- RF-008. Evitar doble descuento ante reintentos.
+- RF-009. Registrar inventario por producto y sucursal.
+- RF-010. Descontar inventario al confirmar venta presencial.
+- RF-011. Validar/reservar stock antes de confirmar pedido.
+- RF-012. Integrar pagos mediante interfaz desacoplada del proveedor.
+- RF-013. Reflejar ventas web e inventario sin sobreventa frente al canal físico.
+- RF-014. Generar reportes operativos de ventas, compras e inventario.
+- RF-015. Auditar operaciones críticas.
+- RF-016. Administrar parámetros operativos sin modificar código.
+- RF-017. superusuario visualiza reportes

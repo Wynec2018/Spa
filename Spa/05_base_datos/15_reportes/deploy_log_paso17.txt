@@ -1,0 +1,60 @@
+# deploy_log_paso17.txt — Paso 17: Despliegue a base real
+# Fecha: 2026-09-22
+# BD destino: MySQL 8.4.3 (localhost:3306), esquema `sistema`
+# Cliente: MariaDB 12.0 mysql.exe (solo cliente; servidor MySQL 8.4)
+# Credenciales: root desde .env (no incluidas en este log)
+
+## Resumen
+| Script | Resultado | Notas |
+|--------|-----------|-------|
+| V001__init_auth_core.sql | OK | 12 tablas (auth_* + core_*) |
+| V002__init_cat.sql | OK | chk_cat_categoria_no_self eliminado (MySQL ERROR 3818: CHECK sobre AUTO_INCREMENT) |
+| V003__init_compras.sql | OK | 6 tablas com_* |
+| V004__init_ventas.sql | OK | 6 tablas sales_* |
+| V005__init_inventario.sql | OK | 5 tablas inv_* |
+| V006__init_pagos.sql | OK | 2 tablas pay_* |
+| V007__indices.sql | OK | 131 índices totales en information_schema |
+| V008__triggers.sql | OK | 4 triggers SIGNAL (append-only core_auditoria + inv_movimiento_inventario) |
+| V009__roles_grants.sql | OK (tras corrección) | Ver incidencias |
+| V010__seed.sql | OK | 9 permisos, rol admin (9 permisos), reserva_ttl_minutos=15 |
+
+## Incidencias corregidas en scripts (no en BD)
+1. **V002 — ERROR 3818**: MySQL 8.4 prohíbe CHECK sobre columna AUTO_INCREMENT.
+   - Fix: eliminado `chk_cat_categoria_no_self` de V002 y modelo_fisico.md.
+2. **V009 — `` `tienda` `` → `` `sistema` ``**: esquema del ejemplo migrado.
+3. **V009 — ERROR 1147 REVOKE**: MySQL no permite REVOKE por tabla desde GRANT de esquema.
+   - Fix: app_rw recibe SELECT+INSERT a nivel esquema + UPDATE en 34 tablas individuales
+     (excluye core_auditoria e inv_movimiento_inventario). SEC-01 doble capa OK.
+4. **V009 — ERROR 1064 BINLOG MONITOR**: privilegio es MariaDB, no existe en MySQL 8.x.
+   - Fix: `GRANT REPLICATION CLIENT ON *.* TO backup` (SEC-03).
+5. **V009 — ERROR 1141 en REVOKE tienda**: grants residuales ya no existían (corridas previas).
+   - Fix: sección de limpieza hecha idempotente (sin REVOKE fallidos).
+6. **V010 — ERROR 1046 No database selected**: faltaba `USE sistema`.
+   - Fix: añadido `USE `sistema`;` al inicio de V010.
+
+## Smoke test (post-V010)
+| Verificación | Esperado | Obtenido | Estado |
+|--------------|----------|----------|--------|
+| Tablas en `sistema` | 36 | 36 | PASS |
+| Triggers | 4 | 4 | PASS |
+| Índices | >0 | 131 | PASS |
+| `reserva_ttl_minutos` | 15 | 15 | PASS |
+| `auth_permiso` seed | 9 | 9 | PASS |
+| `auth_rol` (admin) | 1 | 1 | PASS |
+| `auth_rol_permiso` | 9 | 9 | PASS |
+| **SEC-01**: app_rw sin UPDATE en `core_auditoria` | ausente | ausente | PASS |
+| **SEC-01**: app_rw sin UPDATE en `inv_movimiento_inventario` | ausente | ausente | PASS |
+| **SEC-01**: app_rw con SELECT+INSERT en append-only | presente | presente (`sistema.*`) | PASS |
+| app_read grants | SELECT ON sistema.* | SELECT ON sistema.* | PASS |
+| backup grants | SELECT+RELOAD+PROCESS+REPLICATION CLIENT+BACKUP_ADMIN | idem | PASS |
+| migraciones grants | ALL ON sistema.* | ALL ON sistema.* | PASS |
+| dba grants | ALL WITH GRANT OPTION | ALL WITH GRANT OPTION | PASS |
+
+## Roles creados
+app_read, app_rw, migraciones, backup, dba (5/5).
+
+## Pendientes operativos (gates Paso 18+)
+- SEC-05: drill de restore (DB-P05) no ejecutado en este paso.
+- DO-02: procedimiento de backup PITR no drill-ejecutado.
+- DO-03: job TTL de carrito (aún sin TTL definido — DB abierta).
+- DO-01: DB-P11 (aislamiento) pendiente de decisión.

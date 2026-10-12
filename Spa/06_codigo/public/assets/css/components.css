@@ -1,0 +1,83 @@
+/* CP-FRONT-01: componentes reutilizables (botones, mensajes) */
+.btn {
+  font: inherit;
+  border: none;
+  border-radius: var(--radius);
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+}
+.btn-primary { background: var(--color-primary); color: #fff; width: 100%; }
+.btn-primary:hover { background: var(--color-primary-hover); }
+.btn-primary:disabled { opacity: .6; cursor: wait; }
+.form-error {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: .9rem;
+}
+
+/* CP-FRONT-02: tarjetas del dashboard */
+.cards { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  min-width: 200px;
+}
+.card h2 { margin: 0; font-size: 2rem; }
+.card p { margin: var(--space-1) 0; color: var(--color-muted); }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+.btn-ghost:hover { background: var(--color-bg); }
+.dash-user { color: var(--color-muted); }
+
+/* CP-FRONT-03: listados, tabla y badges */
+.page-sub { color: var(--color-muted); }
+.page-muted { color: var(--color-muted); font-style: italic; }
+.table-wrap { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+th, td { text-align: left; padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-border); }
+th { background: var(--color-bg); font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+.badge { display: inline-block; padding: 2px var(--space-2); border-radius: 999px; font-size: .8rem; }
+.badge-ok { background: #dcfce7; color: var(--color-ok); }
+.badge-off { background: var(--color-bg); color: var(--color-muted); }
+
+/* CP-FRONT-04: sección de alta */
+.form-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  margin-top: var(--space-4);
+  max-width: 420px;
+}
+.form-section h2 { margin: 0 0 var(--space-3); font-size: 1.1rem; }
+.form-field select {
+  font: inherit;
+  width: 100%;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+.form-ok {
+  background: #dcfce7;
+  color: var(--color-ok);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: .9rem;
+}
+.btn-inline { width: auto; }
+
+/* CP-FRONT-05: acciones de fila */
+.row-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.btn-sm { padding: 2px var(--space-2); font-size: .85rem; }
+td .btn + .btn { margin-left: var(--space-2); }

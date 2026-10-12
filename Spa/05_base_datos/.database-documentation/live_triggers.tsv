@@ -1,0 +1,4 @@
+﻿trg_core_auditoria_no_delete	core_auditoria	BEFORE	DELETE
+trg_core_auditoria_no_update	core_auditoria	BEFORE	UPDATE
+trg_inv_movimiento_no_delete	inv_movimiento_inventario	BEFORE	DELETE
+trg_inv_movimiento_no_update	inv_movimiento_inventario	BEFORE	UPDATE

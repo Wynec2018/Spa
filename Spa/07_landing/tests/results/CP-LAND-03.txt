@@ -1,0 +1,29 @@
+CP-LAND-03 — Seed Bolivia (7 categorías x 10 productos, precios en Bs)
+Fecha: 2026-09-30 20:21:45
+MySQL: 8.4.3 (Laragon) | DB: sistema
+
+== 1. Fuente ==
+  proyecto/07_landing/database/02_landing_seed.sql (START TRANSACTION ... COMMIT)
+  Datos demostrativos; moneda Bs (fixture: tests/fixtures/catalogo_bolivia.json)
+
+== 2. Aplicacion ==
+  mysql --default-character-set=utf8mb4 sistema < 02_landing_seed.sql => exit 0
+
+== 3. Conteos en BD ==
+  landing_categoria = 7
+  landing_producto  = 70
+  por categoria (id 1..7): 10, 10, 10, 10, 10, 10, 10
+  categorias vacias: 0
+
+== 4. Comparacion seed vs fixture (PHP/PDO utf8mb4) ==
+  fixture cats=7, productos comparados=70
+  nombres (categoria+producto), precio y precio_anterior: OK, 0 discrepancias
+  slugs duplicados: 0 | precios negativos: 0 | precios NULL: 0
+  encoding: 'Panadería y desayuno' leído correctamente (utf8mb4)
+
+== 5. validate_checkpoint.php CP-LAND-03 ==
+  [0] CP-LAND-03: PASSED
+  (fixture 7x10=70, estructura y prohibiciones)
+
+== Veredicto ==
+CP-LAND-03: PASSED

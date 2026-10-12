@@ -1,0 +1,33 @@
+﻿CP-LAND-10 — Responsive base (móvil/tablet/desktop)
+Fecha: 2026-09-30 22:09:52
+Skill: design-taste-frontend + verificación con Chrome headless (medición real, no a ojo)
+
+== Método ==
+public/tmp_cp10_check.html: página de prueba que carga la landing en iframes de 360/768/1280 px y mide:
+  - overflowPx = scrollWidth - clientWidth del documento (scroll horizontal)
+  - offenders = elementos cuyo rect sobrepasa el viewport
+  - smallTargets = enlaces/botones visibles con dimensiones < 24px (umbral WCAG; objetivo 44px)
+Chrome headless --virtual-time-budget --dump-dom -> captura del reporte.
+
+== Resultado (antes del fix) ==
+WIDTH 360 : overflowPx=0 offenders=0 smallTargets=0
+WIDTH 768 : overflowPx=0 offenders=0 smallTargets=4  (A 70x23, A 64x23, A 66x23, A 59x23)
+WIDTH 1280: overflowPx=0 offenders=0 smallTargets=4
+
+== Fix ==
+landing.css: .site-header__nav a y .site-footer a con display:inline-flex + min-height:44px (targets táctiles).
+
+== Resultado (después del fix) ==
+WIDTH 360 : overflowPx=0 offenders=0 smallTargets=0
+WIDTH 768 : overflowPx=0 offenders=0 smallTargets=0
+WIDTH 1280: overflowPx=0 offenders=0 smallTargets=0
+
+== Validadores ==
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-10 => CP-LAND-10: PASSED
+index HTTP 200 tras cambios.
+
+Nota: tmp_cp10_check.html es infraestructura de prueba en public/; eliminar en CP-LAND-16 (QA final).
+
+== Veredicto ==
+CP-LAND-10: PASSED

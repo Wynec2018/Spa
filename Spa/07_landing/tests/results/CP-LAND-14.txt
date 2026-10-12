@@ -1,0 +1,65 @@
+CP-LAND-14 — Auditoria UI/UX y accesibilidad
+Fecha: 2026-10-01
+Skill obligatorio: web-design-guidelines (cargado paso 0). Read-only del workflow respetado
+en la parte de diagnostico; los fixes aplicados estan dentro del alcance de resolucion de
+hallazgos de esta auditoria (regla: HIGH/BLOCKER no aprueba sin resolverse o documentarse).
+
+== Preparacion del entorno ==
+Estado inicial: mysqld NO escuchaba en 127.0.0.1:3306 (.env) => la landing renderizaba
+estado degradado (0 .cat-card, 0 .prod-card, estados vacios).
+Hallado: un mysqld ajeno (servicio Windows "MariaDB", PID 5836) en 3307 con auth
+gssapi_client — NO es la BD de la app; se ignoro.
+Accion: iniciado MySQL 8.4.3 (Laragon, my.ini port=3306, datadir C:\Portable\laragon\data\mysql-8.4);
+aplicados database/01_landing_schema.sql + 02_landing_seed.sql => landing_categoria=7,
+landing_producto=70. Con eso la pagina renderiza 7 cat-card + 70 prod-card, 0 estados vacios.
+Nota: las auditorias previas de esta sesion (y posiblemente de CP-10/CP-12) corrieron con
+catalogo vacio; por eso M2 no se habia detectado antes.
+
+== Metodo ==
+1) Estatico: vistas (header/footer/sections), base.css, landing.css, components.css,
+   variables.css, responsive.css, landing.js — anti-patrones y reglas 1-30 de la guia.
+2) Vivo: Chrome (chrome-devtools MCP) sobre http://127.0.0.1:8110/ con catalogo real;
+   Lighthouse snapshot desktop (1280) y mobile (360, DPR2, touch); consola; overflow en
+   360/768/1280; anclas con header sticky; jerarquia de encabezados; targets.
+3) Regresion de validadores: grep previo confirmo que validate_structure/validate_checkpoint
+   no revisan header/footer/landing.js/favicon/scroll-padding => edits seguros.
+
+== Hallazgos y estado ==
+BLOCKER=0 HIGH=2 MEDIUM=2 LOW=4
+- A1 HIGH footer.php script http://localhost:8400/live.js (impeccable-live) => RESUELTO:
+  bloque eliminado. Consola: 0 mensajes (antes ERR_CONNECTION_REFUSED).
+- A2 HIGH landing.css .cta-final__lead contraste 4.43:1 < 4.5:1 (unico fallo axe) =>
+  RESUELTO: color var(--color-on-accent) => 5.55:1. Audit color-contrast: PASS.
+- M1 MED anclas tapadas por header sticky (elementTop=0 en #categorias/#productos/#beneficios
+  y skip-link) => RESUELTO: base.css html { scroll-padding-top: 84px }. Destinos: top=84
+  (header 69px), covered=false en las 3.
+- M2 MED overflow horizontal REAL en 360px (scrollWidth 658 vs 360) por imagenes con
+  width nativo 640 en columnas 1fr (min=auto) => RESUELTO: responsive.css
+  minmax(0, 1fr) en .hero__grid/.categorias__grid y repeat(2, minmax(0,1fr)) en .productos__grid.
+- L1 LOW favicon 404 => RESUELTO: <link rel="icon" href="data:,"> en header.php.
+- L2 LOW sin touch-action => RESUELTO: a, .btn { touch-action: manipulation } en base.css.
+- L3 LOW theme-color/color-scheme/text-wrap:balance ausentes => NO RESUELTO, dueño CP-LAND-15.
+- L4 LOW overflow-wrap explicito en .prod-card__nombre => NO RESUELTO, dueño CP-LAND-15.
+
+== Mediciones ==
+ANTES: Lighthouse desktop a11y=95 (fallo color-contrast), BP=100, SEO=100, 2 errores consola.
+DESPUES (catalogo real):
+  desktop 1280: a11y=100 BP=100 SEO=100 agentic=100, 0 fallos, 0 consola.
+  mobile  360 : a11y=100 BP=100 SEO=100 agentic=100, 0 fallos, 0 consola.
+Overflow: 360 => scrollWidth=360/0 off-by-one; 768 => 753/753; 1280 => 1265/1265. Sin offenders.
+Anclas: categorias/productos/beneficios top=84 > header 69.
+Encabezados con datos: H1=1, H2=5, H3=7, main=1, nav=1.
+Targets <44px en 360: solo skip-link (42px, foco de teclado) y link de marca (30px de alto,
+>=24px min AA). Nav y CTA header ocultos <768px: decision aprobada en CP-10.
+
+== Entregables ==
+.agents/reviews/landing-accessibility-review.md (tabla file:line + severidad + estado)
+tests/results/CP-LAND-14.txt (este archivo)
+
+== Validadores ==
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-14 => CP-LAND-14: PASSED
+HIGH pendientes: 0 (A1, A2 resueltos en codigo). MEDIUM pendientes: 0 (M1, M2 resueltos).
+
+== Veredicto ==
+CP-LAND-14: PASSED — pendientes L3/L4 + motion M1-M3/L1 de CP-LAND-13 con dueño CP-LAND-15.

@@ -1,0 +1,23 @@
+﻿CP-LAND-08 — Productos (70, precios en Bs)
+Fecha: 2026-09-30 21:59:06
+Skill: design-taste-frontend (grid auto-fill 220px, tarjeta con precio acento, etiqueta badge)
+
+== Código ==
+app/Repositories/LandingProductoRepository.php: UNICA consulta JOIN (sin N+1), WHERE p.visible=1 AND c.visible=1, ORDER BY categoria,producto.
+app/Services/LandingCatalogoService.php: productosPorCategoria() agrupa en PHP desde un solo result set.
+app/Views/sections/productos.php: #productos, 7 grupos (una h3 por categoria), 70 tarjetas; alt por producto; loading=lazy; aspect-ratio 4/3; precio 'Bs ' + number_format(2, ',', '.'); precio_anterior con <s>; estado empty.
+public/index.php: 43 lineas; try/catch -> estado vacio; require repositorios.
+CSS: landing.css (.productos__grid, .prod-card, .state), responsive.css (2 col <480px).
+
+== Verificación HTTP (php -S 127.0.0.1:8108) ==
+index HTTP 200 (66551 bytes)
+prod-card = 70 | loading=lazy = 70 | grupos = 7 | cat-card = 7
+precios en Bs = 89 (70 actuales + 19 tachados) | precio_anterior = 19
+BD: total=70 visibles=70.
+
+== Validadores ==
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-08 => CP-LAND-08: PASSED
+
+== Veredicto ==
+CP-LAND-08: PASSED

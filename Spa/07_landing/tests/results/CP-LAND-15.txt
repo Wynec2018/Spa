@@ -1,0 +1,60 @@
+CP-LAND-15 — Performance + hardening (skill impeccable optimize/harden)
+Fecha: 2026-10-01
+Servidor: http://127.0.0.1:8110 (php -S, catálogo real 7 cats / 70 prods)
+
+== VALIDADORES ==
+STRUCTURE: PASSED (exit 0)
+CP-LAND-15: PASSED (exit 0)
+
+== PERFORMANCE (trace Chrome, desktop 1280) ==
+LCP: 500 ms (IMG.hero__img; TTFB 27 ms, load delay 20 ms, load duration 132 ms, render delay 322 ms)
+CLS: 0.00
+RenderBlocking savings: FCP 0 ms / LCP 0 ms
+DocumentLatency: wasted 40 kB (sin gzip en php -S -> accion de produccion)
+Cache: wasted 18.2 kB (sin Cache-Control en php -S -> accion de produccion)
+
+== LIGHTHOUSE (navigation, desktop) ==
+Accessibility: 100
+SEO: 100
+Agentic Browsing: 100
+Best Practices: 77
+  Fallo 1: "Uses third-party cookies" -> CDN thumb.wikimedia.org (ajeno, fuente permitida)
+  Fallo 2: "Issues were logged in the Issues panel" -> issue del navegador (mismo origen)
+
+== CONSEROLA ==
+0 mensajes
+
+== LAYOUT (medido en vivo) ==
+vw 360  (mobile DPR2): overflowX 0 | cats 1 col | prods 2 cols (card 156px)
+vw 1280 (desktop):     overflowX 0 | cats 4 cols | prods 5 cols
+vw 1440 (desktop):     overflowX 0 | cats 4 cols (1 celda vacia, antes 5x7=3) | prods 5 cols (0 vacias; L2 no reproducible) | grid 1336px
+
+== TRANSICIONES (computed) ==
+.cat-card__link / .prod-card: 0.18s, 0.18s (M1)
+.btn: 0.16s, 0.2s (M2); .btn:active scale(0.97)
+.site-header: transition-duration 0s (L1-mot, sombra instantanea)
+reduced-motion: sin blanket transition-duration; animaciones 0.01ms; scroll auto; .btn:active transform none (M3)
+
+== COPY (verificado en DOM) ==
+hero_subtitle: "Explora 7 categorias y 70 productos con precios pensados para el mercado boliviano."
+categorias lead: "7 categorias con productos en Bs."
+productos lead: "70 productos con precios en Bs."
+headline: "Productos de calidad con precios en Bs"
+beneficios: "0" + "cuentas o registros requeridos"
+Ocurrencias "demostrativ" en leads: 0 (restan 3x demo_notice + descripcion de categoria 7 en seed BD)
+
+== ACCESIBILIDAD / HARDENING ==
+L3: theme-color #f9fafb + color-scheme light + text-wrap balance (h1/h2/h3)
+L4: overflow-wrap anywhere en .prod-card__nombre
+A2: viewport-fit=cover + env(safe-area-inset-bottom) en .site-footer
+A3: srcset documentado como techo conocido (imagenes 64-201 kB, lazy en grid, hero fetchpriority=high)
+
+== IMGANES (HEAD) ==
+960px thumb wikimedia: 201 kB | originales upload.wikimedia: 64-118 kB
+
+== ENTREGABLE ==
+proyecto/07_landing/.agents/reviews/landing-performance-review.md (PASS, BLOCKER/HIGH/MEDIUM = 0, dueño CP-16: ninguno)
+
+== COMANDOS ==
+php proyecto/07_landing/tools/validate_structure.php        -> PASSED
+php proyecto/07_landing/tools/validate_checkpoint.php CP-LAND-15 -> PASSED

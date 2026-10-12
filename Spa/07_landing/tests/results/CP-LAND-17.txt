@@ -1,0 +1,13 @@
+CP-LAND-17 — Cierre
+Fecha: 2026-10-01
+
+== ENTREGABLE ==
+docs/validacion_final.md completado (alcance, resumen CP-01..17, mediciones finales, validadores, techos conocidos, conclusión).
+
+== VALIDADOR ==
+php proyecto/07_landing/tools/validate_checkpoint.php CP-LAND-17 -> CP-LAND-17: PASSED (exit 0)
+
+== ESTADO FINAL ==
+TECHNICAL_STATUS: PASSED
+HUMAN_STATUS: PENDING  (el humano decide la aprobación final)
+Pendientes de dueño: ninguno.

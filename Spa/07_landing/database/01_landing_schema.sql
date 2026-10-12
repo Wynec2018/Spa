@@ -1,0 +1,53 @@
+-- MySQL 8.x / InnoDB. Módulo aislado de landing.
+CREATE TABLE IF NOT EXISTS landing_categoria (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(120) NOT NULL,
+  slug VARCHAR(150) NOT NULL,
+  descripcion VARCHAR(255) NULL,
+  imagen_url VARCHAR(700) NULL,
+  imagen_fuente VARCHAR(50) NULL,
+  imagen_fuente_url VARCHAR(700) NULL,
+  imagen_autor VARCHAR(160) NULL,
+  imagen_licencia VARCHAR(160) NULL,
+  orden INT UNSIGNED NOT NULL DEFAULT 0,
+  visible TINYINT(1) NOT NULL DEFAULT 1,
+  user_create BIGINT UNSIGNED NOT NULL DEFAULT 1,
+  user_update BIGINT UNSIGNED NOT NULL DEFAULT 1,
+  user_created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  user_update_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_landing_categoria_slug (slug),
+  KEY idx_landing_categoria_visible_orden (visible,orden)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS landing_producto (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  categoria_id BIGINT UNSIGNED NOT NULL,
+  nombre VARCHAR(160) NOT NULL,
+  slug VARCHAR(180) NOT NULL,
+  descripcion_corta VARCHAR(500) NULL,
+  precio DECIMAL(10,2) NOT NULL,
+  precio_anterior DECIMAL(10,2) NULL,
+  imagen_url VARCHAR(700) NULL,
+  imagen_fuente VARCHAR(50) NULL,
+  imagen_fuente_url VARCHAR(700) NULL,
+  imagen_autor VARCHAR(160) NULL,
+  imagen_licencia VARCHAR(160) NULL,
+  etiqueta VARCHAR(40) NULL,
+  destacado TINYINT(1) NOT NULL DEFAULT 0,
+  visible TINYINT(1) NOT NULL DEFAULT 1,
+  orden INT UNSIGNED NOT NULL DEFAULT 0,
+  user_create BIGINT UNSIGNED NOT NULL DEFAULT 1,
+  user_update BIGINT UNSIGNED NOT NULL DEFAULT 1,
+  user_created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  user_update_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_landing_producto_slug (slug),
+  KEY idx_landing_producto_categoria (categoria_id),
+  KEY idx_landing_producto_visible_orden (visible,orden),
+  KEY idx_landing_producto_destacado (destacado,visible),
+  CONSTRAINT fk_landing_producto_categoria FOREIGN KEY (categoria_id)
+    REFERENCES landing_categoria(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT chk_landing_producto_precio CHECK (precio >= 0),
+  CONSTRAINT chk_landing_producto_precio_anterior CHECK (precio_anterior IS NULL OR precio_anterior >= 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -1,0 +1,39 @@
+CP-LAND-02 — Esquema landing_categoria / landing_producto
+Fecha: 2026-09-30 20:16:35
+MySQL: 8.4.3 (Laragon) | DB: sistema
+
+== 1. Fuente ==
+  proyecto/07_landing/database/01_landing_schema.sql (CREATE TABLE IF NOT EXISTS)
+
+== 2. Aplicacion ==
+  mysql --user=root --host=127.0.0.1 --port=3306 sistema < 01_landing_schema.sql => OK (exit 0)
+  Tablas landing_% antes de aplicar: 0
+  Tablas landing_% después: landing_categoria, landing_producto
+
+== 3. SHOW CREATE TABLE (resumen) ==
+  landing_categoria: ENGINE=InnoDB, CHARSET=utf8mb4, PK(id), UNIQUE(slug), KEY(visible,orden),
+    trazabilidad: user_create, user_update, user_created_at, user_update_at,
+    imagenes: imagen_url, imagen_fuente, imagen_fuente_url, imagen_autor, imagen_licencia
+  landing_producto: ENGINE=InnoDB, CHARSET=utf8mb4, PK(id), UNIQUE(slug),
+    KEY(categoria_id), KEY(visible,orden), KEY(destacado,visible),
+    FK fk_landing_producto_categoria -> landing_categoria(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    CHECK chk_landing_producto_precio (precio >= 0), CHECK chk_landing_producto_precio_anterior,
+    trazabilidad e imagenes: iguales a categoria, + precio DECIMAL(10,2), precio_anterior, etiqueta, destacado, visible, orden
+
+== 4. Aislamiento de cat_* ==
+  Diferencia de tablas antes/después (information_schema, schema=sistema):
+    => landing_categoria
+    => landing_producto
+  (solo se crearon estas 2; ninguna tabla modificada/eliminada)
+  cat_* presentes e intactas: cat_categoria, cat_precio, cat_producto, cat_promocion
+  Referencias a cat_ en database/*.sql: ninguna
+
+== 5. Prueba de constraints (START TRANSACTION ... ROLLBACK) ==
+  INSERT precio=-5 => ERROR 3819: Check constraint 'chk_landing_producto_precio' is violated. (exit 1)
+  ROLLBACK aplicado; conteos posteriores: landing_categoria=0, landing_producto=0 (seed pendiente = CP-LAND-03)
+
+== 6. validate_structure.php ==
+  [0] STRUCTURE: PASSED
+
+== Veredicto ==
+CP-LAND-02: PASSED

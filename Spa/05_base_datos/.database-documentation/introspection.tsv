@@ -1,0 +1,581 @@
+﻿SECTION	TABLE	COL	TYPE	NULLABLE	DEFAULT	KEY	EXTRA
+COLUMN	auth_permiso	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	auth_permiso	codigo	varchar(64)	NO		UNI	
+COLUMN	auth_permiso	descripcion	varchar(255)	YES			
+COLUMN	auth_permiso	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	auth_permiso	user_create	bigint unsigned	NO			
+COLUMN	auth_permiso	user_update	bigint unsigned	NO			
+COLUMN	auth_permiso	user_created_at	datetime	NO			
+COLUMN	auth_permiso	user_update_at	datetime	NO			
+COLUMN	auth_rol	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	auth_rol	nombre	varchar(80)	NO		UNI	
+COLUMN	auth_rol	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	auth_rol	user_create	bigint unsigned	NO			
+COLUMN	auth_rol	user_update	bigint unsigned	NO			
+COLUMN	auth_rol	user_created_at	datetime	NO			
+COLUMN	auth_rol	user_update_at	datetime	NO			
+COLUMN	auth_rol_permiso	rol_id	bigint unsigned	NO		PRI	
+COLUMN	auth_rol_permiso	permiso_id	bigint unsigned	NO		PRI	
+COLUMN	auth_rol_permiso	user_create	bigint unsigned	NO			
+COLUMN	auth_rol_permiso	user_update	bigint unsigned	NO			
+COLUMN	auth_rol_permiso	user_created_at	datetime	NO			
+COLUMN	auth_rol_permiso	user_update_at	datetime	NO			
+COLUMN	auth_token_blacklist	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	auth_token_blacklist	token_hash	varchar(64)	NO		UNI	
+COLUMN	auth_token_blacklist	expira_en	datetime	NO		MUL	
+COLUMN	auth_token_blacklist	creado_en	datetime	NO			
+COLUMN	auth_usuario	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	auth_usuario	nombre	varchar(120)	NO			
+COLUMN	auth_usuario	email	varchar(254)	NO		UNI	
+COLUMN	auth_usuario	hash_password	varchar(255)	NO			
+COLUMN	auth_usuario	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	auth_usuario	user_create	bigint unsigned	NO			
+COLUMN	auth_usuario	user_update	bigint unsigned	NO			
+COLUMN	auth_usuario	user_created_at	datetime	NO			
+COLUMN	auth_usuario	user_update_at	datetime	NO			
+COLUMN	auth_usuario_rol	usuario_id	bigint unsigned	NO		PRI	
+COLUMN	auth_usuario_rol	rol_id	bigint unsigned	NO		PRI	
+COLUMN	auth_usuario_rol	user_create	bigint unsigned	NO			
+COLUMN	auth_usuario_rol	user_update	bigint unsigned	NO			
+COLUMN	auth_usuario_rol	user_created_at	datetime	NO			
+COLUMN	auth_usuario_rol	user_update_at	datetime	NO			
+COLUMN	cat_categoria	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	cat_categoria	nombre	varchar(100)	NO			
+COLUMN	cat_categoria	categoria_padre_id	bigint unsigned	YES		MUL	
+COLUMN	cat_categoria	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	cat_categoria	user_create	bigint unsigned	NO			
+COLUMN	cat_categoria	user_update	bigint unsigned	NO			
+COLUMN	cat_categoria	user_created_at	datetime	NO			
+COLUMN	cat_categoria	user_update_at	datetime	NO			
+COLUMN	cat_precio	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	cat_precio	sucursal_id	bigint unsigned	NO		MUL	
+COLUMN	cat_precio	producto_id	bigint unsigned	NO		MUL	
+COLUMN	cat_precio	monto	decimal(12,2)	NO			
+COLUMN	cat_precio	moneda	char(3)	NO			
+COLUMN	cat_precio	vigente_desde	datetime	NO			
+COLUMN	cat_precio	vigente_hasta	datetime	YES			
+COLUMN	cat_precio	user_create	bigint unsigned	NO			
+COLUMN	cat_precio	user_update	bigint unsigned	NO			
+COLUMN	cat_precio	user_created_at	datetime	NO			
+COLUMN	cat_precio	user_update_at	datetime	NO			
+COLUMN	cat_producto	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	cat_producto	sku	varchar(64)	NO		UNI	
+COLUMN	cat_producto	nombre	varchar(150)	NO			
+COLUMN	cat_producto	categoria_id	bigint unsigned	NO		MUL	
+COLUMN	cat_producto	unidad	varchar(32)	NO			
+COLUMN	cat_producto	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	cat_producto	user_create	bigint unsigned	NO			
+COLUMN	cat_producto	user_update	bigint unsigned	NO			
+COLUMN	cat_producto	user_created_at	datetime	NO			
+COLUMN	cat_producto	user_update_at	datetime	NO			
+COLUMN	cat_promocion	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	cat_promocion	nombre	varchar(120)	NO			
+COLUMN	cat_promocion	reglas	json	NO			
+COLUMN	cat_promocion	vigente_desde	datetime	NO			
+COLUMN	cat_promocion	vigente_hasta	datetime	YES			
+COLUMN	cat_promocion	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	cat_promocion	user_create	bigint unsigned	NO			
+COLUMN	cat_promocion	user_update	bigint unsigned	NO			
+COLUMN	cat_promocion	user_created_at	datetime	NO			
+COLUMN	cat_promocion	user_update_at	datetime	NO			
+COLUMN	com_orden_compra	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	com_orden_compra	numero	varchar(32)	NO		UNI	
+COLUMN	com_orden_compra	proveedor_id	bigint unsigned	NO		MUL	
+COLUMN	com_orden_compra	estado	enum('draft','enviada','recibida','cancelada')	NO	draft		
+COLUMN	com_orden_compra	fecha_orden	datetime	NO			
+COLUMN	com_orden_compra	total	decimal(12,2)	NO	0.00		
+COLUMN	com_orden_compra	user_create	bigint unsigned	NO			
+COLUMN	com_orden_compra	user_update	bigint unsigned	NO			
+COLUMN	com_orden_compra	user_created_at	datetime	NO			
+COLUMN	com_orden_compra	user_update_at	datetime	NO			
+COLUMN	com_orden_compra_item	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	com_orden_compra_item	orden_id	bigint unsigned	NO		MUL	
+COLUMN	com_orden_compra_item	producto_id	bigint unsigned	NO		MUL	
+COLUMN	com_orden_compra_item	cantidad	int unsigned	NO			
+COLUMN	com_orden_compra_item	precio_pactado	decimal(12,2)	NO			
+COLUMN	com_orden_compra_item	user_create	bigint unsigned	NO			
+COLUMN	com_orden_compra_item	user_update	bigint unsigned	NO			
+COLUMN	com_orden_compra_item	user_created_at	datetime	NO			
+COLUMN	com_orden_compra_item	user_update_at	datetime	NO			
+COLUMN	com_producto_promocion	producto_id	bigint unsigned	NO		PRI	
+COLUMN	com_producto_promocion	promocion_id	bigint unsigned	NO		PRI	
+COLUMN	com_producto_promocion	user_create	bigint unsigned	NO			
+COLUMN	com_producto_promocion	user_update	bigint unsigned	NO			
+COLUMN	com_producto_promocion	user_created_at	datetime	NO			
+COLUMN	com_producto_promocion	user_update_at	datetime	NO			
+COLUMN	com_proveedor	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	com_proveedor	nombre	varchar(150)	NO		UNI	
+COLUMN	com_proveedor	codigo	varchar(32)	YES		UNI	
+COLUMN	com_proveedor	contacto	varchar(150)	YES			
+COLUMN	com_proveedor	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	com_proveedor	user_create	bigint unsigned	NO			
+COLUMN	com_proveedor	user_update	bigint unsigned	NO			
+COLUMN	com_proveedor	user_created_at	datetime	NO			
+COLUMN	com_proveedor	user_update_at	datetime	NO			
+COLUMN	com_recepcion	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	com_recepcion	orden_id	bigint unsigned	NO		MUL	
+COLUMN	com_recepcion	estado	enum('draft','confirmada')	NO	draft		
+COLUMN	com_recepcion	fecha	datetime	NO			
+COLUMN	com_recepcion	usuario_confirma	bigint unsigned	YES		MUL	
+COLUMN	com_recepcion	user_create	bigint unsigned	NO			
+COLUMN	com_recepcion	user_update	bigint unsigned	NO			
+COLUMN	com_recepcion	user_created_at	datetime	NO			
+COLUMN	com_recepcion	user_update_at	datetime	NO			
+COLUMN	com_recepcion_item	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	com_recepcion_item	recepcion_id	bigint unsigned	NO		MUL	
+COLUMN	com_recepcion_item	producto_id	bigint unsigned	NO		MUL	
+COLUMN	com_recepcion_item	cantidad_recibida	int unsigned	NO			
+COLUMN	com_recepcion_item	user_create	bigint unsigned	NO			
+COLUMN	com_recepcion_item	user_update	bigint unsigned	NO			
+COLUMN	com_recepcion_item	user_created_at	datetime	NO			
+COLUMN	com_recepcion_item	user_update_at	datetime	NO			
+COLUMN	core_auditoria	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	core_auditoria	accion	varchar(50)	NO			
+COLUMN	core_auditoria	entidad_tipo	varchar(80)	NO		MUL	
+COLUMN	core_auditoria	entidad_id	bigint unsigned	NO			
+COLUMN	core_auditoria	datos_previos	text	YES			
+COLUMN	core_auditoria	datos_nuevos	text	YES			
+COLUMN	core_auditoria	usuario_id	bigint unsigned	NO		MUL	
+COLUMN	core_auditoria	motivo	text	YES			
+COLUMN	core_auditoria	fecha	datetime	NO		MUL	
+COLUMN	core_auditoria	correlation_id	varchar(64)	YES			
+COLUMN	core_auditoria	user_create	bigint unsigned	NO			
+COLUMN	core_auditoria	user_update	bigint unsigned	NO			
+COLUMN	core_auditoria	user_created_at	datetime	NO			
+COLUMN	core_auditoria	user_update_at	datetime	NO			
+COLUMN	core_caja_pos	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	core_caja_pos	sucursal_id	bigint unsigned	NO		MUL	
+COLUMN	core_caja_pos	codigo	varchar(32)	NO			
+COLUMN	core_caja_pos	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	core_caja_pos	user_create	bigint unsigned	NO			
+COLUMN	core_caja_pos	user_update	bigint unsigned	NO			
+COLUMN	core_caja_pos	user_created_at	datetime	NO			
+COLUMN	core_caja_pos	user_update_at	datetime	NO			
+COLUMN	core_cliente	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	core_cliente	nombre	varchar(150)	NO			
+COLUMN	core_cliente	razon_social	varchar(150)	YES			
+COLUMN	core_cliente	identificacion	varchar(32)	YES		UNI	
+COLUMN	core_cliente	email	varchar(254)	YES		MUL	
+COLUMN	core_cliente	telefono	varchar(32)	YES			
+COLUMN	core_cliente	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	core_cliente	user_create	bigint unsigned	NO			
+COLUMN	core_cliente	user_update	bigint unsigned	NO			
+COLUMN	core_cliente	user_created_at	datetime	NO			
+COLUMN	core_cliente	user_update_at	datetime	NO			
+COLUMN	core_configuracion	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	core_configuracion	clave	varchar(80)	NO		UNI	
+COLUMN	core_configuracion	valor	text	NO			
+COLUMN	core_configuracion	descripcion	varchar(255)	YES			
+COLUMN	core_configuracion	user_create	bigint unsigned	NO			
+COLUMN	core_configuracion	user_update	bigint unsigned	NO			
+COLUMN	core_configuracion	user_created_at	datetime	NO			
+COLUMN	core_configuracion	user_update_at	datetime	NO			
+COLUMN	core_idempotency_key	key	char(36)	NO		PRI	
+COLUMN	core_idempotency_key	operacion	varchar(80)	NO			
+COLUMN	core_idempotency_key	respuesta	mediumtext	YES			
+COLUMN	core_idempotency_key	expiracion	datetime	NO		MUL	
+COLUMN	core_idempotency_key	creado_en	datetime	NO			
+COLUMN	core_sucursal	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	core_sucursal	nombre	varchar(120)	NO			
+COLUMN	core_sucursal	direccion	varchar(255)	YES			
+COLUMN	core_sucursal	estado	enum('activo','inactivo')	NO	activo		
+COLUMN	core_sucursal	user_create	bigint unsigned	NO			
+COLUMN	core_sucursal	user_update	bigint unsigned	NO			
+COLUMN	core_sucursal	user_created_at	datetime	NO			
+COLUMN	core_sucursal	user_update_at	datetime	NO			
+COLUMN	inv_ajuste_stock	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	inv_ajuste_stock	inventario_id	bigint unsigned	NO		MUL	
+COLUMN	inv_ajuste_stock	cantidad	int	NO			
+COLUMN	inv_ajuste_stock	motivo	text	NO			
+COLUMN	inv_ajuste_stock	usuario_id	bigint unsigned	NO		MUL	
+COLUMN	inv_ajuste_stock	fecha	datetime	NO			
+COLUMN	inv_ajuste_stock	user_create	bigint unsigned	NO			
+COLUMN	inv_ajuste_stock	user_update	bigint unsigned	NO			
+COLUMN	inv_ajuste_stock	user_created_at	datetime	NO			
+COLUMN	inv_ajuste_stock	user_update_at	datetime	NO			
+COLUMN	inv_inventario	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	inv_inventario	producto_id	bigint unsigned	NO		MUL	
+COLUMN	inv_inventario	sucursal_id	bigint unsigned	NO		MUL	
+COLUMN	inv_inventario	stock_available	int unsigned	NO	0		
+COLUMN	inv_inventario	stock_reserved	int unsigned	NO	0		
+COLUMN	inv_inventario	stock_sold	int unsigned	NO	0		
+COLUMN	inv_inventario	version	int unsigned	NO	0		
+COLUMN	inv_inventario	user_create	bigint unsigned	NO			
+COLUMN	inv_inventario	user_update	bigint unsigned	NO			
+COLUMN	inv_inventario	user_created_at	datetime	NO			
+COLUMN	inv_inventario	user_update_at	datetime	NO			
+COLUMN	inv_movimiento_inventario	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	inv_movimiento_inventario	inventario_id	bigint unsigned	NO		MUL	
+COLUMN	inv_movimiento_inventario	producto_id	bigint unsigned	NO		MUL	
+COLUMN	inv_movimiento_inventario	sucursal_id	bigint unsigned	NO		MUL	
+COLUMN	inv_movimiento_inventario	tipo	enum('entrada','salida','reserva','liberacion','ajuste','devolucion','transferencia_salida','transferencia_entrada','recepcion')	NO			
+COLUMN	inv_movimiento_inventario	cantidad	int	NO			
+COLUMN	inv_movimiento_inventario	referencia_tipo	varchar(50)	YES			
+COLUMN	inv_movimiento_inventario	referencia_id	bigint unsigned	YES			
+COLUMN	inv_movimiento_inventario	usuario_id	bigint unsigned	NO		MUL	
+COLUMN	inv_movimiento_inventario	motivo	text	YES			
+COLUMN	inv_movimiento_inventario	fecha	datetime	NO			
+COLUMN	inv_movimiento_inventario	user_create	bigint unsigned	NO			
+COLUMN	inv_movimiento_inventario	user_update	bigint unsigned	NO			
+COLUMN	inv_movimiento_inventario	user_created_at	datetime	NO			
+COLUMN	inv_movimiento_inventario	user_update_at	datetime	NO			
+COLUMN	inv_reserva	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	inv_reserva	orden_id	bigint unsigned	NO		MUL	
+COLUMN	inv_reserva	inventario_id	bigint unsigned	NO		MUL	
+COLUMN	inv_reserva	cantidad	int unsigned	NO			
+COLUMN	inv_reserva	estado	enum('pending','confirmed','expired','cancelled')	NO	pending	MUL	
+COLUMN	inv_reserva	expira_en	datetime	NO			
+COLUMN	inv_reserva	creado_en	datetime	NO			
+COLUMN	inv_reserva	user_create	bigint unsigned	NO			
+COLUMN	inv_reserva	user_update	bigint unsigned	NO			
+COLUMN	inv_reserva	user_created_at	datetime	NO			
+COLUMN	inv_reserva	user_update_at	datetime	NO			
+COLUMN	inv_transferencia	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	inv_transferencia	sucursal_origen_id	bigint unsigned	NO		MUL	
+COLUMN	inv_transferencia	sucursal_destino_id	bigint unsigned	NO		MUL	
+COLUMN	inv_transferencia	estado	enum('draft','in_transit','received','cancelled')	NO	draft		
+COLUMN	inv_transferencia	usuario_id	bigint unsigned	NO		MUL	
+COLUMN	inv_transferencia	fecha_salida	datetime	YES			
+COLUMN	inv_transferencia	fecha_recepcion	datetime	YES			
+COLUMN	inv_transferencia	user_create	bigint unsigned	NO			
+COLUMN	inv_transferencia	user_update	bigint unsigned	NO			
+COLUMN	inv_transferencia	user_created_at	datetime	NO			
+COLUMN	inv_transferencia	user_update_at	datetime	NO			
+COLUMN	inv_transferencia_item	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	inv_transferencia_item	transferencia_id	bigint unsigned	NO		MUL	
+COLUMN	inv_transferencia_item	producto_id	bigint unsigned	NO		MUL	
+COLUMN	inv_transferencia_item	cantidad	int unsigned	NO			
+COLUMN	inv_transferencia_item	user_create	bigint unsigned	NO			
+COLUMN	inv_transferencia_item	user_update	bigint unsigned	NO			
+COLUMN	inv_transferencia_item	user_created_at	datetime	NO			
+COLUMN	inv_transferencia_item	user_update_at	datetime	NO			
+COLUMN	pay_outbox_evento	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	pay_outbox_evento	agregado_tipo	varchar(50)	NO			
+COLUMN	pay_outbox_evento	agregado_id	bigint unsigned	NO			
+COLUMN	pay_outbox_evento	evento_tipo	varchar(80)	NO			
+COLUMN	pay_outbox_evento	payload	json	NO			
+COLUMN	pay_outbox_evento	estado	enum('pending','processing','processed','failed')	NO	pending	MUL	
+COLUMN	pay_outbox_evento	claimed_at	datetime	YES			
+COLUMN	pay_outbox_evento	correlation_id	varchar(64)	NO		MUL	
+COLUMN	pay_outbox_evento	creado_en	datetime	NO			
+COLUMN	pay_outbox_evento	procesado_en	datetime	YES			
+COLUMN	pay_outbox_evento	reintentos	int unsigned	NO	0		
+COLUMN	pay_transaccion_pago	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	pay_transaccion_pago	orden_id	bigint unsigned	NO		MUL	
+COLUMN	pay_transaccion_pago	proveedor_pago	varchar(50)	NO		MUL	
+COLUMN	pay_transaccion_pago	referencia_externa	varchar(120)	NO			
+COLUMN	pay_transaccion_pago	monto	decimal(12,2)	NO			
+COLUMN	pay_transaccion_pago	estado	enum('initiated','authorized','failed','refunded','compensated')	NO	initiated		
+COLUMN	pay_transaccion_pago	idempotency_key	varchar(64)	NO		UNI	
+COLUMN	pay_transaccion_pago	fecha	datetime	NO			
+COLUMN	pay_transaccion_pago	user_create	bigint unsigned	NO			
+COLUMN	pay_transaccion_pago	user_update	bigint unsigned	NO			
+COLUMN	pay_transaccion_pago	user_created_at	datetime	NO			
+COLUMN	pay_transaccion_pago	user_update_at	datetime	NO			
+COLUMN	sales_carrito_web	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	sales_carrito_web	cliente_id	bigint unsigned	YES		MUL	
+COLUMN	sales_carrito_web	sesion_key	varchar(64)	NO		UNI	
+COLUMN	sales_carrito_web	actualizado_en	datetime	NO			
+COLUMN	sales_carrito_web	user_create	bigint unsigned	NO			
+COLUMN	sales_carrito_web	user_update	bigint unsigned	NO			
+COLUMN	sales_carrito_web	user_created_at	datetime	NO			
+COLUMN	sales_carrito_web	user_update_at	datetime	NO			
+COLUMN	sales_carrito_web_item	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	sales_carrito_web_item	carrito_id	bigint unsigned	NO		MUL	
+COLUMN	sales_carrito_web_item	producto_id	bigint unsigned	NO		MUL	
+COLUMN	sales_carrito_web_item	cantidad	int unsigned	NO			
+COLUMN	sales_carrito_web_item	user_create	bigint unsigned	NO			
+COLUMN	sales_carrito_web_item	user_update	bigint unsigned	NO			
+COLUMN	sales_carrito_web_item	user_created_at	datetime	NO			
+COLUMN	sales_carrito_web_item	user_update_at	datetime	NO			
+COLUMN	sales_devolucion	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	sales_devolucion	orden_original_id	bigint unsigned	NO		MUL	
+COLUMN	sales_devolucion	cliente_id	bigint unsigned	YES		MUL	
+COLUMN	sales_devolucion	usuario_id	bigint unsigned	NO		MUL	
+COLUMN	sales_devolucion	estado	enum('draft','aprobada','rechazada','completada')	NO	draft		
+COLUMN	sales_devolucion	motivo	text	YES			
+COLUMN	sales_devolucion	monto	decimal(12,2)	NO	0.00		
+COLUMN	sales_devolucion	fecha	datetime	NO			
+COLUMN	sales_devolucion	user_create	bigint unsigned	NO			
+COLUMN	sales_devolucion	user_update	bigint unsigned	NO			
+COLUMN	sales_devolucion	user_created_at	datetime	NO			
+COLUMN	sales_devolucion	user_update_at	datetime	NO			
+COLUMN	sales_devolucion_item	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	sales_devolucion_item	devolucion_id	bigint unsigned	NO		MUL	
+COLUMN	sales_devolucion_item	producto_id	bigint unsigned	NO		MUL	
+COLUMN	sales_devolucion_item	producto_orden_item_id	bigint unsigned	NO		MUL	
+COLUMN	sales_devolucion_item	cantidad	int unsigned	NO			
+COLUMN	sales_devolucion_item	monto	decimal(12,2)	NO			
+COLUMN	sales_devolucion_item	user_create	bigint unsigned	NO			
+COLUMN	sales_devolucion_item	user_update	bigint unsigned	NO			
+COLUMN	sales_devolucion_item	user_created_at	datetime	NO			
+COLUMN	sales_devolucion_item	user_update_at	datetime	NO			
+COLUMN	sales_orden_venta	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	sales_orden_venta	numero	varchar(32)	NO		UNI	
+COLUMN	sales_orden_venta	canal	enum('pos','web')	NO			
+COLUMN	sales_orden_venta	cliente_id	bigint unsigned	YES		MUL	
+COLUMN	sales_orden_venta	sucursal_id	bigint unsigned	NO		MUL	
+COLUMN	sales_orden_venta	estado	enum('pending','pagada','confirmada','cancelada','devuelta')	NO	pending	MUL	
+COLUMN	sales_orden_venta	total	decimal(12,2)	NO	0.00		
+COLUMN	sales_orden_venta	idempotency_key	varchar(64)	YES		UNI	
+COLUMN	sales_orden_venta	fulfillment_type	enum('entrega','retiro')	YES			
+COLUMN	sales_orden_venta	fulfillment_direccion	varchar(255)	YES			
+COLUMN	sales_orden_venta	fecha_entrega	datetime	YES			
+COLUMN	sales_orden_venta	creado_en	datetime	NO			
+COLUMN	sales_orden_venta	confirmado_en	datetime	YES			
+COLUMN	sales_orden_venta	user_create	bigint unsigned	NO			
+COLUMN	sales_orden_venta	user_update	bigint unsigned	NO			
+COLUMN	sales_orden_venta	user_created_at	datetime	NO			
+COLUMN	sales_orden_venta	user_update_at	datetime	NO			
+COLUMN	sales_orden_venta_item	id	bigint unsigned	NO		PRI	auto_increment
+COLUMN	sales_orden_venta_item	orden_id	bigint unsigned	NO		MUL	
+COLUMN	sales_orden_venta_item	producto_id	bigint unsigned	NO		MUL	
+COLUMN	sales_orden_venta_item	cantidad	int unsigned	NO			
+COLUMN	sales_orden_venta_item	precio_unitario	decimal(12,2)	NO			
+COLUMN	sales_orden_venta_item	subtotal	decimal(12,2)	NO			
+COLUMN	sales_orden_venta_item	user_create	bigint unsigned	NO			
+COLUMN	sales_orden_venta_item	user_update	bigint unsigned	NO			
+COLUMN	sales_orden_venta_item	user_created_at	datetime	NO			
+COLUMN	sales_orden_venta_item	user_update_at	datetime	NO			
+PK	auth_permiso	id	1				
+PK	auth_rol	id	1				
+PK	auth_rol_permiso	rol_id	1				
+PK	auth_rol_permiso	permiso_id	2				
+PK	auth_token_blacklist	id	1				
+PK	auth_usuario	id	1				
+PK	auth_usuario_rol	usuario_id	1				
+PK	auth_usuario_rol	rol_id	2				
+PK	cat_categoria	id	1				
+PK	cat_precio	id	1				
+PK	cat_producto	id	1				
+PK	cat_promocion	id	1				
+PK	com_orden_compra	id	1				
+PK	com_orden_compra_item	id	1				
+PK	com_producto_promocion	producto_id	1				
+PK	com_producto_promocion	promocion_id	2				
+PK	com_proveedor	id	1				
+PK	com_recepcion	id	1				
+PK	com_recepcion_item	id	1				
+PK	core_auditoria	id	1				
+PK	core_caja_pos	id	1				
+PK	core_cliente	id	1				
+PK	core_configuracion	id	1				
+PK	core_idempotency_key	key	1				
+PK	core_sucursal	id	1				
+PK	inv_ajuste_stock	id	1				
+PK	inv_inventario	id	1				
+PK	inv_movimiento_inventario	id	1				
+PK	inv_reserva	id	1				
+PK	inv_transferencia	id	1				
+PK	inv_transferencia_item	id	1				
+PK	pay_outbox_evento	id	1				
+PK	pay_transaccion_pago	id	1				
+PK	sales_carrito_web	id	1				
+PK	sales_carrito_web_item	id	1				
+PK	sales_devolucion	id	1				
+PK	sales_devolucion_item	id	1				
+PK	sales_orden_venta	id	1				
+PK	sales_orden_venta_item	id	1				
+FK	auth_rol_permiso	fk_auth_rol_permiso_permiso	auth_permiso.id	NO ACTION	RESTRICT	permiso_id	
+FK	auth_rol_permiso	fk_auth_rol_permiso_rol	auth_rol.id	NO ACTION	RESTRICT	rol_id	
+FK	auth_usuario_rol	fk_auth_usuario_rol_rol	auth_rol.id	NO ACTION	RESTRICT	rol_id	
+FK	auth_usuario_rol	fk_auth_usuario_rol_usuario	auth_usuario.id	NO ACTION	RESTRICT	usuario_id	
+FK	cat_categoria	fk_cat_categoria_padre	cat_categoria.id	NO ACTION	RESTRICT	categoria_padre_id	
+FK	cat_precio	fk_cat_precio_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	cat_precio	fk_cat_precio_sucursal	core_sucursal.id	NO ACTION	RESTRICT	sucursal_id	
+FK	cat_producto	fk_cat_producto_categoria	cat_categoria.id	NO ACTION	RESTRICT	categoria_id	
+FK	com_orden_compra	fk_com_orden_compra_proveedor	com_proveedor.id	NO ACTION	RESTRICT	proveedor_id	
+FK	com_orden_compra_item	fk_com_orden_item_orden	com_orden_compra.id	NO ACTION	RESTRICT	orden_id	
+FK	com_orden_compra_item	fk_com_orden_item_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	com_producto_promocion	fk_com_producto_promocion_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	com_producto_promocion	fk_com_producto_promocion_promo	cat_promocion.id	NO ACTION	RESTRICT	promocion_id	
+FK	com_recepcion	fk_com_recepcion_orden	com_orden_compra.id	NO ACTION	RESTRICT	orden_id	
+FK	com_recepcion	fk_com_recepcion_usuario	auth_usuario.id	NO ACTION	RESTRICT	usuario_confirma	
+FK	com_recepcion_item	fk_com_recepcion_item_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	com_recepcion_item	fk_com_recepcion_item_recepcion	com_recepcion.id	NO ACTION	RESTRICT	recepcion_id	
+FK	core_auditoria	fk_core_auditoria_usuario	auth_usuario.id	NO ACTION	RESTRICT	usuario_id	
+FK	core_caja_pos	fk_core_caja_pos_sucursal	core_sucursal.id	NO ACTION	RESTRICT	sucursal_id	
+FK	inv_ajuste_stock	fk_inv_ajuste_inventario	inv_inventario.id	NO ACTION	RESTRICT	inventario_id	
+FK	inv_ajuste_stock	fk_inv_ajuste_usuario	auth_usuario.id	NO ACTION	RESTRICT	usuario_id	
+FK	inv_inventario	fk_inv_inventario_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	inv_inventario	fk_inv_inventario_sucursal	core_sucursal.id	NO ACTION	RESTRICT	sucursal_id	
+FK	inv_movimiento_inventario	fk_inv_mov_inventario	inv_inventario.id	NO ACTION	RESTRICT	inventario_id	
+FK	inv_movimiento_inventario	fk_inv_mov_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	inv_movimiento_inventario	fk_inv_mov_sucursal	core_sucursal.id	NO ACTION	RESTRICT	sucursal_id	
+FK	inv_movimiento_inventario	fk_inv_mov_usuario	auth_usuario.id	NO ACTION	RESTRICT	usuario_id	
+FK	inv_reserva	fk_inv_reserva_inventario	inv_inventario.id	NO ACTION	RESTRICT	inventario_id	
+FK	inv_reserva	fk_inv_reserva_orden	sales_orden_venta.id	NO ACTION	RESTRICT	orden_id	
+FK	inv_transferencia	fk_inv_trans_destino	core_sucursal.id	NO ACTION	RESTRICT	sucursal_destino_id	
+FK	inv_transferencia	fk_inv_trans_origen	core_sucursal.id	NO ACTION	RESTRICT	sucursal_origen_id	
+FK	inv_transferencia	fk_inv_trans_usuario	auth_usuario.id	NO ACTION	RESTRICT	usuario_id	
+FK	inv_transferencia_item	fk_inv_trans_item_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	inv_transferencia_item	fk_inv_trans_item_trans	inv_transferencia.id	NO ACTION	RESTRICT	transferencia_id	
+FK	pay_transaccion_pago	fk_pay_pago_orden	sales_orden_venta.id	NO ACTION	RESTRICT	orden_id	
+FK	sales_carrito_web	fk_sales_carrito_cliente	core_cliente.id	NO ACTION	RESTRICT	cliente_id	
+FK	sales_carrito_web_item	fk_sales_carrito_item_carrito	sales_carrito_web.id	NO ACTION	RESTRICT	carrito_id	
+FK	sales_carrito_web_item	fk_sales_carrito_item_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	sales_devolucion	fk_sales_dev_cliente	core_cliente.id	NO ACTION	RESTRICT	cliente_id	
+FK	sales_devolucion	fk_sales_dev_orden	sales_orden_venta.id	NO ACTION	RESTRICT	orden_original_id	
+FK	sales_devolucion	fk_sales_dev_usuario	auth_usuario.id	NO ACTION	RESTRICT	usuario_id	
+FK	sales_devolucion_item	fk_sales_dev_item_dev	sales_devolucion.id	NO ACTION	RESTRICT	devolucion_id	
+FK	sales_devolucion_item	fk_sales_dev_item_orden_item	sales_orden_venta_item.id	NO ACTION	RESTRICT	producto_orden_item_id	
+FK	sales_devolucion_item	fk_sales_dev_item_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+FK	sales_orden_venta	fk_sales_orden_cliente	core_cliente.id	NO ACTION	RESTRICT	cliente_id	
+FK	sales_orden_venta	fk_sales_orden_sucursal	core_sucursal.id	NO ACTION	RESTRICT	sucursal_id	
+FK	sales_orden_venta_item	fk_sales_item_orden	sales_orden_venta.id	NO ACTION	RESTRICT	orden_id	
+FK	sales_orden_venta_item	fk_sales_item_producto	cat_producto.id	NO ACTION	RESTRICT	producto_id	
+UNIQ	auth_permiso	uq_auth_permiso_codigo	codigo				
+UNIQ	auth_rol	uq_auth_rol_nombre	nombre				
+UNIQ	auth_token_blacklist	uq_auth_token_blacklist_hash	token_hash				
+UNIQ	auth_usuario	uq_auth_usuario_email	email				
+UNIQ	cat_precio	uq_cat_precio_sucursal_producto_desde	sucursal_id,producto_id,vigente_desde				
+UNIQ	cat_producto	uq_cat_producto_sku	sku				
+UNIQ	com_orden_compra	uq_com_orden_compra_numero	numero				
+UNIQ	com_orden_compra_item	uq_com_orden_item_orden_producto	orden_id,producto_id				
+UNIQ	com_proveedor	uq_com_proveedor_codigo	codigo				
+UNIQ	com_proveedor	uq_com_proveedor_nombre	nombre				
+UNIQ	com_recepcion_item	uq_com_recepcion_item_recepcion_producto	recepcion_id,producto_id				
+UNIQ	core_caja_pos	uq_core_caja_pos_sucursal_codigo	sucursal_id,codigo				
+UNIQ	core_cliente	uq_core_cliente_identificacion	identificacion				
+UNIQ	core_configuracion	uq_core_config_clave	clave				
+UNIQ	inv_inventario	uq_inv_inventario_producto_sucursal	producto_id,sucursal_id				
+UNIQ	inv_transferencia_item	uq_inv_trans_item_trans_producto	transferencia_id,producto_id				
+UNIQ	pay_transaccion_pago	uq_pay_pago_idempotency	idempotency_key				
+UNIQ	pay_transaccion_pago	uq_pay_pago_proveedor_ref	proveedor_pago,referencia_externa				
+UNIQ	sales_carrito_web	uq_sales_carrito_sesion	sesion_key				
+UNIQ	sales_carrito_web_item	uq_sales_carrito_item_carrito_producto	carrito_id,producto_id				
+UNIQ	sales_devolucion_item	uq_sales_dev_item_dev_producto	devolucion_id,producto_id				
+UNIQ	sales_orden_venta	uq_sales_orden_idempotency	idempotency_key				
+UNIQ	sales_orden_venta	uq_sales_orden_numero	numero				
+UNIQ	sales_orden_venta_item	uq_sales_item_orden_producto	orden_id,producto_id				
+IDX	auth_permiso	PRIMARY	id	0		BTREE	
+IDX	auth_permiso	uq_auth_permiso_codigo	codigo	0		BTREE	
+IDX	auth_rol	PRIMARY	id	0		BTREE	
+IDX	auth_rol	uq_auth_rol_nombre	nombre	0		BTREE	
+IDX	auth_rol_permiso	idx_auth_rol_permiso_permiso	permiso_id	1		BTREE	
+IDX	auth_rol_permiso	PRIMARY	rol_id	0		BTREE	
+IDX	auth_rol_permiso	PRIMARY	permiso_id	0		BTREE	
+IDX	auth_token_blacklist	idx_auth_token_blacklist_expira	expira_en	1		BTREE	
+IDX	auth_token_blacklist	PRIMARY	id	0		BTREE	
+IDX	auth_token_blacklist	uq_auth_token_blacklist_hash	token_hash	0		BTREE	
+IDX	auth_usuario	PRIMARY	id	0		BTREE	
+IDX	auth_usuario	uq_auth_usuario_email	email	0		BTREE	
+IDX	auth_usuario_rol	idx_auth_usuario_rol_rol	rol_id	1		BTREE	
+IDX	auth_usuario_rol	PRIMARY	usuario_id	0		BTREE	
+IDX	auth_usuario_rol	PRIMARY	rol_id	0		BTREE	
+IDX	cat_categoria	idx_cat_categoria_padre	categoria_padre_id	1		BTREE	
+IDX	cat_categoria	PRIMARY	id	0		BTREE	
+IDX	cat_precio	fk_cat_precio_producto	producto_id	1		BTREE	
+IDX	cat_precio	PRIMARY	id	0		BTREE	
+IDX	cat_precio	uq_cat_precio_sucursal_producto_desde	sucursal_id	0		BTREE	
+IDX	cat_precio	uq_cat_precio_sucursal_producto_desde	producto_id	0		BTREE	
+IDX	cat_precio	uq_cat_precio_sucursal_producto_desde	vigente_desde	0		BTREE	
+IDX	cat_producto	idx_cat_producto_categoria	categoria_id	1		BTREE	
+IDX	cat_producto	PRIMARY	id	0		BTREE	
+IDX	cat_producto	uq_cat_producto_sku	sku	0		BTREE	
+IDX	cat_promocion	PRIMARY	id	0		BTREE	
+IDX	com_orden_compra	idx_com_orden_compra_proveedor	proveedor_id	1		BTREE	
+IDX	com_orden_compra	PRIMARY	id	0		BTREE	
+IDX	com_orden_compra	uq_com_orden_compra_numero	numero	0		BTREE	
+IDX	com_orden_compra_item	idx_com_orden_item_producto	producto_id	1		BTREE	
+IDX	com_orden_compra_item	PRIMARY	id	0		BTREE	
+IDX	com_orden_compra_item	uq_com_orden_item_orden_producto	orden_id	0		BTREE	
+IDX	com_orden_compra_item	uq_com_orden_item_orden_producto	producto_id	0		BTREE	
+IDX	com_producto_promocion	idx_com_producto_promocion_promo	promocion_id	1		BTREE	
+IDX	com_producto_promocion	PRIMARY	producto_id	0		BTREE	
+IDX	com_producto_promocion	PRIMARY	promocion_id	0		BTREE	
+IDX	com_proveedor	PRIMARY	id	0		BTREE	
+IDX	com_proveedor	uq_com_proveedor_codigo	codigo	0		BTREE	
+IDX	com_proveedor	uq_com_proveedor_nombre	nombre	0		BTREE	
+IDX	com_recepcion	idx_com_recepcion_orden	orden_id	1		BTREE	
+IDX	com_recepcion	idx_com_recepcion_usuario	usuario_confirma	1		BTREE	
+IDX	com_recepcion	PRIMARY	id	0		BTREE	
+IDX	com_recepcion_item	idx_com_recepcion_item_producto	producto_id	1		BTREE	
+IDX	com_recepcion_item	idx_com_recepcion_item_recepcion	recepcion_id	1		BTREE	
+IDX	com_recepcion_item	PRIMARY	id	0		BTREE	
+IDX	com_recepcion_item	uq_com_recepcion_item_recepcion_producto	recepcion_id	0		BTREE	
+IDX	com_recepcion_item	uq_com_recepcion_item_recepcion_producto	producto_id	0		BTREE	
+IDX	core_auditoria	idx_core_auditoria_entidad	entidad_tipo	1		BTREE	
+IDX	core_auditoria	idx_core_auditoria_entidad	entidad_id	1		BTREE	
+IDX	core_auditoria	idx_core_auditoria_entidad	fecha	1		BTREE	
+IDX	core_auditoria	idx_core_auditoria_fecha	fecha	1		BTREE	
+IDX	core_auditoria	idx_core_auditoria_usuario	usuario_id	1		BTREE	
+IDX	core_auditoria	PRIMARY	id	0		BTREE	
+IDX	core_caja_pos	PRIMARY	id	0		BTREE	
+IDX	core_caja_pos	uq_core_caja_pos_sucursal_codigo	sucursal_id	0		BTREE	
+IDX	core_caja_pos	uq_core_caja_pos_sucursal_codigo	codigo	0		BTREE	
+IDX	core_cliente	idx_core_cliente_email	email	1		BTREE	
+IDX	core_cliente	PRIMARY	id	0		BTREE	
+IDX	core_cliente	uq_core_cliente_identificacion	identificacion	0		BTREE	
+IDX	core_configuracion	PRIMARY	id	0		BTREE	
+IDX	core_configuracion	uq_core_config_clave	clave	0		BTREE	
+IDX	core_idempotency_key	idx_core_idem_expiracion	expiracion	1		BTREE	
+IDX	core_idempotency_key	PRIMARY	key	0		BTREE	
+IDX	core_sucursal	PRIMARY	id	0		BTREE	
+IDX	inv_ajuste_stock	idx_inv_ajuste_inventario	inventario_id	1		BTREE	
+IDX	inv_ajuste_stock	idx_inv_ajuste_usuario	usuario_id	1		BTREE	
+IDX	inv_ajuste_stock	PRIMARY	id	0		BTREE	
+IDX	inv_inventario	idx_inv_inventario_sucursal	sucursal_id	1		BTREE	
+IDX	inv_inventario	PRIMARY	id	0		BTREE	
+IDX	inv_inventario	uq_inv_inventario_producto_sucursal	producto_id	0		BTREE	
+IDX	inv_inventario	uq_inv_inventario_producto_sucursal	sucursal_id	0		BTREE	
+IDX	inv_movimiento_inventario	idx_inv_mov_inventario	inventario_id	1		BTREE	
+IDX	inv_movimiento_inventario	idx_inv_mov_inventario	fecha	1		BTREE	
+IDX	inv_movimiento_inventario	idx_inv_mov_producto_fecha	producto_id	1		BTREE	
+IDX	inv_movimiento_inventario	idx_inv_mov_producto_fecha	fecha	1		BTREE	
+IDX	inv_movimiento_inventario	idx_inv_mov_sucursal_fecha	sucursal_id	1		BTREE	
+IDX	inv_movimiento_inventario	idx_inv_mov_sucursal_fecha	fecha	1		BTREE	
+IDX	inv_movimiento_inventario	idx_inv_mov_usuario	usuario_id	1		BTREE	
+IDX	inv_movimiento_inventario	PRIMARY	id	0		BTREE	
+IDX	inv_reserva	idx_inv_reserva_estado_expira	estado	1		BTREE	
+IDX	inv_reserva	idx_inv_reserva_estado_expira	expira_en	1		BTREE	
+IDX	inv_reserva	idx_inv_reserva_inventario	inventario_id	1		BTREE	
+IDX	inv_reserva	idx_inv_reserva_orden	orden_id	1		BTREE	
+IDX	inv_reserva	PRIMARY	id	0		BTREE	
+IDX	inv_transferencia	idx_inv_trans_destino	sucursal_destino_id	1		BTREE	
+IDX	inv_transferencia	idx_inv_trans_origen	sucursal_origen_id	1		BTREE	
+IDX	inv_transferencia	idx_inv_trans_usuario	usuario_id	1		BTREE	
+IDX	inv_transferencia	PRIMARY	id	0		BTREE	
+IDX	inv_transferencia_item	idx_inv_trans_item_producto	producto_id	1		BTREE	
+IDX	inv_transferencia_item	PRIMARY	id	0		BTREE	
+IDX	inv_transferencia_item	uq_inv_trans_item_trans_producto	transferencia_id	0		BTREE	
+IDX	inv_transferencia_item	uq_inv_trans_item_trans_producto	producto_id	0		BTREE	
+IDX	pay_outbox_evento	idx_pay_outbox_correlation	correlation_id	1		BTREE	
+IDX	pay_outbox_evento	idx_pay_outbox_estado_fecha	estado	1		BTREE	
+IDX	pay_outbox_evento	idx_pay_outbox_estado_fecha	creado_en	1		BTREE	
+IDX	pay_outbox_evento	PRIMARY	id	0		BTREE	
+IDX	pay_transaccion_pago	idx_pay_pago_orden	orden_id	1		BTREE	
+IDX	pay_transaccion_pago	PRIMARY	id	0		BTREE	
+IDX	pay_transaccion_pago	uq_pay_pago_idempotency	idempotency_key	0		BTREE	
+IDX	pay_transaccion_pago	uq_pay_pago_proveedor_ref	proveedor_pago	0		BTREE	
+IDX	pay_transaccion_pago	uq_pay_pago_proveedor_ref	referencia_externa	0		BTREE	
+IDX	sales_carrito_web	idx_sales_carrito_cliente	cliente_id	1		BTREE	
+IDX	sales_carrito_web	PRIMARY	id	0		BTREE	
+IDX	sales_carrito_web	uq_sales_carrito_sesion	sesion_key	0		BTREE	
+IDX	sales_carrito_web_item	idx_sales_carrito_item_producto	producto_id	1		BTREE	
+IDX	sales_carrito_web_item	PRIMARY	id	0		BTREE	
+IDX	sales_carrito_web_item	uq_sales_carrito_item_carrito_producto	carrito_id	0		BTREE	
+IDX	sales_carrito_web_item	uq_sales_carrito_item_carrito_producto	producto_id	0		BTREE	
+IDX	sales_devolucion	idx_sales_dev_cliente	cliente_id	1		BTREE	
+IDX	sales_devolucion	idx_sales_dev_orden	orden_original_id	1		BTREE	
+IDX	sales_devolucion	idx_sales_dev_usuario	usuario_id	1		BTREE	
+IDX	sales_devolucion	PRIMARY	id	0		BTREE	
+IDX	sales_devolucion_item	idx_sales_dev_item_dev	devolucion_id	1		BTREE	
+IDX	sales_devolucion_item	idx_sales_dev_item_orden_item	producto_orden_item_id	1		BTREE	
+IDX	sales_devolucion_item	idx_sales_dev_item_producto	producto_id	1		BTREE	
+IDX	sales_devolucion_item	PRIMARY	id	0		BTREE	
+IDX	sales_devolucion_item	uq_sales_dev_item_dev_producto	devolucion_id	0		BTREE	
+IDX	sales_devolucion_item	uq_sales_dev_item_dev_producto	producto_id	0		BTREE	
+IDX	sales_orden_venta	idx_sales_orden_cliente	cliente_id	1		BTREE	
+IDX	sales_orden_venta	idx_sales_orden_estado_fecha	estado	1		BTREE	
+IDX	sales_orden_venta	idx_sales_orden_estado_fecha	creado_en	1		BTREE	
+IDX	sales_orden_venta	idx_sales_orden_sucursal	sucursal_id	1		BTREE	
+IDX	sales_orden_venta	idx_sales_orden_sucursal_fecha	sucursal_id	1		BTREE	
+IDX	sales_orden_venta	idx_sales_orden_sucursal_fecha	creado_en	1		BTREE	
+IDX	sales_orden_venta	PRIMARY	id	0		BTREE	
+IDX	sales_orden_venta	uq_sales_orden_idempotency	idempotency_key	0		BTREE	
+IDX	sales_orden_venta	uq_sales_orden_numero	numero	0		BTREE	
+IDX	sales_orden_venta_item	idx_sales_item_producto	producto_id	1		BTREE	
+IDX	sales_orden_venta_item	PRIMARY	id	0		BTREE	
+IDX	sales_orden_venta_item	uq_sales_item_orden_producto	orden_id	0		BTREE	
+IDX	sales_orden_venta_item	uq_sales_item_orden_producto	producto_id	0		BTREE	

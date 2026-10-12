@@ -1,0 +1,19 @@
+﻿CP-LAND-05 — Sistema visual
+Fecha: 2026-09-30 21:49:59
+Skill obligatorio: design-taste-frontend (leido y aplicado)
+Precedencia: DECISIONES(D-LAND-08/09) > WORKFLOW > GUIDES > SKILLS
+
+== Output ==
+docs/decisiones_visuales.md = 6244 bytes
+Contenido: baseline (DV=8, MI=6, VD=4), direccion visual asimetrica,
+tokens de color (1 acento #047857, off-black #18181b, bg #f9fafb),
+tipografia Outfit (sin Inter/serif) con escala, espaciado base 4px,
+contenedor 1400px, radios/sombras, componentes base + estados,
+motion CSS-only con reduced-motion, copy Bolivia Bs, pre-flight.
+
+== Validadores ==
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-05 => CP-LAND-05: PASSED (CP sin check especifico; el requisito del workflow es el doc)
+
+== Veredicto ==
+CP-LAND-05: PASSED (doc generado y estructura valida)

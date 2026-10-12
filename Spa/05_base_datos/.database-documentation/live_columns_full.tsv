@@ -1,0 +1,338 @@
+﻿auth_permiso	id	bigint unsigned	NO	NULL	auto_increment	PRI
+auth_permiso	codigo	varchar(64)	NO	NULL		UNI
+auth_permiso	descripcion	varchar(255)	YES	NULL		
+auth_permiso	estado	enum('activo','inactivo')	NO	activo		
+auth_permiso	user_create	bigint unsigned	NO	NULL		
+auth_permiso	user_update	bigint unsigned	NO	NULL		
+auth_permiso	user_created_at	datetime	NO	NULL		
+auth_permiso	user_update_at	datetime	NO	NULL		
+auth_rol	id	bigint unsigned	NO	NULL	auto_increment	PRI
+auth_rol	nombre	varchar(80)	NO	NULL		UNI
+auth_rol	estado	enum('activo','inactivo')	NO	activo		
+auth_rol	user_create	bigint unsigned	NO	NULL		
+auth_rol	user_update	bigint unsigned	NO	NULL		
+auth_rol	user_created_at	datetime	NO	NULL		
+auth_rol	user_update_at	datetime	NO	NULL		
+auth_rol_permiso	rol_id	bigint unsigned	NO	NULL		PRI
+auth_rol_permiso	permiso_id	bigint unsigned	NO	NULL		PRI
+auth_rol_permiso	user_create	bigint unsigned	NO	NULL		
+auth_rol_permiso	user_update	bigint unsigned	NO	NULL		
+auth_rol_permiso	user_created_at	datetime	NO	NULL		
+auth_rol_permiso	user_update_at	datetime	NO	NULL		
+auth_token_blacklist	id	bigint unsigned	NO	NULL	auto_increment	PRI
+auth_token_blacklist	token_hash	varchar(64)	NO	NULL		UNI
+auth_token_blacklist	expira_en	datetime	NO	NULL		MUL
+auth_token_blacklist	creado_en	datetime	NO	NULL		
+auth_usuario	id	bigint unsigned	NO	NULL	auto_increment	PRI
+auth_usuario	nombre	varchar(120)	NO	NULL		
+auth_usuario	email	varchar(254)	NO	NULL		UNI
+auth_usuario	hash_password	varchar(255)	NO	NULL		
+auth_usuario	estado	enum('activo','inactivo')	NO	activo		
+auth_usuario	user_create	bigint unsigned	NO	NULL		
+auth_usuario	user_update	bigint unsigned	NO	NULL		
+auth_usuario	user_created_at	datetime	NO	NULL		
+auth_usuario	user_update_at	datetime	NO	NULL		
+auth_usuario_rol	usuario_id	bigint unsigned	NO	NULL		PRI
+auth_usuario_rol	rol_id	bigint unsigned	NO	NULL		PRI
+auth_usuario_rol	user_create	bigint unsigned	NO	NULL		
+auth_usuario_rol	user_update	bigint unsigned	NO	NULL		
+auth_usuario_rol	user_created_at	datetime	NO	NULL		
+auth_usuario_rol	user_update_at	datetime	NO	NULL		
+cat_categoria	id	bigint unsigned	NO	NULL	auto_increment	PRI
+cat_categoria	nombre	varchar(100)	NO	NULL		
+cat_categoria	categoria_padre_id	bigint unsigned	YES	NULL		MUL
+cat_categoria	estado	enum('activo','inactivo')	NO	activo		
+cat_categoria	user_create	bigint unsigned	NO	NULL		
+cat_categoria	user_update	bigint unsigned	NO	NULL		
+cat_categoria	user_created_at	datetime	NO	NULL		
+cat_categoria	user_update_at	datetime	NO	NULL		
+cat_precio	id	bigint unsigned	NO	NULL	auto_increment	PRI
+cat_precio	sucursal_id	bigint unsigned	NO	NULL		MUL
+cat_precio	producto_id	bigint unsigned	NO	NULL		MUL
+cat_precio	monto	decimal(12,2)	NO	NULL		
+cat_precio	moneda	char(3)	NO	NULL		
+cat_precio	vigente_desde	datetime	NO	NULL		
+cat_precio	vigente_hasta	datetime	YES	NULL		
+cat_precio	user_create	bigint unsigned	NO	NULL		
+cat_precio	user_update	bigint unsigned	NO	NULL		
+cat_precio	user_created_at	datetime	NO	NULL		
+cat_precio	user_update_at	datetime	NO	NULL		
+cat_producto	id	bigint unsigned	NO	NULL	auto_increment	PRI
+cat_producto	sku	varchar(64)	NO	NULL		UNI
+cat_producto	nombre	varchar(150)	NO	NULL		
+cat_producto	categoria_id	bigint unsigned	NO	NULL		MUL
+cat_producto	unidad	varchar(32)	NO	NULL		
+cat_producto	estado	enum('activo','inactivo')	NO	activo		
+cat_producto	user_create	bigint unsigned	NO	NULL		
+cat_producto	user_update	bigint unsigned	NO	NULL		
+cat_producto	user_created_at	datetime	NO	NULL		
+cat_producto	user_update_at	datetime	NO	NULL		
+cat_promocion	id	bigint unsigned	NO	NULL	auto_increment	PRI
+cat_promocion	nombre	varchar(120)	NO	NULL		
+cat_promocion	reglas	json	NO	NULL		
+cat_promocion	vigente_desde	datetime	NO	NULL		
+cat_promocion	vigente_hasta	datetime	YES	NULL		
+cat_promocion	estado	enum('activo','inactivo')	NO	activo		
+cat_promocion	user_create	bigint unsigned	NO	NULL		
+cat_promocion	user_update	bigint unsigned	NO	NULL		
+cat_promocion	user_created_at	datetime	NO	NULL		
+cat_promocion	user_update_at	datetime	NO	NULL		
+com_orden_compra	id	bigint unsigned	NO	NULL	auto_increment	PRI
+com_orden_compra	numero	varchar(32)	NO	NULL		UNI
+com_orden_compra	proveedor_id	bigint unsigned	NO	NULL		MUL
+com_orden_compra	estado	enum('draft','enviada','recibida','cancelada')	NO	draft		
+com_orden_compra	fecha_orden	datetime	NO	NULL		
+com_orden_compra	total	decimal(12,2)	NO	0.00		
+com_orden_compra	user_create	bigint unsigned	NO	NULL		
+com_orden_compra	user_update	bigint unsigned	NO	NULL		
+com_orden_compra	user_created_at	datetime	NO	NULL		
+com_orden_compra	user_update_at	datetime	NO	NULL		
+com_orden_compra_item	id	bigint unsigned	NO	NULL	auto_increment	PRI
+com_orden_compra_item	orden_id	bigint unsigned	NO	NULL		MUL
+com_orden_compra_item	producto_id	bigint unsigned	NO	NULL		MUL
+com_orden_compra_item	cantidad	int unsigned	NO	NULL		
+com_orden_compra_item	precio_pactado	decimal(12,2)	NO	NULL		
+com_orden_compra_item	user_create	bigint unsigned	NO	NULL		
+com_orden_compra_item	user_update	bigint unsigned	NO	NULL		
+com_orden_compra_item	user_created_at	datetime	NO	NULL		
+com_orden_compra_item	user_update_at	datetime	NO	NULL		
+com_producto_promocion	producto_id	bigint unsigned	NO	NULL		PRI
+com_producto_promocion	promocion_id	bigint unsigned	NO	NULL		PRI
+com_producto_promocion	user_create	bigint unsigned	NO	NULL		
+com_producto_promocion	user_update	bigint unsigned	NO	NULL		
+com_producto_promocion	user_created_at	datetime	NO	NULL		
+com_producto_promocion	user_update_at	datetime	NO	NULL		
+com_proveedor	id	bigint unsigned	NO	NULL	auto_increment	PRI
+com_proveedor	nombre	varchar(150)	NO	NULL		UNI
+com_proveedor	codigo	varchar(32)	YES	NULL		UNI
+com_proveedor	contacto	varchar(150)	YES	NULL		
+com_proveedor	estado	enum('activo','inactivo')	NO	activo		
+com_proveedor	user_create	bigint unsigned	NO	NULL		
+com_proveedor	user_update	bigint unsigned	NO	NULL		
+com_proveedor	user_created_at	datetime	NO	NULL		
+com_proveedor	user_update_at	datetime	NO	NULL		
+com_recepcion	id	bigint unsigned	NO	NULL	auto_increment	PRI
+com_recepcion	orden_id	bigint unsigned	NO	NULL		MUL
+com_recepcion	estado	enum('draft','confirmada')	NO	draft		
+com_recepcion	fecha	datetime	NO	NULL		
+com_recepcion	usuario_confirma	bigint unsigned	YES	NULL		MUL
+com_recepcion	user_create	bigint unsigned	NO	NULL		
+com_recepcion	user_update	bigint unsigned	NO	NULL		
+com_recepcion	user_created_at	datetime	NO	NULL		
+com_recepcion	user_update_at	datetime	NO	NULL		
+com_recepcion_item	id	bigint unsigned	NO	NULL	auto_increment	PRI
+com_recepcion_item	recepcion_id	bigint unsigned	NO	NULL		MUL
+com_recepcion_item	producto_id	bigint unsigned	NO	NULL		MUL
+com_recepcion_item	cantidad_recibida	int unsigned	NO	NULL		
+com_recepcion_item	user_create	bigint unsigned	NO	NULL		
+com_recepcion_item	user_update	bigint unsigned	NO	NULL		
+com_recepcion_item	user_created_at	datetime	NO	NULL		
+com_recepcion_item	user_update_at	datetime	NO	NULL		
+core_auditoria	id	bigint unsigned	NO	NULL	auto_increment	PRI
+core_auditoria	accion	varchar(50)	NO	NULL		
+core_auditoria	entidad_tipo	varchar(80)	NO	NULL		MUL
+core_auditoria	entidad_id	bigint unsigned	NO	NULL		
+core_auditoria	datos_previos	text	YES	NULL		
+core_auditoria	datos_nuevos	text	YES	NULL		
+core_auditoria	usuario_id	bigint unsigned	NO	NULL		MUL
+core_auditoria	motivo	text	YES	NULL		
+core_auditoria	fecha	datetime	NO	NULL		MUL
+core_auditoria	correlation_id	varchar(64)	YES	NULL		
+core_auditoria	user_create	bigint unsigned	NO	NULL		
+core_auditoria	user_update	bigint unsigned	NO	NULL		
+core_auditoria	user_created_at	datetime	NO	NULL		
+core_auditoria	user_update_at	datetime	NO	NULL		
+core_caja_pos	id	bigint unsigned	NO	NULL	auto_increment	PRI
+core_caja_pos	sucursal_id	bigint unsigned	NO	NULL		MUL
+core_caja_pos	codigo	varchar(32)	NO	NULL		
+core_caja_pos	estado	enum('activo','inactivo')	NO	activo		
+core_caja_pos	user_create	bigint unsigned	NO	NULL		
+core_caja_pos	user_update	bigint unsigned	NO	NULL		
+core_caja_pos	user_created_at	datetime	NO	NULL		
+core_caja_pos	user_update_at	datetime	NO	NULL		
+core_cliente	id	bigint unsigned	NO	NULL	auto_increment	PRI
+core_cliente	nombre	varchar(150)	NO	NULL		
+core_cliente	razon_social	varchar(150)	YES	NULL		
+core_cliente	identificacion	varchar(32)	YES	NULL		UNI
+core_cliente	email	varchar(254)	YES	NULL		MUL
+core_cliente	telefono	varchar(32)	YES	NULL		
+core_cliente	estado	enum('activo','inactivo')	NO	activo		
+core_cliente	user_create	bigint unsigned	NO	NULL		
+core_cliente	user_update	bigint unsigned	NO	NULL		
+core_cliente	user_created_at	datetime	NO	NULL		
+core_cliente	user_update_at	datetime	NO	NULL		
+core_configuracion	id	bigint unsigned	NO	NULL	auto_increment	PRI
+core_configuracion	clave	varchar(80)	NO	NULL		UNI
+core_configuracion	valor	text	NO	NULL		
+core_configuracion	descripcion	varchar(255)	YES	NULL		
+core_configuracion	user_create	bigint unsigned	NO	NULL		
+core_configuracion	user_update	bigint unsigned	NO	NULL		
+core_configuracion	user_created_at	datetime	NO	NULL		
+core_configuracion	user_update_at	datetime	NO	NULL		
+core_idempotency_key	key	char(36)	NO	NULL		PRI
+core_idempotency_key	operacion	varchar(80)	NO	NULL		
+core_idempotency_key	respuesta	mediumtext	YES	NULL		
+core_idempotency_key	expiracion	datetime	NO	NULL		MUL
+core_idempotency_key	creado_en	datetime	NO	NULL		
+core_sucursal	id	bigint unsigned	NO	NULL	auto_increment	PRI
+core_sucursal	nombre	varchar(120)	NO	NULL		
+core_sucursal	direccion	varchar(255)	YES	NULL		
+core_sucursal	estado	enum('activo','inactivo')	NO	activo		
+core_sucursal	user_create	bigint unsigned	NO	NULL		
+core_sucursal	user_update	bigint unsigned	NO	NULL		
+core_sucursal	user_created_at	datetime	NO	NULL		
+core_sucursal	user_update_at	datetime	NO	NULL		
+inv_ajuste_stock	id	bigint unsigned	NO	NULL	auto_increment	PRI
+inv_ajuste_stock	inventario_id	bigint unsigned	NO	NULL		MUL
+inv_ajuste_stock	cantidad	int	NO	NULL		
+inv_ajuste_stock	motivo	text	NO	NULL		
+inv_ajuste_stock	usuario_id	bigint unsigned	NO	NULL		MUL
+inv_ajuste_stock	fecha	datetime	NO	NULL		
+inv_ajuste_stock	user_create	bigint unsigned	NO	NULL		
+inv_ajuste_stock	user_update	bigint unsigned	NO	NULL		
+inv_ajuste_stock	user_created_at	datetime	NO	NULL		
+inv_ajuste_stock	user_update_at	datetime	NO	NULL		
+inv_inventario	id	bigint unsigned	NO	NULL	auto_increment	PRI
+inv_inventario	producto_id	bigint unsigned	NO	NULL		MUL
+inv_inventario	sucursal_id	bigint unsigned	NO	NULL		MUL
+inv_inventario	stock_available	int unsigned	NO	0		
+inv_inventario	stock_reserved	int unsigned	NO	0		
+inv_inventario	stock_sold	int unsigned	NO	0		
+inv_inventario	version	int unsigned	NO	0		
+inv_inventario	user_create	bigint unsigned	NO	NULL		
+inv_inventario	user_update	bigint unsigned	NO	NULL		
+inv_inventario	user_created_at	datetime	NO	NULL		
+inv_inventario	user_update_at	datetime	NO	NULL		
+inv_movimiento_inventario	id	bigint unsigned	NO	NULL	auto_increment	PRI
+inv_movimiento_inventario	inventario_id	bigint unsigned	NO	NULL		MUL
+inv_movimiento_inventario	producto_id	bigint unsigned	NO	NULL		MUL
+inv_movimiento_inventario	sucursal_id	bigint unsigned	NO	NULL		MUL
+inv_movimiento_inventario	tipo	enum('entrada','salida','reserva','liberacion','ajuste','devolucion','transferencia_salida','transferencia_entrada','recepcion')	NO	NULL		
+inv_movimiento_inventario	cantidad	int	NO	NULL		
+inv_movimiento_inventario	referencia_tipo	varchar(50)	YES	NULL		
+inv_movimiento_inventario	referencia_id	bigint unsigned	YES	NULL		
+inv_movimiento_inventario	usuario_id	bigint unsigned	NO	NULL		MUL
+inv_movimiento_inventario	motivo	text	YES	NULL		
+inv_movimiento_inventario	fecha	datetime	NO	NULL		
+inv_movimiento_inventario	user_create	bigint unsigned	NO	NULL		
+inv_movimiento_inventario	user_update	bigint unsigned	NO	NULL		
+inv_movimiento_inventario	user_created_at	datetime	NO	NULL		
+inv_movimiento_inventario	user_update_at	datetime	NO	NULL		
+inv_reserva	id	bigint unsigned	NO	NULL	auto_increment	PRI
+inv_reserva	orden_id	bigint unsigned	NO	NULL		MUL
+inv_reserva	inventario_id	bigint unsigned	NO	NULL		MUL
+inv_reserva	cantidad	int unsigned	NO	NULL		
+inv_reserva	estado	enum('pending','confirmed','expired','cancelled')	NO	pending		MUL
+inv_reserva	expira_en	datetime	NO	NULL		
+inv_reserva	creado_en	datetime	NO	NULL		
+inv_reserva	user_create	bigint unsigned	NO	NULL		
+inv_reserva	user_update	bigint unsigned	NO	NULL		
+inv_reserva	user_created_at	datetime	NO	NULL		
+inv_reserva	user_update_at	datetime	NO	NULL		
+inv_transferencia	id	bigint unsigned	NO	NULL	auto_increment	PRI
+inv_transferencia	sucursal_origen_id	bigint unsigned	NO	NULL		MUL
+inv_transferencia	sucursal_destino_id	bigint unsigned	NO	NULL		MUL
+inv_transferencia	estado	enum('draft','in_transit','received','cancelled')	NO	draft		
+inv_transferencia	usuario_id	bigint unsigned	NO	NULL		MUL
+inv_transferencia	fecha_salida	datetime	YES	NULL		
+inv_transferencia	fecha_recepcion	datetime	YES	NULL		
+inv_transferencia	user_create	bigint unsigned	NO	NULL		
+inv_transferencia	user_update	bigint unsigned	NO	NULL		
+inv_transferencia	user_created_at	datetime	NO	NULL		
+inv_transferencia	user_update_at	datetime	NO	NULL		
+inv_transferencia_item	id	bigint unsigned	NO	NULL	auto_increment	PRI
+inv_transferencia_item	transferencia_id	bigint unsigned	NO	NULL		MUL
+inv_transferencia_item	producto_id	bigint unsigned	NO	NULL		MUL
+inv_transferencia_item	cantidad	int unsigned	NO	NULL		
+inv_transferencia_item	user_create	bigint unsigned	NO	NULL		
+inv_transferencia_item	user_update	bigint unsigned	NO	NULL		
+inv_transferencia_item	user_created_at	datetime	NO	NULL		
+inv_transferencia_item	user_update_at	datetime	NO	NULL		
+pay_outbox_evento	id	bigint unsigned	NO	NULL	auto_increment	PRI
+pay_outbox_evento	agregado_tipo	varchar(50)	NO	NULL		
+pay_outbox_evento	agregado_id	bigint unsigned	NO	NULL		
+pay_outbox_evento	evento_tipo	varchar(80)	NO	NULL		
+pay_outbox_evento	payload	json	NO	NULL		
+pay_outbox_evento	estado	enum('pending','processing','processed','failed')	NO	pending		MUL
+pay_outbox_evento	claimed_at	datetime	YES	NULL		
+pay_outbox_evento	correlation_id	varchar(64)	NO	NULL		MUL
+pay_outbox_evento	creado_en	datetime	NO	NULL		
+pay_outbox_evento	procesado_en	datetime	YES	NULL		
+pay_outbox_evento	reintentos	int unsigned	NO	0		
+pay_transaccion_pago	id	bigint unsigned	NO	NULL	auto_increment	PRI
+pay_transaccion_pago	orden_id	bigint unsigned	NO	NULL		MUL
+pay_transaccion_pago	proveedor_pago	varchar(50)	NO	NULL		MUL
+pay_transaccion_pago	referencia_externa	varchar(120)	NO	NULL		
+pay_transaccion_pago	monto	decimal(12,2)	NO	NULL		
+pay_transaccion_pago	estado	enum('initiated','authorized','failed','refunded','compensated')	NO	initiated		
+pay_transaccion_pago	idempotency_key	varchar(64)	NO	NULL		UNI
+pay_transaccion_pago	fecha	datetime	NO	NULL		
+pay_transaccion_pago	user_create	bigint unsigned	NO	NULL		
+pay_transaccion_pago	user_update	bigint unsigned	NO	NULL		
+pay_transaccion_pago	user_created_at	datetime	NO	NULL		
+pay_transaccion_pago	user_update_at	datetime	NO	NULL		
+sales_carrito_web	id	bigint unsigned	NO	NULL	auto_increment	PRI
+sales_carrito_web	cliente_id	bigint unsigned	YES	NULL		MUL
+sales_carrito_web	sesion_key	varchar(64)	NO	NULL		UNI
+sales_carrito_web	actualizado_en	datetime	NO	NULL		
+sales_carrito_web	user_create	bigint unsigned	NO	NULL		
+sales_carrito_web	user_update	bigint unsigned	NO	NULL		
+sales_carrito_web	user_created_at	datetime	NO	NULL		
+sales_carrito_web	user_update_at	datetime	NO	NULL		
+sales_carrito_web_item	id	bigint unsigned	NO	NULL	auto_increment	PRI
+sales_carrito_web_item	carrito_id	bigint unsigned	NO	NULL		MUL
+sales_carrito_web_item	producto_id	bigint unsigned	NO	NULL		MUL
+sales_carrito_web_item	cantidad	int unsigned	NO	NULL		
+sales_carrito_web_item	user_create	bigint unsigned	NO	NULL		
+sales_carrito_web_item	user_update	bigint unsigned	NO	NULL		
+sales_carrito_web_item	user_created_at	datetime	NO	NULL		
+sales_carrito_web_item	user_update_at	datetime	NO	NULL		
+sales_devolucion	id	bigint unsigned	NO	NULL	auto_increment	PRI
+sales_devolucion	orden_original_id	bigint unsigned	NO	NULL		MUL
+sales_devolucion	cliente_id	bigint unsigned	YES	NULL		MUL
+sales_devolucion	usuario_id	bigint unsigned	NO	NULL		MUL
+sales_devolucion	estado	enum('draft','aprobada','rechazada','completada')	NO	draft		
+sales_devolucion	motivo	text	YES	NULL		
+sales_devolucion	monto	decimal(12,2)	NO	0.00		
+sales_devolucion	fecha	datetime	NO	NULL		
+sales_devolucion	user_create	bigint unsigned	NO	NULL		
+sales_devolucion	user_update	bigint unsigned	NO	NULL		
+sales_devolucion	user_created_at	datetime	NO	NULL		
+sales_devolucion	user_update_at	datetime	NO	NULL		
+sales_devolucion_item	id	bigint unsigned	NO	NULL	auto_increment	PRI
+sales_devolucion_item	devolucion_id	bigint unsigned	NO	NULL		MUL
+sales_devolucion_item	producto_id	bigint unsigned	NO	NULL		MUL
+sales_devolucion_item	producto_orden_item_id	bigint unsigned	NO	NULL		MUL
+sales_devolucion_item	cantidad	int unsigned	NO	NULL		
+sales_devolucion_item	monto	decimal(12,2)	NO	NULL		
+sales_devolucion_item	user_create	bigint unsigned	NO	NULL		
+sales_devolucion_item	user_update	bigint unsigned	NO	NULL		
+sales_devolucion_item	user_created_at	datetime	NO	NULL		
+sales_devolucion_item	user_update_at	datetime	NO	NULL		
+sales_orden_venta	id	bigint unsigned	NO	NULL	auto_increment	PRI
+sales_orden_venta	numero	varchar(32)	NO	NULL		UNI
+sales_orden_venta	canal	enum('pos','web')	NO	NULL		
+sales_orden_venta	cliente_id	bigint unsigned	YES	NULL		MUL
+sales_orden_venta	sucursal_id	bigint unsigned	NO	NULL		MUL
+sales_orden_venta	estado	enum('pending','pagada','confirmada','cancelada','devuelta')	NO	pending		MUL
+sales_orden_venta	total	decimal(12,2)	NO	0.00		
+sales_orden_venta	idempotency_key	varchar(64)	YES	NULL		UNI
+sales_orden_venta	fulfillment_type	enum('entrega','retiro')	YES	NULL		
+sales_orden_venta	fulfillment_direccion	varchar(255)	YES	NULL		
+sales_orden_venta	fecha_entrega	datetime	YES	NULL		
+sales_orden_venta	creado_en	datetime	NO	NULL		
+sales_orden_venta	confirmado_en	datetime	YES	NULL		
+sales_orden_venta	user_create	bigint unsigned	NO	NULL		
+sales_orden_venta	user_update	bigint unsigned	NO	NULL		
+sales_orden_venta	user_created_at	datetime	NO	NULL		
+sales_orden_venta	user_update_at	datetime	NO	NULL		
+sales_orden_venta_item	id	bigint unsigned	NO	NULL	auto_increment	PRI
+sales_orden_venta_item	orden_id	bigint unsigned	NO	NULL		MUL
+sales_orden_venta_item	producto_id	bigint unsigned	NO	NULL		MUL
+sales_orden_venta_item	cantidad	int unsigned	NO	NULL		
+sales_orden_venta_item	precio_unitario	decimal(12,2)	NO	NULL		
+sales_orden_venta_item	subtotal	decimal(12,2)	NO	NULL		
+sales_orden_venta_item	user_create	bigint unsigned	NO	NULL		
+sales_orden_venta_item	user_update	bigint unsigned	NO	NULL		
+sales_orden_venta_item	user_created_at	datetime	NO	NULL		
+sales_orden_venta_item	user_update_at	datetime	NO	NULL		

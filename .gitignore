@@ -1,0 +1,7 @@
+# Secretos y configuración local — nunca versionar (RNF-034)
+.env
+*.env
+!.env.example
+
+# Configuración local de agentes/entorno
+Spa/settings.txt

@@ -1,0 +1,48 @@
+/* CP-FRONT-01: disposición de página (centrado del login) */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+.page-auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auth-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  width: 100%;
+  max-width: 360px;
+}
+.auth-card h1 { margin: 0 0 var(--space-1); font-size: 1.4rem; }
+.auth-sub { margin: 0 0 var(--space-3); color: var(--color-muted); font-size: .9rem; }
+
+/* CP-FRONT-02: shell autenticado (sidebar + contenido) */
+.page-main { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+.sidebar {
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.brand { font-weight: 700; font-size: 1.1rem; }
+.sidebar nav { display: flex; flex-direction: column; gap: var(--space-1); }
+.sidebar nav a {
+  display: block;
+  padding: var(--space-2);
+  border-radius: var(--radius);
+  color: var(--color-text);
+  text-decoration: none;
+}
+.sidebar nav a:hover { background: var(--color-bg); }
+.sidebar nav a[aria-current="page"] { background: var(--color-primary); color: #fff; }
+.sidebar-user { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); font-size: .9rem; }
+.main-content { padding: var(--space-4); }

@@ -1,0 +1,22 @@
+/* Responsive base (CP-LAND-06; refuerzo CP-LAND-10). */
+
+/* Sin scroll horizontal */
+body { max-width: 100vw; }
+
+@media (max-width: 767px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr); /* minmax(0,..): evita overflow por imágenes con width nativo 640/960 (M2 CP-14) */
+    padding-block: var(--space-12);
+  }
+  .hero__actions .btn { width: 100%; } /* targets cómodos en móvil */
+  .section { padding-block: var(--space-12); }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero__grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 479px) {
+  .categorias__grid { grid-template-columns: minmax(0, 1fr); }
+  .productos__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+}

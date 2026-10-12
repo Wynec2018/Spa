@@ -1,0 +1,30 @@
+﻿CP-LAND-11 — Motion
+Fecha: 2026-09-30 22:12:02
+Skill obligatorio: animate (Emil Kowalski) — cargado paso 0.
+
+== Gate (secuencia del skill) ==
+Frecuencia: hover de tarjetas (decenas/día) => near-imperceptible; propósito: State indication (sombra) + Feedback (lift sutil).
+RECHAZADO: entrada animada del hero (el LCP debe estar estático en primer paint).
+RECHAZADO: scroll-reveal por secciones (los datos no deben moverse mientras se leen).
+RECHAZADO: keyframes / librerías (CSS transitions alcanza).
+
+== Ingredientes ==
+Tool: CSS transition (transform + box-shadow).
+Tokens existentes: --dur 0.3s, --ease cubic-bezier(0.16,1,0.3,1) (se extienden, no se bifurcan).
+Gating: @media (hover: hover) and (pointer: fine) sobre .cat-card__link:hover y .prod-card:hover.
+Reduced motion: global en base.css (0.01ms) + override en landing.css: hover conserva sombra (feedback), transform:none (sin movimiento).
+Header is-scrolled: box-shadow con transition (state indication) — ya existía en CP-06.
+
+== Auditoría ==
+transition: all = 0 | ease-in = 0 | @keyframes = 0
+prefers-reduced-motion = 2 bloques | hover: hover = 2 reglas
+JS = 18 líneas, cero librerías.
+
+== Verificación ==
+index HTTP 200.
+Regresión responsive (CP-10, Chrome headless 360/768/1280): overflow=0, offenders=0, smallTargets=0 en las 3.
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-11 => CP-LAND-11: PASSED
+
+== Veredicto ==
+CP-LAND-11: PASSED

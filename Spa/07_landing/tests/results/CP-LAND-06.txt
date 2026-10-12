@@ -1,0 +1,33 @@
+﻿CP-LAND-06 — Header + Hero + CTA
+Fecha: 2026-09-30 21:54:05
+Skill: design-taste-frontend (baseline DV=8: hero asimetrico 55/45, no centrado)
+
+== Archivos ==
+public/index.php (composicion, 22 lineas, sin SQL/PDO ni CSS/JS inline)
+app/Views/layouts/header.php (head + skip-link + nav + CTA header)
+app/Views/sections/hero.php (hero asimetrico + CTA primario/secundario + aviso demo)
+app/Views/layouts/footer.php (cierre + contacto sin inventar datos)
+config/landing.php (CTA/hero/meta configurables; whatsapp=null si no hay env)
+assets/css/{variables,base,layout,components,landing,responsive}.css (tokens CP-05)
+assets/js/landing.js (sombra header al scroll, sin librerias)
+
+== Render CLI ==
+exit=0, 66 lineas; contiene hero-titulo, btn--primary, skip-link, brand.
+
+== HTTP (php -S 127.0.0.1:8106, docroot public) ==
+index HTTP 200 (3282 bytes, text/html; charset=UTF-8)
+assets/css/variables.css HTTP 200
+assets/js/landing.js HTTP 200
+CTA above-the-fold: si (header + hero)
+sin 'login'/'wa.me': si (cero login, sin WhatsApp inventado)
+
+== Reglas cumplidas ==
+CTA visible above-the-fold; cero login; alt en imagen hero; focus-visible;
+prefers-reduced-motion; targets >= 44px; acento unico #047857; Outfit sin Inter.
+
+== Validadores ==
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-06 => CP-LAND-06: PASSED
+
+== Veredicto ==
+CP-LAND-06: PASSED

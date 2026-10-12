@@ -1,0 +1,64 @@
+/* Base accesible (CP-LAND-06). */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px; /* header sticky (69px) no cubre anclas ni foco */
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: var(--color-ink);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* sin scroll horizontal (CP-LAND-10) */
+}
+
+h1, h2, h3 {
+  margin: 0 0 var(--space-4);
+  font-weight: 800;
+  color: var(--color-ink);
+  text-wrap: balance; /* L3: títulos equilibrados entre líneas */
+}
+h1 { font-size: var(--text-h1); line-height: 1.05; letter-spacing: -0.02em; }
+h2 { font-size: var(--text-h2); line-height: 1.15; letter-spacing: -0.015em; }
+h3 { font-size: var(--text-h3); font-weight: 600; letter-spacing: normal; }
+
+p { margin: 0 0 var(--space-4); max-width: 65ch; }
+
+a { color: var(--color-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a, .btn { touch-action: manipulation; } /* sin retardo de doble-tap en móvil */
+
+img { max-width: 100%; display: block; }
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-surface);
+  color: var(--color-ink);
+  padding: var(--space-2) var(--space-4);
+  z-index: 100;
+}
+.skip-link:focus { left: var(--space-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    /* M3: sin blanket transition-duration — cada transición tiene duración propia y corta;
+       el feedback de interacción se anula en landing.css (.btn:active) */
+  }
+}

@@ -1,0 +1,34 @@
+CP-LAND-04 — Imágenes con fuente/licencia verificables
+Fecha: 2026-10-01
+PHP: C:\Portable\laragon\bin\php\php-8.3.26-Win32-vs16-x64\php.exe
+
+== 1. Politica de imagenes ==
+  Fuente: Wikimedia Commons (API oficial gsrnamespace=6 + imageinfo/extmetadata)
+  Sin Google Images / Pinterest / Pinterest scraping
+  Sin IA (imagenes reales de Commons)
+  70/70 con campos: imagen_url, imagen_fuente, imagen_fuente_url,
+                    imagen_autor, imagen_licencia, imagen_fecha_verificacion,
+                    imagen_verificada = true
+  URLs unicas: 70/70
+  Marcas visibles / pinturas / diagramas / libros historicos: descartados y reasignados
+
+== 2. Fixture ==
+  tests/fixtures/catalogo_bolivia.json
+  categorias = 7, productos = 70 (10 por categoria)
+  sin imagen_url/fuente/licencia: 0
+
+== 3. Verificacion HTTP final (fetch_images_commons.php) ==
+  exit = 0
+  OK: 70 imágenes (70 esperadas), HTTP 200 en todas (con reintento)
+
+== 4. Evidencia documental ==
+  docs/fuentes_imagenes.md = 22947 bytes (>= 500), 70 filas
+  Columnas: Tipo, ID/Slug, Imagen URL, Página origen, Fuente, Autor, Licencia, Fecha
+  Licencias: CC0, CC BY, CC BY-SA, Public domain / No restrictions
+
+== 5. Validadores ==
+  validate_checkpoint.php CP-LAND-04 => CP-LAND-04: PASSED
+  validate_structure.php             => STRUCTURE: PASSED
+
+== Veredicto ==
+CP-LAND-04: PASSED

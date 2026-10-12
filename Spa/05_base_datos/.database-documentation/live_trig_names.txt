@@ -1,0 +1,4 @@
+﻿trg_core_auditoria_no_update
+trg_core_auditoria_no_delete
+trg_inv_movimiento_no_update
+trg_inv_movimiento_no_delete

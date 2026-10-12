@@ -1,0 +1,25 @@
+﻿CP-LAND-07 — Categorías
+Fecha: 2026-09-30 21:57:31
+Skill: design-taste-frontend (grid auto-fill 240px, hover lift, estados empty)
+
+== Código ==
+app/Core/Database.php: PDO singleton, DSN desde config/database.php, ERRMODE_EXCEPTION.
+app/Repositories/LandingCategoriaRepository.php: SELECT estatico (sin input de usuario, sin concatenacion), WHERE visible=1 ORDER BY orden,id; contarVisibles().
+app/Services/LandingCatalogoService.php: orquestacion sin SQL/PDO.
+app/Views/sections/categorias.php: seccion #categorias, 7 tarjetas, alt por categoria, loading=lazy, aspect-ratio 4/3, estado empty.
+public/index.php: 34 lineas; try/catch de BD -> estado vacio + error_log; sin CSS/JS inline.
+CSS: landing.css (.categorias__grid, .cat-card, .state), responsive.css (<480px 1 col).
+
+== Verificación HTTP (php -S 127.0.0.1:8107) ==
+index HTTP 200 (8548 bytes)
+cat-card__link = 7 | cat-card__img = 7 | loading=lazy = 7
+Las 7 categorias renderizadas: Productos bolivianos, Bebidas, Panadería y desayuno, Snacks, Lácteos, Hogar, Ofertas y promociones.
+sin login = True
+BD: total=7 visibles=7 (auditoria check_categorias.php).
+
+== Validadores ==
+validate_structure.php => STRUCTURE: PASSED
+validate_checkpoint.php CP-LAND-07 => CP-LAND-07: PASSED
+
+== Veredicto ==
+CP-LAND-07: PASSED
