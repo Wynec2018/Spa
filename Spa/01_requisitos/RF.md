@@ -1,18 +1,18 @@
 # Requisitos funcionales
-- RF-001. Administrar usuarios, roles y permisos.
-- RF-002. Administrar clientes.
-- RF-003. Registrar Serivicio, tiempo, usuario, cama y promociones.
-- RF-004. Registrar recepción de pago del cliente al usuario y servicio.
-- RF-005. Registrar entradas, salidas, reservas, ajustes y transferencias.
-- RF-006. Registrar promociones.
-- RF-007. Registrar devoluciones parciales o totales.
-- RF-008. Evitar doble descuento ante reintentos.
-- RF-009. Registrar inventario por producto y sucursal.
-- RF-010. Descontar inventario al confirmar venta presencial.
-- RF-011. Validar/reservar stock antes de confirmar pedido.
-- RF-012. Integrar pagos mediante interfaz desacoplada del proveedor.
-- RF-013. Reflejar ventas web e inventario sin sobreventa frente al canal físico.
-- RF-014. Generar reportes operativos de ventas, compras e inventario.
-- RF-015. Auditar operaciones críticas.
-- RF-016. Administrar parámetros operativos sin modificar código.
-- RF-017. superusuario visualiza reportes
+- RF-001. Administrar usuarios, roles y permisos (Superusuario, Secretaria, Trabajadora, Cliente).
+- RF-002. Administrar clientes e identidad digital (registro web y presencial).
+- RF-003. Administrar el catálogo de servicios (nombre, duración, precio, estado).
+- RF-004. Registrar reserva/cita: cliente, servicio, fecha/hora, cama (1 a 6) y trabajadora (1 a 10).
+- RF-005. Gestionar el estado de los recursos (cama y trabajadora): libre, ocupada o no disponible, en tiempo real.
+- RF-006. Registrar atención presencial sin reserva cuando exista al menos una cama y una trabajadora libres.
+- RF-007. Registrar pago por QR y permitir a la secretaría aprobar o rechazar el comprobante.
+- RF-008. Evitar duplicados o doble descuento ante reintentos (idempotencia).
+- RF-009. Registrar promociones aplicables a servicios.
+- RF-010. Registrar devoluciones o cancelaciones parciales o totales.
+- RF-011. Notificar al cliente (confirmación/recordatorio) por WhatsApp o correo.
+- RF-012. Integrar el pago QR mediante una interfaz desacoplada del proveedor.
+- RF-013. Reflejar la disponibilidad sin sobreasignación entre reserva web y recepción física.
+- RF-014. Generar reportes operativos (ocupación, ingresos, rendimiento por trabajadora).
+- RF-015. Auditar operaciones críticas (pagos, asignaciones, cambios de estado).
+- RF-016. Administrar parámetros operativos sin modificar código (nº de camas 1 a 6, nº de trabajadoras 1 a 10, TTL de reserva, etc.).
+- RF-017. El superusuario visualiza el dashboard y los reportes.

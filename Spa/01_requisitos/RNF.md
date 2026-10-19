@@ -4,15 +4,15 @@
 - RNF-002. La capacidad objetivo debe ser configurable externamente.
 - RNF-003. Una transacción de negocio no equivale a una sentencia SQL.
 - RNF-004. Evaluar picos con el multiplicador configurado.
-- RNF-005. Mantener integridad bajo concurrencia entre canal físico y web.
+- RNF-005. Mantener integridad bajo concurrencia entre la reserva web y la recepción presencial.
 - RNF-006. Código estructurado y documentado que permita realizar actualizaciones o correcciones de errores de manera rápida y sin afectar la operación del spa.
 # Escalabilidad
-- RNF-010. Permitir crecimiento de sucursales/cajas sin rediseñar todo el dominio.
-- RNF-011. Evaluar un escenario de 10x la carga inicial.
+- RNF-010. Permitir el crecimiento de recursos (camas y trabajadoras) y de sucursales sin rediseñar todo el dominio.
+- RNF-011. Evaluar un escenario de 10x la carga inicial de transacciones de negocio.
 - RNF-012. La arquitectura modular permitirá ampliar fácilmente la capacidad si el spa decide expandirse a más de 6 camas o incorporar más de 10 trabajadoras en el futuro.
 # Integridad
-- RNF-020. Evitar sobreventa por condiciones de carrera.
-- RNF-021. Definir fronteras transaccionales para dinero e inventario.
+- RNF-020. Evitar sobreasignación por condiciones de carrera.
+- RNF-021. Definir fronteras transaccionales para dinero y asignación de recursos.
 - RNF-022. Evitar duplicados ante reintentos.
 # Seguridad
 - RNF-030. Autenticación para operaciones administrativas.

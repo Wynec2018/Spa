@@ -20,7 +20,7 @@ Arquitectura objetivo: **Monolito Modular (Alternativa A)** con preparación par
 | **Reportes superusuario** | ~5/día | <2s | Eventual | Agregaciones multi-entidad |
 | **Auditoría / Trazabilidad** | Escritura: cada tx crítica | Async | Fuerte (inmutable) | AuditLog, todas las entidades |
 | **Gestión clientes/usuarios** | Baja | <500ms | Fuerte | User, Client, Role |
-| **Inventario básico** | ~10/hora | <500ms | Fuerte | Product, StockMovement |
+| **Notificaciones cliente** | ~30/hora | async | Eventual | Notification, Outbox |
 
 ### Volumen Estimado (RNF-001, RNF-004, RNF-011)
 
@@ -41,7 +41,7 @@ Arquitectura objetivo: **Monolito Modular (Alternativa A)** con preparación par
 | Req | Exigencia | Implicación BD |
 |-----|-----------|----------------|
 | RNF-005, RNF-020 | Evitar doble asignación cama/trabajadora | **Locks a nivel fila**, transacciones ACID, aislamiento `READ COMMITTED` o `REPEATABLE READ` |
-| RNF-021 | Fronteras transaccionales dinero + inventario | **Transacciones multi-tabla** atómicas (Booking + Payment + Resource en 1 TX) |
+| RNF-021 | Fronteras transaccionales dinero + asignación de recursos | **Transacciones multi-tabla** atómicas (Booking + Payment + Resource en 1 TX) |
 | RNF-022 | Idempotencia ante reintentos | **Tabla deduplicación** (clave idempotencia + hash request) o constraints únicos |
 | RF-015, RNF-030+ | Auditoría inmutable operaciones críticas | **Tabla append-only** (event store ligero) o triggers + tabla `audit_log` |
 | RNF-040, RNF-043 | Backup diario, 99.8% disponibilidad | **Point-in-time recovery (PITR)**, réplica standby, RPO/RTO definidos |
@@ -218,7 +218,9 @@ erDiagram
     BRANCH ||--o{ "USER" : "pertenece"
     BRANCH ||--o{ CLIENT : "atiende"
     BRANCH ||--o{ BOOKING : "ubicacion"
-    BRANCH ||--o{ PRODUCT : "stock"
+    BRANCH ||--o{ SERVICE : "ofrece"
+    BRANCH ||--o{ PROMOTION : "aplica"
+    CLIENT ||--o{ NOTIFICATION : "recibe"
     
     RESOURCE {
         uuid id PK
@@ -285,23 +287,31 @@ erDiagram
         boolean active
     }
     
-    PRODUCT {
+    PROMOTION {
         uuid id PK
         uuid branch_id FK
-        string sku UK
         string name
-        int stock_qty
-        int min_stock
+        jsonb rules "descuento, vigencia, aplicabilidad"
+        timestamp valid_from
+        timestamp valid_to
+        boolean active
     }
     
-    STOCK_MOVEMENT {
+    NOTIFICATION {
         uuid id PK
-        uuid branch_id FK
-        uuid product_id FK
-        enum type "entrada|salida|ajuste|transferencia"
-        int qty
-        uuid ref_booking_id FK "nullable"
-        string reason
+        uuid client_id FK
+        string channel "whatsapp|email"
+        string template
+        enum status "pendiente|enviada|fallida"
+        timestamp created_at
+    }
+    
+    OUTBOX {
+        bigserial id PK
+        string event_type
+        jsonb payload
+        boolean published
+        timestamp created_at
     }
     
     AUDIT_LOG {
@@ -561,7 +571,7 @@ pg1-user=postgres
 
 ## Migraciones y Versionado
 
-- **Herramienta**: `golang-migrate` / `Flyway` / `EF Core Migrations` / `sqlx-migrate` (según stack backend)
+- **Herramienta**: migraciones de **Laravel** (`php artisan make:migration`); opción de SQL versionado `V{version}_{descripcion}.sql` para cambios de alto riesgo
 - **Convención**: `V{version}_{descripcion}.sql` (ej: `V1_001_initial_schema.sql`)
 - **Entornos**: Dev → Test → Prod (misma secuencia, validar en Test)
 - **Rollback**: Scripts `DOWN` obligatorios para cambios destructivos
@@ -575,7 +585,7 @@ pg1-user=postgres
 | DB-01 | **RPO/RTO numéricos** | Producto/Técnico | Define réplica sincrónica vs asíncrona, frecuencia backup |
 | DB-02 | **Proveedor QR / Webhook vs Polling** | Producto | Define tabla `payment.qr_payload`, `payment.webhook_event_id`, job polling |
 | DB-03 | **Multi-sucursal día 1 confirmado** | Producto | Confirma `branch_id` + RLS en todas tablas core |
-| DB-04 | **Stack backend (lenguaje/ORM)** | Architect | Define herramienta migraciones, patrones repositorio |
+| DB-04 | ~~Stack backend (lenguaje/ORM)~~ **RESUELTO** | Architect | PHP 8.3 + Laravel 11 (Eloquent); define migraciones Laravel y patrón repositorio |
 
 ---
 
@@ -590,4 +600,4 @@ pg1-user=postgres
 
 **Skill utilizado**: `database-evaluation`  
 **Agente responsable**: `database-specialist`  
-**Estado**: `HUMAN_STATUS: PENDING` — Requiere validación de RPO/RTO (P-05) y proveedor QR (P-04) antes de detallar migraciones finales.
+**Estado**: `HUMAN_STATUS: PENDING` — D-09 resuelto (PHP 8.3 + Laravel 11); requiere validación de RPO/RTO (P-05) y proveedor QR (P-04) antes de detallar migraciones finales.
