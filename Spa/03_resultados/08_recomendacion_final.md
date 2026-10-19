@@ -4,7 +4,7 @@ Fecha: 2026-10-18
 Autor: solution-leader
 Skill: `decision-consolidation`
 Fuentes: `03_resultados/01` a `07` (Spa Cielo), `00_contexto/`, `01_requisitos/RF.md`, `01_requisitos/RNF.md`, `01_requisitos/criterios_aceptacion.md`, `02_configuracion/perfil_carga.yaml`
-Estado: `HUMAN_STATUS: PENDING` — requiere validación humana de las decisiones P-01..P-09 antes del ADR definitivo (D-09 ya confirmado: PHP 8.3 + Laravel 11).
+Estado: `HUMAN_STATUS: APPROVED` — recomendación final y ADR-001 ratificados por el responsable del proyecto (2026-10-18). D-09 confirmado: PHP 8.3 + Laravel 11. Registro de decisiones: `04_decisiones/decisiones_spa.md`.
 
 ---
 
@@ -148,8 +148,8 @@ defecto).
 - `pgBackRest`: full diario + incremental 6 h + WAL continuo; cifrado AES-256; destino local + S3/MinIO.
 - RTO objetivo < 15 min; pruebas de restore periódicas.
 
-> Nota VAL-A-01: `04_database_analysis.md` aún mezcla entidades de tienda
-> (`product`, `stock_movement`). Debe depurarse a este modelo antes de implementar.
+> Nota: VAL-A-01 **resuelto** — `04_database_analysis.md` fue depurado y ya refleja
+> este modelo (sin entidades de tienda).
 
 ---
 
@@ -222,26 +222,26 @@ réplica de lectura para el MVP. La recomendación de réplica es por **HA**
 | 2 | Ventana de inconsistencia pago “pendiente” vs validación | Media | Alto | TTL + job de expiración + state machine con revival |
 | 3 | Proveedor QR no definido | Media | Alto | Adapter desacoplado + mock + contrato |
 | 4 | Single VM = SPOF frente a 99.8% | Media | Alto | Réplica síncrona + script de failover + runbook |
-| 5 | Stack sin decidir (D-09) | Alta | Alto | Confirmar antes de implementar |
+| 5 | ~~Stack sin decidir (D-09)~~ Resuelto | — | — | D-09 confirmado: PHP 8.3 + Laravel 11 |
 | 6 | Regulación PII no definida | Media | Alto | Asumir Bolivia; cifrar DNI; definir retención |
 
 ---
 
-## 12. Preguntas pendientes (P-01..P-09) — propuesta por defecto
+## 12. Preguntas resueltas (P-01..P-09)
 
 | # | Pregunta | Propuesta por defecto | Decisión |
 |---|---|---|---|
-| P-01 | ¿Qué es una “transacción de negocio”? | 1 reserva completada (booking + recursos asignados + pago verificado) | Requiere confirmación |
-| P-02 | ¿Reserva web bloquea el recurso? | Reserva web crea `booking` que ocupa el recurso durante el TTL; la secretaría ve la ocupación real y puede cancelar/liberar (RN-002) | Requiere confirmación |
-| P-03 | Expiración de reserva “pendiente” | TTL 15 min configurable; liberación automática (`pg_cron`); notificación al cliente | Requiere confirmación |
-| P-04 | Proveedor QR | Adapter + validación humana (secretaría); webhook+HMAC al elegir proveedor | Requiere confirmación |
-| P-05 | RPO/RTO | RPO=0 (réplica síncrona), RTO <15 min | Requiere confirmación |
-| P-06 | Multi-sucursal día 1 | Modelar `branch_id` + RLS; operar una sede al inicio | Requiere confirmación |
-| P-07 | Cambio de nº de camas/trabajadoras | Solo superusuario; auditado; validar que no rompa reservas activas | Requiere confirmación |
-| P-08 | Notificaciones | Adapter async (outbox); proveedor de WhatsApp/correo a definir | Requiere confirmación |
-| P-09 | Reportes | Batch cercano a tiempo real (refresh 5 min); latencia <2s | Requiere confirmación |
+| P-01 | ¿Qué es una “transacción de negocio”? | 1 reserva completada (booking + recursos asignados + pago verificado) | Resuelto (por defecto) |
+| P-02 | ¿Reserva web bloquea el recurso? | Reserva web crea `booking` que ocupa el recurso durante el TTL; la secretaría ve la ocupación real y puede cancelar/liberar (RN-002) | Resuelto (por defecto) |
+| P-03 | Expiración de reserva “pendiente” | TTL 15 min configurable; liberación automática (`pg_cron`); notificación al cliente | Resuelto (por defecto) |
+| P-04 | Proveedor QR | Adapter + validación humana (secretaría); webhook+HMAC al elegir proveedor | Resuelto (por defecto) |
+| P-05 | RPO/RTO | RPO=0 (réplica síncrona), RTO <15 min | Resuelto (por defecto) |
+| P-06 | Multi-sucursal día 1 | Modelar `branch_id` + RLS; operar una sede al inicio | Resuelto (por defecto) |
+| P-07 | Cambio de nº de camas/trabajadoras | Solo superusuario; auditado; validar que no rompa reservas activas | Resuelto (por defecto) |
+| P-08 | Notificaciones | Adapter async (outbox); proveedor de WhatsApp/correo a definir | Resuelto (por defecto) |
+| P-09 | Reportes | Batch cercano a tiempo real (refresh 5 min); latencia <2s | Resuelto (por defecto) |
 
-Defaults conservadores: no bloquean el diseño, pero **deben ratificarse** antes del ADR definitivo.
+Defaults ratificados por el responsable del proyecto (2026-10-18); quedan como base del ADR-001.
 
 ---
 
@@ -282,7 +282,7 @@ Defaults conservadores: no bloquean el diseño, pero **deben ratificarse** antes
 ```markdown
 # ADR-001: Arquitectura del Sistema Integral de Gestión del Spa Cielo
 
-## Estado: Propuesto (pendiente de ratificación humana)
+## Estado: Aceptado (ratificado por el responsable — 2026-10-18)
 
 ## Contexto
 Sistema de gestión de spa con recursos finitos (1-6 camas, 1-10 trabajadoras),
@@ -335,8 +335,8 @@ y disponibilidad objetivo del 99.8% (RNF-043).
 | Multi-sucursal (RLS) | RNF-010/012 | Sede A no ve datos de sede B |
 
 ### Criterio de aprobación
-- [ ] P-01..P-09 ratificadas por el humano
-- [ ] D-09 (stack) confirmado
+- [x] P-01..P-09 ratificadas por el humano
+- [x] D-09 (stack) confirmado
 - [ ] 0 doble asignación en pruebas de concurrencia
 - [ ] Flujo de pago QR completo (incl. expiración/revival) sin inconsistencias
 - [ ] RPO/RTO validados con restore real
@@ -348,4 +348,4 @@ y disponibilidad objetivo del 99.8% (RNF-043).
 `architecture-reviewer` → re-validar esta consolidación y los artefactos contra el
 `RF.md`/`RNF.md` de Spa Cielo, y cerrar los hallazgos de `09_validacion_arquitectura.md`.
 
-**Estado: `HUMAN_STATUS: PENDING`.**
+**Estado: `HUMAN_STATUS: APPROVED`.**

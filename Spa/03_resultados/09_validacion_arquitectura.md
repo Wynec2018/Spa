@@ -6,8 +6,8 @@ Agente: `architecture-reviewer`
 Alcance: `Spa/03_resultados/`, `Spa/04_decisiones/`, `Spa/00_contexto/`, `Spa/01_requisitos/`, `Spa/02_configuracion/`
 Estado: `HUMAN_STATUS: PENDING`
 
-Resultado: **NO VALIDADA (BLOQUEADA)**. El pipeline se ejecutó para dos dominios
-distintos (Spa Cielo y Tienda Omnicanal) y los artefactos quedaron mezclados.
+Resultado: **NO VALIDADA (BLOQUEADA)** al momento del análisis. El pipeline se ejecutó para dos dominios
+distintos (Spa Cielo y Tienda Omnicanal) y los artefactos quedaron mezclados. Estado actual: **corregido** (ver §6).
 
 ---
 
@@ -99,9 +99,14 @@ Resueltos tras esta validación:
 - **VAL-B-02**: `RF.md`/`RNF.md` reescritos al dominio del spa.
 - **VAL-B-03**: artefactos de tienda archivados en `Spa/_legacy_tienda/`.
 - **VAL-A-01**: `04_database_analysis.md` depurado (sin entidades retail: `product`, `stock_movement`).
-- **VAL-A-02**: decisiones de tienda archivadas; `06_codigo`/`07_landing` pendientes de decisión de alcance.
+- **VAL-A-02**: decisiones de tienda archivadas; `06_codigo` y `07_landing` movidos a `_legacy_tienda/` (junto con `05_base_datos` y las guías raíz de tienda).
+- **VAL-A-03**: RPO/RTO y conflictos resueltos vía P-01..P-09 y ADR-001.
+- **VAL-M-01**/**VAL-M-02**: matriz re-hecha contra RF/RNF de spa; `PRODUCT.md`/`DESIGN.md` archivados.
 - **D-09**: resuelto — PHP 8.3 + Laravel 11.
+- **P-01..P-09**: ratificadas; registradas en `Spa/04_decisiones/decisiones_spa.md`.
+- **ADR-001**: aceptado.
+- **README.md**: reescrito; referencias a `agents/{state,workflows,guides}` eliminadas.
 
-Pendiente: ratificación humana de P-01..P-09 y destino de `06_codigo`/`07_landing`.
+Sin pendientes. Pipeline cerrado.
 
-**Estado: `HUMAN_STATUS: PENDING`.**
+**Estado: `HUMAN_STATUS: APPROVED`.**
