@@ -5,3 +5,7 @@
 
 # Configuración local de agentes/entorno
 Spa/settings.txt
+
+# Credenciales locales (RNF-034)
+env.txt
+*.local.env
