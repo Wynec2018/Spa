@@ -84,7 +84,7 @@ Lee:
 - Spa/01_requisitos/
 - Spa/02_configuracion/
 - Spa/03_resultados/
-- Spa/04_decisiones/
+- Spa/_legacy_tienda/04_decisiones/
 
 Luego sigue:
 agents/workflows/02_database_workflow.md

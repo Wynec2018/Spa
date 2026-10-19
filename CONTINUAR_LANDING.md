@@ -19,8 +19,8 @@ CRUD administrativo, roles, permisos, carrito, checkout ni pagos reales.
 
 ## Lee primero, en este orden
 1. `AGENTS.md` si existe.
-2. `Spa/04_decisiones/decisiones_alcance.md` si existe.
-3. `Spa/04_decisiones/decisiones_landing.md`.
+2. `Spa/_legacy_tienda/04_decisiones/decisiones_alcance.md` si existe.
+3. `Spa/_legacy_tienda/04_decisiones/decisiones_landing.md`.
 4. `agents/guides/estructura_landing.md`.
 5. `agents/guides/reglas_landing.md`.
 6. `agents/guides/politica_imagenes_landing.md`.

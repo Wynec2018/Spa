@@ -16,9 +16,9 @@ Lee primero:
 - `agents/state/frontend-workflow.json`
 - `agents/workflows/05_frontend_workflow.md`
 - `agents/guides/estructura_frontend.md`
-- `Spa/04_decisiones/decisiones_alcance.md`
-- `Spa/04_decisiones/decisiones_frontend.md`
-- `Spa/04_decisiones/decisiones_api.md`
+- `Spa/_legacy_tienda/04_decisiones/decisiones_alcance.md`
+- `Spa/_legacy_tienda/04_decisiones/decisiones_frontend.md`
+- `Spa/_legacy_tienda/04_decisiones/decisiones_api.md`
 
 Respeta obligatoriamente la estructura definida en:
 

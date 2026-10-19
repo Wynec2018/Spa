@@ -14,9 +14,9 @@ Lee primero:
 - `agents/state/backend-workflow.json`
 - `agents/workflows/04_backend_workflow.md`
 - `agents/guides/estructura_backend.md`
-- `Spa/04_decisiones/decisiones_alcance.md`
-- `Spa/04_decisiones/decisiones_backend.md`
-- `Spa/04_decisiones/decisiones_api.md`
+- `Spa/_legacy_tienda/04_decisiones/decisiones_alcance.md`
+- `Spa/_legacy_tienda/04_decisiones/decisiones_backend.md`
+- `Spa/_legacy_tienda/04_decisiones/decisiones_api.md`
 
 Respeta obligatoriamente la estructura definida en:
 
