@@ -4,10 +4,16 @@
   "created_at": "2026-10-19",
   "updated_at": "2026-10-19",
   "notes": "Checkpoint de ingenieria de base de datos. Rutas reales del repo: workflow en agents/workflows, skills en agents/skills, salida en Spa/05_base_datos.",
-  "dbms": "PostgreSQL 16+",
-  "current_step": 15,
-  "status": "IN_PROGRESS",
+  "dbms": "PostgreSQL 18.3 (objetivo 16+)",
+  "current_step": 20,
+  "status": "COMPLETE",
   "dba_status": "APPROVED",
+  "environment": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "sistema",
+    "credentials_source": ".env (no versionado)"
+  },
   "steps": {
     "01_requisitos_datos": "done",
     "02_modelo_conceptual": "done",
@@ -24,11 +30,34 @@
     "13_migraciones": "done",
     "14_revision_dba": "done",
     "15_generacion_sql": "done",
-    "16_conexion": "pending",
-    "17_despliegue": "pending",
-    "18_verificacion_base_real": "pending",
-    "19_pruebas": "pending",
-    "20_informe_final": "pending"
+    "16_conexion": "done",
+    "17_despliegue": "done",
+    "18_verificacion_base_real": "done",
+    "19_pruebas": "done",
+    "20_informe_final": "done"
   },
-  "blocked_on": "Autorizacion explicita para conectar/desplegar (Pasos 16-17) con credenciales via .env"
+  "deployment": {
+    "migrations_applied": ["V0001", "V0002", "V0003", "V0004", "V0005", "V0006", "V0007", "V0008", "V0009", "V0010", "V0011"],
+    "result": "OK (exit=0 en todas)",
+    "portability_adjustments": [
+      "pg_cron no disponible: scheduling TTL delegado a la app (D-09)",
+      "GRANT ON ALL TABLES reemplazado por iteracion sobre pg_class (MV-safe)"
+    ]
+  },
+  "tests": {
+    "total": 24,
+    "pass": 23,
+    "fail": 1,
+    "findings_initial": ["DEF-01 prev_hash no funcional (T14)", "DEF-02 RLS 22P02 con contexto vacio (T20)", "OBS-01 ck_booking_periodo inalcanzable (T08)", "DRIFT-02 auditoria en 4 de 9 tablas"]
+  },
+  "fixes": {
+    "V0011__fix_audit_rls.sql": "Aplicada y verificada: DEF-01 (cadena hash PASS), DEF-02 (RLS contexto vacio = 0 filas), DRIFT-02 (9 triggers de auditoria)"
+  },
+  "remaining": {
+    "OBS-01": "ck_booking_periodo inalcanzable (informativa, sin accion funcional)",
+    "DRIFT-01": "Roles spa_owner/spa_backup (fase DevSecOps)",
+    "DRIFT-03": "pgaudit/pg_cron en despliegue Linux (fase DevSecOps)",
+    "DRIFT-04": "indice de cobertura ix_booking_list (opcional)"
+  },
+  "blocked_on": null
 }

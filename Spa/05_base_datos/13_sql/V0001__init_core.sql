@@ -7,8 +7,17 @@ BEGIN;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;    -- gen_random_uuid()
 CREATE EXTENSION IF NOT EXISTS btree_gist;  -- EXCLUDE con igualdad + rango
-CREATE EXTENSION IF NOT EXISTS pg_cron;     -- jobs (expiración TTL)
 CREATE EXTENSION IF NOT EXISTS pg_trgm;     -- búsqueda difusa de nombres
+
+-- pg_cron puede no estar disponible en todo entorno (p. ej. build Windows).
+-- Se intenta instalar; si no está, el job TTL se programa desde la aplicación
+-- (Laravel scheduler, D-09). La función booking.expirar_pendientes() se crea igual.
+DO $$
+BEGIN
+    EXECUTE 'CREATE EXTENSION IF NOT EXISTS pg_cron';
+EXCEPTION WHEN OTHERS THEN
+    RAISE NOTICE 'pg_cron no disponible en este entorno; programar booking.expirar_pendientes() desde la aplicacion (D-09).';
+END $$;
 
 CREATE SCHEMA IF NOT EXISTS core;
 CREATE SCHEMA IF NOT EXISTS auth;

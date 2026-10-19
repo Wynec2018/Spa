@@ -23,18 +23,27 @@ END $$;
 GRANT USAGE ON SCHEMA core, auth, catalog, booking, payment, support, audit TO spa_app;
 GRANT USAGE ON SCHEMA core, auth, catalog, booking, payment, support, audit TO spa_readonly;
 
--- App: lectura/escritura de dominio; sin DELETE en dominio; sin UPDATE/DELETE en auditoría
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA core    TO spa_app;
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA auth    TO spa_app;
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA catalog TO spa_app;
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA booking TO spa_app;
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA payment TO spa_app;
-GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA support TO spa_app;
-GRANT INSERT, SELECT         ON ALL TABLES IN SCHEMA audit   TO spa_app;
-REVOKE UPDATE, DELETE ON audit.audit_log FROM spa_app;
+-- App: lectura/escritura de dominio (excluye DELETE); auditoría solo INSERT/SELECT.
+-- Se itera sobre pg_class porque los GRANT ... ON ALL TABLES fallan sobre
+-- vistas materializadas (solo admiten SELECT). Ajuste de portabilidad documentado.
+DO $$
+DECLARE r record;
+BEGIN
+    FOR r IN
+        SELECT n.nspname, c.relname, c.relkind
+        FROM pg_class c
+        JOIN pg_namespace n ON n.oid = c.relnamespace
+        WHERE n.nspname IN ('core','auth','catalog','booking','payment','support','audit')
+          AND c.relkind IN ('r','p','m','v')
+    LOOP
+        EXECUTE format('GRANT SELECT ON %I.%I TO spa_app, spa_readonly', r.nspname, r.relname);
+        IF r.relkind IN ('r','p') THEN
+            EXECUTE format('GRANT INSERT, UPDATE ON %I.%I TO spa_app', r.nspname, r.relname);
+        END IF;
+    END LOOP;
+END $$;
 
--- Reportes: solo lectura
-GRANT SELECT ON ALL TABLES IN SCHEMA core, auth, catalog, booking, payment, support TO spa_readonly;
+REVOKE UPDATE, DELETE ON audit.audit_log FROM spa_app;
 
 -- Cron: solo la función de expiración
 GRANT UPDATE (estado) ON booking.booking TO spa_cron;
@@ -49,9 +58,17 @@ INSERT INTO core.app_config (clave, valor) VALUES
     ('capacidad_tx_hora',       '50'::jsonb)
 ON CONFLICT (clave) DO NOTHING;
 
--- Job de expiración (cada minuto)
-SELECT cron.schedule('expira_reservas', '* * * * *',
-                     $$ SELECT booking.expirar_pendientes(); $$);
+-- Job de expiración (cada minuto). Si pg_cron no está instalado, se omite y
+-- la aplicación (Laravel scheduler, D-09) programa booking.expirar_pendientes().
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'pg_cron') THEN
+        PERFORM cron.schedule('expira_reservas', '* * * * *',
+                              'SELECT booking.expirar_pendientes();');
+    ELSE
+        RAISE NOTICE 'pg_cron ausente: programar la expiracion TTL desde la aplicacion (D-09).';
+    END IF;
+END $$;
 
 COMMIT;
 
