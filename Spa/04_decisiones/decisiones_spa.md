@@ -21,6 +21,9 @@ Fuente narrativa completa: `../03_resultados/08_recomendacion_final.md`.
 | D-11 | Observabilidad | Vector → Loki + Prometheus + Grafana | RNF-050..052 |
 | D-12 | Reportes | Vistas materializadas (refresh 5 min) | RF-014/017 |
 
+> **D-09 actualizado 2026-10-20**: PHP 8.3 + **Laravel 13** (Laravel 11 quedó
+> bloqueado por avisos de seguridad). Ver `decisiones_stack_fase3.md`.
+
 ## Preguntas de producto resueltas (P-01..P-09)
 
 | # | Pregunta | Resolución adoptada |

@@ -67,3 +67,45 @@ Hasta aprobar la recomendación final y el ADR:
 2. Reemplazar el contenido de `Spa/00_contexto/`, `Spa/01_requisitos/` y `Spa/02_configuracion/`.
 3. Conservar `agents/skills/`, `OpenCode/` y `Claude/`.
 4. Ejecutar el flujo obligatorio y ratificar el ADR antes de implementar.
+
+##segunda parte
+Continúa este spa con la fase de ingeniería de base de datos.
+
+Mantén exactamente la estructura existente.
+
+Lee:
+- AGENTS.md
+- SKILLS_SOURCES.md
+- spa/00_contexto/
+- spa/01_requisitos/
+- spa/02_configuracion/
+- spa/03_resultados/
+- spa/04_decisiones/
+
+Luego sigue:
+.agents/workflows/02_database_workflow.md
+
+Usa únicamente los skills existentes instalados en:
+.agents/skills/
+
+Continúa desde:
+.agents/state/database-workflow.json
+
+Trabaja paso por paso.
+No saltes etapas.
+No empieces directamente creando tablas o SQL.
+No elijas PostgreSQL, MySQL o SQL Server por preferencia:
+justifica la selección mediante RF, RNF, restricciones y arquitectura.
+
+Después de cada etapa:
+1. indica el skill utilizado;
+2. genera el artefacto correspondiente en proyecto/05_base_datos/;
+3. resume las decisiones;
+4. actualiza el checkpoint;
+5. continúa con el siguiente paso si no existe bloqueo.
+
+No conectes ni despliegues hasta que la revisión DBA genere:
+STATUS: APPROVED
+
+Nunca escribas credenciales en archivos versionados.
+No ejecutes operaciones destructivas sin autorización explícita.

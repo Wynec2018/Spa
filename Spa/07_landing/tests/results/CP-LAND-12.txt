@@ -1,0 +1,56 @@
+CP-LAND-12 - Auditoria visual post-create
+Fecha: 2026-10-25 23:50:12
+PHP: 8.3.35
+
+== 1. Documentos ==
+  OK   AGENTS.md
+  OK   CONTINUAR_LANDING.md
+  OK   Spa/04_decisiones/decisiones_alcance_fase3.md
+  OK   Spa/04_decisiones/decisiones_landing.md
+  OK   agents/guides/estructura_landing.md
+  OK   agents/guides/reglas_landing.md
+  OK   agents/guides/politica_imagenes_landing.md
+  OK   agents/workflows/07_landing_workflow.md
+  OK   Spa/03_resultados/09_validacion_arquitectura.md
+  OK   agents/reviews/landing-design-review.md
+  OK   Spa/07_landing/docs/decisiones_visuales.md
+
+== 2. Estructura ==
+  [0] STRUCTURE: PASSED
+    Archivos requeridos: 49
+    Carpetas requeridas: 26
+    Archivos de codigo revisados: 36
+
+== 3. Auditoria visual ==
+    OK   Review con layout, typeset, clarify y adapt
+    OK   Detector sin hallazgos en 1440x900 y 390x844
+    OK   Sin kickers/eyebrows en vistas ni HTML renderizado
+    OK   Acentos visibles y textos sin faltas de acentuacion
+    OK   Testimonio 1.3, notas --text-sm y reflujo 720px
+
+== 4. Estado ==
+  OK   agents/state/landing-workflow.json
+
+== 5. Prohibiciones ==
+  Login/dashboard/CRUD/carrito/checkout/pagos: no presentes en estructura
+  Tablas landing_* y cat_*: no presentes en codigo
+  Catalogo 7x10/70 productos: no presentes en codigo
+  Kickers/eyebrows repetidos: no presentes
+  Texto visible sin acentos: no presente
+  Desborde horizontal en 720px: no presente
+  Hallazgos finales del detector: 0
+
+== 6. Evidencia complementaria ==
+  Detector antes: 1 hero-eyebrow-chip, 6 kicker-above-heading, 2 tight-leading (9)
+  Detector despues 1440x900: []
+  Detector despues 390x844: []
+  Chrome headless 1440x900 / 768x1024 / 390x844: sin overflow horizontal
+  Reflujo 720px: overflow=false; hero/beds en una columna
+  Nombre de servicio largo: rowWidth=647, rowScrollWidth=647, overflow=false
+  Reduced motion: landing visible, reveal no oculta contenido
+
+== Veredicto ==
+CP-LAND-12: PASSED
+TECHNICAL_STATUS: PASSED
+HUMAN_STATUS: PENDING
+CAN_CONTINUE: false

@@ -1,0 +1,284 @@
+{
+    "workflow": "06_integration_workflow",
+    "system": "Spa Cielo",
+    "created_at": "2026-10-24",
+    "updated_at": "2026-10-25",
+    "scope_decision": "Spa/04_decisiones/decisiones_alcance_fase3.md",
+    "stack_decision": "Spa/04_decisiones/decisiones_stack_fase3.md",
+    "integration_decision": "Spa/04_decisiones/decisiones_integracion.md",
+    "prerequisite": {
+        "workflow": "05_frontend_workflow",
+        "state": "COMPLETE",
+        "human_status": "APPROVED",
+        "approved_at": "2026-10-24"
+    },
+    "current_step": "CP-INT-05",
+    "status": "APPROVED",
+    "human_status": "APPROVED",
+    "approvals": {
+        "CP-INT-01": "2026-10-24",
+        "CP-INT-02": "2026-10-24",
+        "CP-INT-03": "2026-10-24",
+        "CP-INT-04": "2026-10-25",
+        "CP-INT-05": "2026-10-25"
+    },
+    "steps": {
+        "CP-INT-01": "approved",
+        "CP-INT-02": "approved",
+        "CP-INT-03": "approved",
+        "CP-INT-04": "approved",
+        "CP-INT-05": "approved"
+    },
+    "artifacts": [
+        "Spa/04_decisiones/decisiones_integracion.md",
+        "Spa/06_codigo/routes/web.php",
+        "Spa/06_codigo/routes/api.php",
+        "Spa/06_codigo/app/Http/Controllers/Web/LoginPageController.php",
+        "Spa/06_codigo/app/Http/Controllers/Web/DashboardPageController.php",
+        "Spa/06_codigo/app/Http/Controllers/Api/V1/AuthController.php",
+        "Spa/06_codigo/app/Services/AuthService.php",
+        "Spa/06_codigo/app/Support/SessionAuth.php",
+        "Spa/06_codigo/app/Support/BranchContext.php",
+        "Spa/06_codigo/app/Repositories/AuthRepository.php",
+        "Spa/06_codigo/app/Repositories/BranchRepository.php",
+        "Spa/06_codigo/app/Repositories/ServiceRepository.php",
+        "Spa/06_codigo/app/Validation/ServiceValidator.php",
+        "Spa/06_codigo/app/Http/Controllers/Web/ServicePageController.php",
+        "Spa/06_codigo/app/Http/Controllers/Api/V1/ServiceController.php",
+        "Spa/06_codigo/app/Repositories/ReservationRepository.php",
+        "Spa/06_codigo/app/Validation/ReservationValidator.php",
+        "Spa/06_codigo/app/Http/Controllers/Web/ReservationPageController.php",
+        "Spa/06_codigo/app/Http/Controllers/Api/V1/ReservationController.php",
+        "Spa/06_codigo/app/Exceptions/ApiException.php",
+        "Spa/06_codigo/resources/views/auth/login.blade.php",
+        "Spa/06_codigo/resources/views/dashboard.blade.php",
+        "Spa/06_codigo/resources/views/layouts/app.blade.php",
+        "Spa/06_codigo/resources/views/services/index.blade.php",
+        "Spa/06_codigo/resources/views/services/create.blade.php",
+        "Spa/06_codigo/resources/views/services/edit.blade.php",
+        "Spa/06_codigo/resources/views/reservations/index.blade.php",
+        "Spa/06_codigo/resources/views/reservations/create.blade.php",
+        "Spa/06_codigo/public/js/reservations.js",
+        "Spa/05_base_datos/13_sql/V0004__init_booking.sql",
+        "Spa/05_base_datos/13_sql/V0007__audit_triggers.sql",
+        "Spa/05_base_datos/13_sql/V0009__rls_policies.sql",
+        "Spa/05_base_datos/13_sql/V0010__grants_seed.sql",
+        "Spa/06_codigo/bootstrap/app.php",
+        "Spa/06_codigo/config/session.php",
+        "Spa/06_codigo/.env.example",
+        "Spa/06_codigo/.gitignore",
+        "Spa/06_codigo/tests/Feature/ExampleTest.php"
+    ],
+    "environment": {
+        "php": "8.3.35 NTS",
+        "framework": "Laravel 13.38.0",
+        "database": "PostgreSQL 18.3",
+        "branch_id": "11111111-1111-4111-8111-111111111111",
+        "branch_name": "Sede Central",
+        "dev_server": "http://127.0.0.1:8000"
+    },
+    "cp_int_01": {
+        "scope": "Login web -> dashboard -> logout; sesion y contexto de sucursal",
+        "flow": [
+            "GET /login 200 con selector de sucursal y CSRF",
+            "POST /login valido 302 /dashboard",
+            "GET /dashboard 200 con sede, usuario, contacto y rol",
+            "GET /api/v1/auth/me 200 con la misma cookie de sesion",
+            "POST /logout 302 /login",
+            "GET /dashboard y /api/v1/auth/me con la cookie anterior: 302 y 401"
+        ],
+        "session": {
+            "cookie": "spa-cielo-session",
+            "flags": "HttpOnly; SameSite=Lax; Path=/",
+            "regeneration": "el ID de sesion cambia al autenticar",
+            "keys": ["auth_user_id", "auth_branch_id", "auth_rol"],
+            "invalidation": "logout invalida la sesion; la cookie anterior no accede al dashboard ni a me"
+        },
+        "branch_context": {
+            "source": "APP_BRANCH_ID / BranchContext",
+            "name_source": "core.branch bajo RLS",
+            "login_guard": "POST /login exige branch_id igual a APP_BRANCH_ID",
+            "me_check": "data.branch_id coincide con la sucursal configurada"
+        },
+        "negative_cases": [
+            "sucursal distinta: error de campo, sin sesion y sin dashboard",
+            "password incorrecta: error de campo, sin sesion y sin dashboard",
+            "POST /login sin CSRF: 419",
+            "GET /dashboard anonimo: 302 /login",
+            "GET /api/v1/auth/me anonimo: 401"
+        ],
+        "credential_handling": "La suite genero un hash temporal para secretaria@spa.local y lo restauro al hash original en el mismo proceso; no se persistio ninguna contrasena.",
+        "data_changes": "Ninguno permanente; fixtures y datos de negocio sin cambios."
+    },
+    "cp_int_02": {
+        "scope": "Servicios: listar -> crear -> editar -> inactivar; duplicado 409 y ausencia de borrado fisico",
+        "flow": [
+            "GET /servicios 200 con el catalogo de la sede",
+            "GET /servicios/nuevo 200 con CSRF",
+            "POST /servicios valido 302 /servicios y crea activo",
+            "POST /servicios duplicado: error de nombre en el formulario, sin fila nueva",
+            "POST /api/v1/servicios duplicado: 409 DUPLICATE_SERVICE",
+            "GET /servicios/{id}/editar 200 y PUT /servicios/{id} 302 con datos actualizados",
+            "POST /servicios/{id}/inactivar 302 y estado inactivo",
+            "GET /servicios?estado=activo excluye el servicio; estado=inactivo lo incluye",
+            "DELETE /api/v1/servicios/{id}: 200, mismo id inactivo y fila conservada"
+        ],
+        "duplicate": {
+            "web": "ValidationException en nombre; mensaje 'Ya existe un servicio con ese nombre en la sede.'; sin fila nueva",
+            "api": "409 DUPLICATE_SERVICE; sin fila nueva"
+        },
+        "inactivation": {
+            "web": "POST /servicios/{id}/inactivar; estado pasa a inactivo; no hay borrado fisico",
+            "api": "DELETE /api/v1/servicios/{id} es baja logica; devuelve el mismo id inactivo",
+            "reactivation": "no existe en esta fase; la vista de inactivo no ofrece reactivar"
+        },
+        "fixtures": {
+            "before": "24 servicios: 3 activos, 21 inactivos",
+            "after": "26 servicios: 3 activos, 23 inactivos",
+            "test_rows": [
+                "153425f3-4f81-40d1-a6c6-09ab20e20994 | Servicio integracion CP-INT-02 593206 editado | inactivo",
+                "cc99f475-8027-404d-b758-ec44695a8998 | Servicio integracion CP-INT-02 5E1E58 editado | inactivo"
+            ],
+            "note": "Dos ejecuciones de la suite dejaron una fila de prueba inactiva cada una; no se borraron porque spa_app no tiene DELETE fisico."
+        },
+        "credential_handling": "La suite genero un hash temporal para secretaria@spa.local y lo restauro al hash original en el mismo proceso; no se persistio ninguna contrasena."
+    },
+    "cp_int_03": {
+        "scope": "Reservas: listar -> crear con cliente existente -> conflicto 409 -> cancelar; liberacion de la trabajadora",
+        "flow": [
+            "GET /reservas 200 con la agenda de la sede",
+            "GET /reservas/nueva 200 con cliente, servicio, cama, trabajadora y CSRF",
+            "POST /reservas valido 302 /reservas?fecha=2032-06-15 y crea pendiente",
+            "La reserva usa Cliente CP-BACK-05, Corte de cabello premium (50 min), Cama CP-BACK-05 y Trabajadora CP-BACK-06 alta",
+            "La trabajadora A pasa a ocupada al crear la reserva",
+            "POST /reservas con la misma cama y otra trabajadora libre en 10:30: error de franja, sin fila nueva",
+            "POST /api/v1/reservas con el mismo solapamiento: 409 RESERVATION_CONFLICT, sin fila nueva",
+            "POST /reservas/{id}/cancelar 302 y estado cancelada; la trabajadora A vuelve a libre",
+            "GET /reservas?fecha=2032-06-15&estado=pendiente queda vacio",
+            "GET /reservas?fecha=2032-06-15&estado=cancelada muestra la reserva"
+        ],
+        "conflict": {
+            "web": "ValidationException en la franja; mensaje 'ya tiene una reserva en esa franja'; sin fila nueva",
+            "api": "409 RESERVATION_CONFLICT; sin fila nueva",
+            "resource": "La segunda trabajadora libre permanece libre; el conflicto es por la cama, no por recurso no disponible"
+        },
+        "cancellation": {
+            "web": "POST /reservas/{id}/cancelar; estado pasa a cancelada; no hay borrado fisico",
+            "worker_release": "El trigger booking.fn_sync_trabajadora_estado devuelve la trabajadora a libre",
+            "row": "La fila cancelada se conserva y el total no disminuye"
+        },
+        "fixtures": {
+            "before": "18 reservas: 14 canceladas, 3 pendientes, 1 expirada",
+            "after": "19 reservas: 15 canceladas, 3 pendientes, 1 expirada",
+            "test_row": "bfd31a18-f336-467f-a757-c57445974f5c | Cliente CP-BACK-05 | Corte de cabello premium (50 min) | Cama CP-BACK-05 | Trabajadora CP-BACK-06 alta | 2032-06-15 10:00-10:50 UTC | cancelada",
+            "note": "La fila de prueba queda cancelada; no se borra porque spa_app no tiene privilegio DELETE fisico."
+        },
+        "credential_handling": "La suite genero un hash temporal para secretaria@spa.local y lo restauro al hash original en el mismo proceso; no se persistio ninguna contrasena."
+    },
+    "cp_int_04": {
+        "scope": "Seguridad basica: sesion, SQLi, XSS, CSRF, secretos, logs, RLS entre sedes y RN-002 sin pago verificado",
+        "checks": "228/228 comprobaciones, 0 fallos",
+        "session": {
+            "anonymous": "GET /dashboard 302 /login; GET /api/v1/auth/me 401",
+            "tampered_cookie": "cookie de sesion alterada rechazada; /me 401",
+            "login": "login valido 302 /dashboard; ID de sesion regenerado",
+            "cookie_flags": "HttpOnly; SameSite=Lax; Path=/",
+            "logout": "POST /logout 302; /dashboard posterior 302 y /me posterior 401"
+        },
+        "sqli": {
+            "service_filters": "q=' OR 1=1--, q=% y q=_ no amplian resultados; orden y estado peligrosos rechazados o ignorados sin error SQL",
+            "reservations": "id y estado con payload no ejecutan SQL; sin bypass ni SQLSTATE",
+            "login": "login web y API con payload no crean sesion; web muestra error de credenciales"
+        },
+        "xss": {
+            "reflected": "q con <script> se escapa en /servicios",
+            "old_input": "contacto con payload se escapa al reintentar login",
+            "stored": "nombre de servicio inactivo con payload se escapa en el listado; servicio restaurado al valor original"
+        },
+        "csrf": {
+            "web": "login, alta/edicion/inactivacion de servicio, alta/cancelacion de reserva y logout sin token: 419",
+            "state": "ninguna operacion sin token cambio el estado"
+        },
+        "secrets": {
+            "env": ".env ignorado por git y no rastreado",
+            "env_example": "APP_KEY y DB_PASSWORD vacios",
+            "hardcoded": "sin coincidencias de APP_KEY base64 ni DB_PASSWORD con valor en archivos versionados",
+            "logs": "sin coincidencias de hash, password, APP_KEY, DB_PASSWORD ni cookie de sesion",
+            "responses": "sin hash, password, APP_KEY, DB_PASSWORD, SQLSTATE, traza ni cookie de sesion"
+        },
+        "rls": {
+            "current_branch": "servicios y reservas de Sede Central visibles",
+            "unknown_branch": "sede aleatoria no ve servicios, reservas ni la sede",
+            "two_branch_transaction": "sede temporal B solo ve su servicio; Sede Central no ve el servicio B y B no ve el servicio A",
+            "rollback": "la transaccion se revierte; no quedan sede ni servicio temporales",
+            "branch_count": 1
+        },
+        "rn_002": {
+            "api_anonymous": "PATCH /api/v1/reservas/{id}/estado con confirmada: 401",
+            "api_authenticated": "PATCH con confirmada sin pago verificado: 422 RN-002",
+            "database": "UPDATE directo a confirmada rechazado por trigger (P0001 RN-002); reserva sigue pendiente",
+            "payments": 0
+        },
+        "fixtures": {
+            "services": "26: 3 activos, 23 inactivos",
+            "bookings": "19: 15 canceladas, 3 pendientes, 1 expirada",
+            "payments": 0,
+            "active_service": "2a70c379-5dcd-4d07-9284-c70f2560bce3",
+            "inactive_service": "29648a41-1563-4eda-8019-03a92bba0647",
+            "pending_booking": "66666666-6666-4666-8666-666666666601",
+            "note": "Sin filas nuevas permanentes; el servicio usado para XSS se restauro y la sede/servicio RLS temporales se revirtieron."
+        },
+        "credential_handling": "La suite genero un hash Argon2id temporal para secretaria@spa.local y lo restauro al hash original en el mismo proceso; no se persistio ninguna contrasena.",
+        "data_changes": "Ninguno permanente.",
+        "out_of_scope": [
+            "Rate limiting no forma parte de CP-INT-04; sigue pendiente en decisiones_backend.md.",
+            "La API de servicios no exige autenticacion por decision vigente; no se considera hallazgo."
+        ]
+    },
+    "cp_int_05": {
+        "scope": "Cierre y validacion final de integracion",
+        "checks": "112/112 comprobaciones, 0 fallos; regresion CP-INT-04 228/228",
+        "flow": [
+            "Anonimo: dashboard, servicios y reservas redirigen a /login; API me y reservas responden 401",
+            "Login valido 302 /dashboard con regeneracion de sesion y cookie HttpOnly/SameSite=Lax/Path=/",
+            "Dashboard muestra Sede Central, Secretaria Demo y el contacto",
+            "Servicios: listado, filtros activo/inactivo, edicion y formulario de alta",
+            "Reservas: listado filtrado por fecha/estado pendiente y formulario de alta",
+            "API me 200; API servicios 3 activos; API reservas incluye la reserva pendiente",
+            "CSRF negativo 419 en logout y alta de servicio; logout invalida dashboard y me",
+            "Rutas heredadas /categorias y /productos ausentes (404)"
+        ],
+        "fixtures": {
+            "branches": 1,
+            "services": "26: 3 activos, 23 inactivos",
+            "bookings": "19: 15 canceladas, 3 pendientes, 1 expirada",
+            "payments": 0,
+            "active_service": "2a70c379-5dcd-4d07-9284-c70f2560bce3",
+            "inactive_service": "29648a41-1563-4eda-8019-03a92bba0647",
+            "pending_booking": "66666666-6666-4666-8666-666666666601",
+            "note": "Conteos, servicios y reserva pendiente sin cambios; no se crearon filas."
+        },
+        "schema": "db:show confirma 15 tablas en audit, auth, booking, catalog, core, payment y support. El esquema se gestiona con scripts SQL V0001-V0011, no con tabla de migraciones Laravel.",
+        "validations": {
+            "closure_suite": "112/112 comprobaciones, 0 fallos",
+            "security_regression": "CP-INT-04 228/228 comprobaciones, 0 fallos",
+            "pint": "OK",
+            "phpunit": "2/2 pruebas, 3 aserciones",
+            "node": "login.js, reservations.js y services.js OK",
+            "views": "view:cache y view:clear OK",
+            "secrets": ".env ignorado y no rastreado; .env.example con APP_KEY y DB_PASSWORD vacios; sin coincidencias hardcodeadas ni en logs",
+            "artifacts": "Documento de integracion, state, AGENTS.md y artefactos principales presentes"
+        },
+        "credential_handling": "La suite genero un hash Argon2id temporal para secretaria@spa.local y lo restauro al hash original en el mismo proceso; no se persistio ninguna contrasena.",
+        "data_changes": "Ninguno permanente."
+    },
+    "tests": {
+        "executed": "CP-INT-01: 43/43 comprobaciones. CP-INT-02: 47/47 comprobaciones. CP-INT-03: 47/47 comprobaciones. CP-INT-04: 228/228 comprobaciones. CP-INT-05: 112/112 comprobaciones; regresion CP-INT-04 228/228. Pint OK; PHPUnit 2/2 (3 aserciones); node --check login.js/reservations.js/services.js OK; view:cache y view:clear OK; db:show confirma el esquema.",
+        "cp_int_01": "GET /login 200; login valido 302 /dashboard; dashboard 200 con Sede Central, Secretaria Demo, secretaria@spa.local y aria-current=page; me 200 con id, rol y branch_id; login autenticado 302 /dashboard; logout 302 /login; dashboard posterior 302; me posterior 401; login posterior 200; cookie regenerada, HttpOnly, SameSite=Lax y Path=/; sin hash ni password en respuestas; sucursal distinta, password incorrecta y falta de CSRF rechazados sin sesion.",
+        "cp_int_02": "GET /servicios 200; alta valida 302 y fila activa con branch_id; duplicado web con error de nombre y sin fila nueva; duplicado API 409 DUPLICATE_SERVICE; edicion PUT 302 con nombre, duracion 50 y precio 299.99, estado activo; inactivacion 302 y estado inactivo; filtro activo sin resultados y filtro inactivo con el servicio; vista inactiva sin reactivacion; DELETE API 200 con mismo id inactivo; fila y total conservados (26 servicios, 3 activos, 23 inactivos).",
+        "cp_int_03": "GET /reservas 200; formulario con cliente, servicio, cama y trabajadora; alta valida 302 y reserva pendiente con fin calculado; trabajadora A ocupada; conflicto web con error de franja y sin fila nueva; conflicto API 409 RESERVATION_CONFLICT y sin fila nueva; cancelacion 302, estado cancelada, trabajadora A libre y fila conservada; filtro pendiente vacio y filtro cancelada con la reserva; total 19 reservas (15 canceladas, 3 pendientes, 1 expirada).",
+        "cp_int_04": "Anonimos: dashboard 302, me 401 y cookie alterada 401. Login 302 con ID regenerado, flags HttpOnly/SameSite=Lax/Path=/; logout 302 y sin acceso posterior. SQLi en q, sort, estado, id y login sin bypass ni SQLSTATE. XSS reflejado, old input y almacenado escapados; servicio restaurado. CSRF 419 en login, servicios, reservas y logout sin cambios. .env ignorado y no rastreado; .env.example con APP_KEY y DB_PASSWORD vacios; sin secretos hardcodeados ni en logs/respuestas. RLS: sede actual visible, sede aleatoria 0, sede temporal B aislada en ambos sentidos y rollback sin filas. RN-002: 401 anonimo, 422 autenticado, trigger P0001 y reserva pendiente. Fixtures 26 servicios, 19 reservas y 0 pagos; sin cambios permanentes.",
+        "cp_int_05": "Cierre read-only: anonimos 302/401; login 302 con sesion regenerada y flags; dashboard con sede, usuario y contacto; servicios con listado, filtros, edicion y formulario; reservas con filtro pendiente y formulario; API me 200, servicios 3 activos y reservas con la pendiente; CSRF negativo 419; logout invalida dashboard y me; rutas heredadas 404. Conteos y fixtures sin cambios; hash temporal restaurado. 112/112 comprobaciones."
+    },
+    "next": "Workflow 06 cerrado: integracion aprobada. No hay checkpoint pendiente."
+}

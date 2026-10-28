@@ -110,3 +110,10 @@ Resueltos tras esta validación:
 Sin pendientes. Pipeline cerrado.
 
 **Estado: `HUMAN_STATUS: APPROVED`.**
+
+## 7. Actualización (2026-10-25)
+
+La landing de tienda permanece archivada en `Spa/_legacy_tienda/`. Se aprobó una
+landing Spa Cielo separada, de solo lectura sobre `catalog.service` y
+`catalog.resource`; ver `Spa/04_decisiones/decisiones_landing.md`. No se ha
+creado `Spa/07_landing` ni se ha iniciado el workflow 07.

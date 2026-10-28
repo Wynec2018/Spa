@@ -2,8 +2,15 @@
   "workflow": "02_database_workflow",
   "system": "Spa Cielo",
   "created_at": "2026-10-19",
-  "updated_at": "2026-10-19",
+  "updated_at": "2026-10-20",
   "notes": "Checkpoint de ingenieria de base de datos. Rutas reales del repo: workflow en agents/workflows, skills en agents/skills, salida en Spa/05_base_datos.",
+  "human_decisions": [
+    {
+      "date": "2026-10-20",
+      "decision": "Mantener PostgreSQL y el diseno aprobado; no rehacer la BD en MySQL.",
+      "evidence": "Spa/05_base_datos/15_reportes/nota_continuidad_stack.md"
+    }
+  ],
   "dbms": "PostgreSQL 18.3 (objetivo 16+)",
   "current_step": 20,
   "status": "COMPLETE",

@@ -1,0 +1,59 @@
+CP-LAND-17 - Cierre
+Fecha: 2026-10-27
+PHP: 8.3.35
+
+== 1. Documento de cierre ==
+  Archivo: Spa/07_landing/docs/validacion_final.md
+  Bytes: 5332
+  Secciones: resultado, checkpoints, validacion tecnica, datos, performance,
+  hardening, evidencia, limitaciones y veredicto
+  Marcadores requeridos:
+    TECHNICAL_STATUS: PASSED -> presente
+    HUMAN_STATUS: PENDING -> presente
+    CP-LAND-17 -> presente
+    14/14 grupos -> presente
+
+== 2. Validacion de estructura ==
+  Comando: php Spa/07_landing/tools/validate_structure.php
+  [0] STRUCTURE: PASSED
+    Archivos requeridos: 51
+    Carpetas requeridas: 26
+    Archivos de codigo revisados: 37
+
+== 3. Validacion completa pre-cierre ==
+  Comando: php Spa/07_landing/tools/validate_checkpoint.php CP-LAND-16
+  CP-LAND-16: PASSED
+  Grupos validados: 14/14
+  TECHNICAL_STATUS: PASSED
+  HUMAN_STATUS: PENDING
+  CAN_CONTINUE: false
+  Nota: se ejecuto antes de mover current_step a CP-LAND-17 porque el validador
+  de CP-LAND-16 exige que el estado apunte a CP-LAND-16.
+
+== 4. Estado final ==
+  Archivo: agents/state/landing-workflow.json
+  current_step: CP-LAND-17
+  status: PASSED
+  human_status: PENDING
+  steps pendientes: 0
+  next: Aprobacion humana final pendiente.
+
+== 5. Alcance ==
+  Sin cambios en Spa/06_codigo.
+  Sin escrituras SQL, migraciones, seed ni tablas landing_*.
+  Sin login, registro, dashboard, CRUD, carrito, checkout ni pagos.
+  Landing publica de solo lectura sobre PostgreSQL.
+
+== 6. Limitaciones declaradas ==
+  Performance medida en Chrome headless con servidor de prueba gzip, no en
+  Apache de produccion.
+  Sin lector de pantalla real; accesibilidad verificada con arbol de Chrome y
+  teclado.
+  WhatsApp/email no configurados en el entorno versionado.
+  Disponibilidad de camas referencial, no reservable.
+
+== 7. Veredicto ==
+  CP-LAND-17: PASSED
+  TECHNICAL_STATUS: PASSED
+  HUMAN_STATUS: APPROVED (2026-10-27; PENDING al cierre tecnico)
+  Workflow 07 cerrado y aprobado por el humano.

@@ -1,0 +1,1037 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Spa Cielo API",
+    "version": "1.0.0",
+    "description": "Contrato del piloto de la API REST de Spa Cielo. Base `/api/v1`. Sin autenticación en esta fase; la sucursal se fija en el servidor y se aplica con RLS. Dinero como cadena decimal y fechas ISO 8601 UTC.",
+    "license": {
+      "name": "Uso interno",
+      "identifier": "LicenseRef-Internal"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000",
+      "description": "Entorno local del piloto"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Salud",
+      "description": "Disponibilidad del servicio y de la base de datos"
+    },
+    {
+      "name": "Servicios",
+      "description": "CRUD de servicios del catálogo con baja lógica"
+    }
+  ],
+  "security": [],
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "operationId": "getHealth",
+        "tags": [
+          "Salud"
+        ],
+        "summary": "Verificar disponibilidad",
+        "description": "Comprueba la conexión con PostgreSQL y que el contexto RLS coincida con la sucursal configurada.",
+        "responses": {
+          "200": {
+            "description": "Servicio y base de datos disponibles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                },
+                "examples": {
+                  "ok": {
+                    "summary": "Todo disponible",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "status": "ok",
+                        "db": "ok"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/servicios": {
+      "get": {
+        "operationId": "listServices",
+        "tags": [
+          "Servicios"
+        ],
+        "summary": "Listar servicios",
+        "description": "Lista los servicios de la sucursal configurada. Los parámetros desconocidos o inválidos responden `400 INVALID_REQUEST`.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Estado"
+          },
+          {
+            "$ref": "#/components/parameters/Q"
+          },
+          {
+            "$ref": "#/components/parameters/Page"
+          },
+          {
+            "$ref": "#/components/parameters/PerPage"
+          },
+          {
+            "$ref": "#/components/parameters/Sort"
+          },
+          {
+            "$ref": "#/components/parameters/Order"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Colección paginada de servicios",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceListResponse"
+                },
+                "examples": {
+                  "lista": {
+                    "summary": "Dos servicios",
+                    "value": {
+                      "success": true,
+                      "data": [
+                        {
+                          "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+                          "nombre": "Masaje relajante",
+                          "duracion_min": 60,
+                          "precio": "250.00",
+                          "estado": "activo",
+                          "created_at": "2026-10-20T00:27:51Z",
+                          "updated_at": "2026-10-20T00:27:51Z"
+                        },
+                        {
+                          "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa3",
+                          "nombre": "Masaje deportivo",
+                          "duracion_min": 90,
+                          "precio": "320.00",
+                          "estado": "inactivo",
+                          "created_at": "2026-10-20T00:27:51Z",
+                          "updated_at": "2026-10-20T01:42:01Z"
+                        }
+                      ],
+                      "meta": {
+                        "page": 1,
+                        "per_page": 20,
+                        "total": 2,
+                        "last_page": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createService",
+        "tags": [
+          "Servicios"
+        ],
+        "summary": "Crear un servicio",
+        "description": "Crea un servicio activo en la sucursal configurada. Solo se aceptan `nombre`, `duracion_min` y `precio`; cualquier otro campo responde `400 INVALID_REQUEST`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceWrite"
+              },
+              "examples": {
+                "nuevo": {
+                  "summary": "Servicio nuevo",
+                  "value": {
+                    "nombre": "Masaje relajante",
+                    "duracion_min": 60,
+                    "precio": "250.00"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Servicio creado",
+            "headers": {
+              "Location": {
+                "description": "Ruta del servicio creado",
+                "schema": {
+                  "type": "string",
+                  "example": "/api/v1/servicios/2a70c379-5dcd-4d07-9284-c70f2560bce3"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResponse"
+                },
+                "examples": {
+                  "creado": {
+                    "summary": "Servicio creado",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "id": "2a70c379-5dcd-4d07-9284-c70f2560bce3",
+                        "nombre": "Masaje relajante",
+                        "duracion_min": 60,
+                        "precio": "250.00",
+                        "estado": "activo",
+                        "created_at": "2026-10-20T01:21:39Z",
+                        "updated_at": "2026-10-20T01:21:39Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "409": {
+            "$ref": "#/components/responses/DuplicateService"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/v1/servicios/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ServiceId"
+        }
+      ],
+      "get": {
+        "operationId": "getService",
+        "tags": [
+          "Servicios"
+        ],
+        "summary": "Obtener un servicio",
+        "description": "Devuelve un servicio de la sucursal configurada. Un servicio de otra sucursal responde `404` por RLS.",
+        "responses": {
+          "200": {
+            "description": "Servicio encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResponse"
+                },
+                "examples": {
+                  "encontrado": {
+                    "summary": "Servicio activo",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+                        "nombre": "Masaje relajante",
+                        "duracion_min": 60,
+                        "precio": "250.00",
+                        "estado": "activo",
+                        "created_at": "2026-10-20T00:27:51Z",
+                        "updated_at": "2026-10-20T00:27:51Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/ServiceNotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "operationId": "replaceService",
+        "tags": [
+          "Servicios"
+        ],
+        "summary": "Reemplazar un servicio",
+        "description": "Reemplazo total de los tres campos editables. `estado` no se modifica: un servicio inactivo sigue inactivo. La actualización es last-write-wins.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceWrite"
+              },
+              "examples": {
+                "reemplazo": {
+                  "summary": "Reemplazo completo",
+                  "value": {
+                    "nombre": "Masaje relajante profundo",
+                    "duracion_min": 75,
+                    "precio": "300.00"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Servicio actualizado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResponse"
+                },
+                "examples": {
+                  "actualizado": {
+                    "summary": "Servicio actualizado",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+                        "nombre": "Masaje relajante profundo",
+                        "duracion_min": 75,
+                        "precio": "300.00",
+                        "estado": "activo",
+                        "created_at": "2026-10-20T00:27:51Z",
+                        "updated_at": "2026-10-20T01:45:47Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/ServiceNotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "409": {
+            "$ref": "#/components/responses/DuplicateService"
+          },
+          "415": {
+            "$ref": "#/components/responses/UnsupportedMediaType"
+          },
+          "422": {
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deactivateService",
+        "tags": [
+          "Servicios"
+        ],
+        "summary": "Inactivar un servicio",
+        "description": "Baja lógica: cambia `estado` a `inactivo` y nunca elimina la fila. Es idempotente; una segunda baja devuelve el mismo objeto sin mutarlo. No existe reactivación en esta fase.",
+        "responses": {
+          "200": {
+            "description": "Servicio inactivado o ya inactivo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceResponse"
+                },
+                "examples": {
+                  "inactivo": {
+                    "summary": "Servicio inactivo",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa2",
+                        "nombre": "Facial hidratante",
+                        "duracion_min": 45,
+                        "precio": "180.50",
+                        "estado": "inactivo",
+                        "created_at": "2026-10-20T00:27:51Z",
+                        "updated_at": "2026-10-20T01:45:47Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/ServiceNotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "ServiceId": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "UUID v4 canónico del servicio",
+        "schema": {
+          "type": "string",
+          "format": "uuid",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+        }
+      },
+      "Estado": {
+        "name": "estado",
+        "in": "query",
+        "required": false,
+        "description": "Filtro exacto por estado",
+        "schema": {
+          "$ref": "#/components/schemas/ServiceEstado"
+        }
+      },
+      "Q": {
+        "name": "q",
+        "in": "query",
+        "required": false,
+        "description": "Búsqueda parcial por nombre, sin distinguir mayúsculas. Se aplica trim; el valor vacío es inválido.",
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      },
+      "Page": {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        }
+      },
+      "PerPage": {
+        "name": "per_page",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
+        }
+      },
+      "Sort": {
+        "name": "sort",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "$ref": "#/components/schemas/ServiceSort"
+        }
+      },
+      "Order": {
+        "name": "order",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "$ref": "#/components/schemas/ServiceOrder"
+        }
+      }
+    },
+    "schemas": {
+      "ServiceEstado": {
+        "type": "string",
+        "enum": [
+          "activo",
+          "inactivo"
+        ],
+        "description": "Estado lógico del servicio. Solo cambia a `inactivo` mediante `DELETE`."
+      },
+      "ServiceSort": {
+        "type": "string",
+        "enum": [
+          "nombre",
+          "precio",
+          "duracion_min",
+          "created_at"
+        ],
+        "default": "nombre"
+      },
+      "ServiceOrder": {
+        "type": "string",
+        "enum": [
+          "asc",
+          "desc"
+        ],
+        "default": "asc"
+      },
+      "Service": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "nombre",
+          "duracion_min",
+          "precio",
+          "estado",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "nombre": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Nombre exacto, sin espacios en los extremos"
+          },
+          "duracion_min": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1440
+          },
+          "precio": {
+            "type": "string",
+            "pattern": "^(?:0|[1-9][0-9]{0,9})\\.[0-9]{2}$",
+            "description": "Cadena decimal normalizada a dos decimales, máximo 9999999999.99"
+          },
+          "estado": {
+            "$ref": "#/components/schemas/ServiceEstado"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+            "readOnly": true
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+            "readOnly": true
+          }
+        }
+      },
+      "ServiceWrite": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "nombre",
+          "duracion_min",
+          "precio"
+        ],
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Se aplica trim; no puede quedar vacío."
+          },
+          "duracion_min": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1440,
+            "description": "Duración en minutos dentro de una jornada."
+          },
+          "precio": {
+            "description": "Número JSON o cadena numérica, mayor o igual a 0, máximo 9999999999.99 y máximo 2 decimales. Se normaliza a cadena con 2 decimales.",
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^\\s*[0-9]+(?:\\.[0-9]{1,2})?\\s*$"
+              },
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 9999999999.99
+              }
+            ]
+          }
+        }
+      },
+      "ServiceResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "success",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "const": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/Service"
+          }
+        }
+      },
+      "ServiceListMeta": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "page",
+          "per_page",
+          "total",
+          "last_page"
+        ],
+        "properties": {
+          "page": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "last_page": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "ServiceListResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "success",
+          "data",
+          "meta"
+        ],
+        "properties": {
+          "success": {
+            "const": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/ServiceListMeta"
+          }
+        }
+      },
+      "HealthOK": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "db"
+        ],
+        "properties": {
+          "status": {
+            "const": "ok"
+          },
+          "db": {
+            "const": "ok"
+          }
+        }
+      },
+      "HealthDegraded": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "db"
+        ],
+        "properties": {
+          "status": {
+            "const": "degraded"
+          },
+          "db": {
+            "const": "error"
+          }
+        }
+      },
+      "HealthResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "success",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "const": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/HealthOK"
+          }
+        }
+      },
+      "HealthUnavailable": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "success",
+          "data",
+          "error",
+          "request_id"
+        ],
+        "properties": {
+          "success": {
+            "const": false
+          },
+          "data": {
+            "$ref": "#/components/schemas/HealthDegraded"
+          },
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "const": "SERVICE_UNAVAILABLE"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "INVALID_REQUEST",
+              "INVALID_ID",
+              "SERVICE_NOT_FOUND",
+              "DUPLICATE_SERVICE",
+              "UNSUPPORTED_MEDIA_TYPE",
+              "VALIDATION_ERROR",
+              "METHOD_NOT_ALLOWED",
+              "INTERNAL_ERROR",
+              "SERVICE_UNAVAILABLE"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "description": "Mapa campo a lista de mensajes; se omite cuando no hay campos."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "success",
+          "error",
+          "request_id"
+        ],
+        "properties": {
+          "success": {
+            "const": false
+          },
+          "error": {
+            "$ref": "#/components/schemas/Error"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Solicitud inválida: JSON malformado, campo o parámetro no permitido, query inválida o UUID malformado.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "invalidId": {
+                "summary": "UUID inválido",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "INVALID_ID",
+                    "message": "El identificador no es un UUID válido."
+                  },
+                  "request_id": "9eb60e74-d6fa-4d8a-bd62-bc66ff62bc6b"
+                }
+              },
+              "invalidRequest": {
+                "summary": "Campo no permitido",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "INVALID_REQUEST",
+                    "message": "El cuerpo de la petición no es válido.",
+                    "details": {
+                      "estado": [
+                        "Campo no permitido."
+                      ]
+                    }
+                  },
+                  "request_id": "96a3cc56-33b7-47df-91ff-d3ab2fffe74b"
+                }
+              }
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "Método HTTP no soportado por la ruta.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "metodo": {
+                "summary": "Método no permitido",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "METHOD_NOT_ALLOWED",
+                    "message": "El método HTTP no está permitido para esta ruta."
+                  },
+                  "request_id": "96c516c6-d89f-4a43-90b3-cf5a6e4d1467"
+                }
+              }
+            }
+          }
+        }
+      },
+      "UnsupportedMediaType": {
+        "description": "El Content-Type no es application/json.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "mediaType": {
+                "summary": "Content-Type incorrecto",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "UNSUPPORTED_MEDIA_TYPE",
+                    "message": "El Content-Type debe ser application/json."
+                  },
+                  "request_id": "4d6bd6f8-a2f1-47b5-9a38-08986789d723"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Los campos no cumplen las reglas de validación.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "validacion": {
+                "summary": "Campos faltantes",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Los datos enviados no son válidos.",
+                    "details": {
+                      "duracion_min": [
+                        "La duración es obligatoria."
+                      ],
+                      "precio": [
+                        "El precio es obligatorio."
+                      ]
+                    }
+                  },
+                  "request_id": "cd7f6962-8810-426b-93b8-06e54bb7d15d"
+                }
+              }
+            }
+          }
+        }
+      },
+      "DuplicateService": {
+        "description": "Ya existe un servicio con ese nombre en la sucursal (SQLSTATE 23505).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "duplicado": {
+                "summary": "Nombre duplicado",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "DUPLICATE_SERVICE",
+                    "message": "Ya existe un servicio con ese nombre en la sucursal."
+                  },
+                  "request_id": "fede157d-f1df-41e4-aaa0-5c3a9947f039"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ServiceNotFound": {
+        "description": "El servicio no existe en la sucursal configurada (incluye otra sucursal por RLS).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "inexistente": {
+                "summary": "Servicio inexistente",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "SERVICE_NOT_FOUND",
+                    "message": "El servicio no existe en la sucursal."
+                  },
+                  "request_id": "a036bb2b-23c8-4a48-92f6-cdc6406faff2"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Falla no controlada; no se expone detalle interno.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "interno": {
+                "summary": "Error interno",
+                "value": {
+                  "success": false,
+                  "error": {
+                    "code": "INTERNAL_ERROR",
+                    "message": "Ocurrió un error interno."
+                  },
+                  "request_id": "7e6f0f0e-2f3a-4f5b-8c9d-0a1b2c3d4e5f"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "No se pudo verificar la base de datos; no se expone el error interno.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/HealthUnavailable"
+            },
+            "examples": {
+              "degradado": {
+                "summary": "Base de datos no disponible",
+                "value": {
+                  "success": false,
+                  "data": {
+                    "status": "degraded",
+                    "db": "error"
+                  },
+                  "error": {
+                    "code": "SERVICE_UNAVAILABLE",
+                    "message": "No se pudo verificar la base de datos."
+                  },
+                  "request_id": "3f1c2b4a-5d6e-4f70-8a9b-0c1d2e3f4a5b"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

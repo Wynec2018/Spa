@@ -1,0 +1,41 @@
+.container {
+    width: min(var(--container), calc(100% - (var(--gutter) * 2)));
+    margin-inline: auto;
+}
+
+.container--narrow {
+    width: min(var(--container-narrow), calc(100% - (var(--gutter) * 2)));
+    margin-inline: auto;
+}
+
+.section {
+    padding-block: var(--section-space);
+}
+
+main,
+.hero,
+.landing-section {
+    scroll-margin-top: calc(var(--header-height) + var(--space-4));
+}
+
+.section--tight {
+    padding-block: var(--section-space-sm);
+}
+
+.section--surface {
+    background: var(--color-surface);
+}
+
+.section--muted {
+    background: var(--color-surface-muted);
+}
+
+.section__header {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 44rem;
+}
+
+.section__header--wide {
+    max-width: 58rem;
+}

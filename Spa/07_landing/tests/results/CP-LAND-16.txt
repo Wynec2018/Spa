@@ -1,0 +1,164 @@
+CP-LAND-16 - Validacion completa
+Fecha: 2026-10-27
+PHP: 8.3.35
+Comando: php Spa/07_landing/tools/validate_checkpoint.php CP-LAND-16
+
+== 1. Documentos ==
+  AGENTS.md, CONTINUAR_LANDING.md, decisiones de alcance/landing, guias de
+  estructura/reglas/imagenes, workflow 07 y validacion de arquitectura: OK
+
+== 2. Estructura ==
+  [0] STRUCTURE: PASSED
+    Archivos requeridos: 51
+    Carpetas requeridas: 26
+    Archivos de codigo revisados: 37
+
+== 3. Fuente de datos ==
+  [0] DATASOURCE: PASSED
+    Rol: spa_readonly (LOGIN, sin superuser/createrole/bypassrls)
+    Schemas: core/catalog USAGE
+    SELECT: catalog.service, catalog.resource, core.branch, core.app_config
+    Escrituras en spa_readonly: 0
+    Tablas landing_*: 0
+    Tablas PII referenciadas: 0
+    SET LOCAL app.branch_id: OK
+    Transaccion de lectura: READ ONLY
+    Servicios activos visibles: 3
+    Camas visibles: 12
+    Repository: servicios/camas/sede/config OK
+
+== 4. Datos demo ==
+  [0] DEMO_DATA: PASSED
+    Servicios activos: 3
+    Camas registradas: 12
+      - libre: 11
+      - no_disponible: 1
+    Sede: Sede Central (activa)
+    Moneda: BOB
+    Escrituras durante la verificacion: 0
+    Datos PII expuestos: 0
+
+== 5. Imagenes ==
+  hero -> assets/img/hero/spa-hero.jpg (1400x934, 263994 bytes)
+  sala_masajes -> assets/img/instalaciones/sala-masajes.jpg (900x1200, 159187 bytes)
+  sauna -> assets/img/instalaciones/sauna.jpg (1000x668, 134630 bytes)
+  fallback -> assets/img/fallback.svg
+  docs/fuentes_imagenes.md: fuente, autor, licencia y fecha
+
+== 6. Sistema visual ==
+  variables.css: 31 tokens base
+  base.css: tipografia, color y foco
+  layout.css: contenedor, secciones y headers
+  components.css: boton, eyebrow e image-frame
+  docs/decisiones_visuales.md: direccion, tokens y accesibilidad
+  Sin negro puro, Inter ni paleta morada
+
+== 7. Header, hero y CTA ==
+  Header, hero y CTA renderizados
+  CTA en header y hero, sin login
+  Imagen de hero prioritaria y con fallback
+  Header sticky, hero asimetrico y colapso mobile
+  Headers de seguridad activos
+
+== 8. Servicios ==
+  Servicios activos leidos desde PostgreSQL
+  3 servicios con nombre, duracion y precio en Bs
+  Lista editorial asimetrica, sin tarjetas repetidas
+  Seccion despues del hero y CTA con destino valido
+  Sin login, carrito, checkout ni pagos
+
+== 9. Camas ==
+  Disponibilidad agregada leida desde catalog.resource
+  2 estados con conteo, sin camas individuales
+  11 camas libres de 12 registradas
+  Seccion despues de servicios y sin datos personales
+  Sin login, carrito, checkout ni pagos
+
+== 10. Beneficios, prueba social y CTA final ==
+  Beneficios sin promesas de reserva en tiempo real
+  Dos testimonios identificados como demostrativos y ficticios
+  CTA final con destino interno seguro
+  Sin telefono/WhatsApp inventado ni claims no verificables
+  Sin login, carrito, checkout ni pagos
+
+== 11. Responsive base ==
+  Viewport responsive sin bloquear zoom
+  Contenedor limitado al ancho disponible
+  Breakpoints de 359 a 1024px
+  Grids de hero, camas, beneficios, testimonios y CTA colapsan
+  Targets tactiles de 44px/48px y sin patrones de scroll horizontal
+
+== 12. Motion ==
+  Hero con entrada CSS de 700ms/900ms
+  Scroll reveal con IntersectionObserver y una sola ejecucion
+  Stagger de 60ms/80ms y propiedades transform/opacity
+  Hover solo en puntero fino y press feedback de 1px
+  Reduced motion sin hero/reveal, scroll suave ni hover transform
+  Sin librerias, transition: all, scale(0) ni animaciones infinitas
+
+== 13. Auditoria visual ==
+  Review con layout, typeset, clarify y adapt
+  Detector sin hallazgos en 1440x900 y 390x844
+  Sin kickers/eyebrows en vistas ni HTML renderizado
+  Acentos visibles y textos sin faltas de acentuacion
+  Testimonio 1.3, notas --text-sm y reflujo 720px
+
+== 14. Auditoria motion ==
+  Review con hero, reveal, stagger y reduced motion
+  Sin transition: all, ease-in, scale(0) ni animaciones infinitas
+  Hover gateado y reduced motion declarado
+  Sin librerias de animacion
+  Evidencia de CLS 0 y 0 long tasks
+
+== 15. UI/UX/accesibilidad ==
+  Skip link, main focusable y foco visible
+  Reveal visible al foco y CTA oscuro con outline claro
+  Scroll margin global y target de marca de 44px
+  Landmarks, headings, alt y dimensiones de imagen
+  Touch action, tap highlight y marca no traducible
+  Moneda via NumberFormatter y aviso de pestaña nueva
+  Sin anti-patrones de accesibilidad
+
+== 16. Performance y hardening ==
+  Bundle CSS de 7 fuentes y motion separado: 2 requests
+  Preload del hero con srcset y fallback plano
+  Blur del header limitado a desktop con puntero fino
+  Cache largo, compresion y dotfiles bloqueados en .htaccess
+  Paginas 404/500 con viewport y noindex
+  WhatsApp/email validados y textos largos envueltos
+  CSP/COOP/CORP y HTML no-store
+  Timeouts y transacciones de solo lectura
+  Render 200 con 2 hojas de estilo y sin estilos inline
+  Presupuesto: bundle 22301 B, JS 1921 B
+
+== 17. Ajuste del validador ==
+  validateLandingHero ahora detecta text-align:center solo en selectores .hero*
+  Motivo: los botones de header/CTA usan text-align:center para texto envuelto
+  desde CP-LAND-15; el check anterior marcaba un falso positivo de hero centrado
+
+== 18. Prohibiciones ==
+  Login/dashboard/CRUD/carrito/checkout/pagos: no presentes
+  Tablas landing_* y cat_*: no presentes
+  Catalogo 7x10/70 productos: no presentes
+  Escrituras SQL en LandingRepository: no presentes
+  Seed/migraciones de landing: no presentes
+  Imagenes con IA/Google Images/Pinterest: no presentes
+  Descripciones/precios inventados: no presentes
+  Datos personales o camas individuales: no presentes
+  Claims no verificables o testimonios sin aviso: no presentes
+  Scroll horizontal, zoom bloqueado o targets menores a 44px: no presentes
+  Librerias de animacion, transition: all, scale(0) o animaciones infinitas: no presentes
+  Estilos inline incompatibles con CSP: no presentes
+  Fuentes/JS/animaciones de terceros: no presentes
+  Blur de header en movil: no presente
+  Hojas de estilo sueltas en el HTML: no presentes
+  Paginas de error indexables: no presentes
+  WhatsApp/email sin validar: no presentes
+  Escrituras SQL o transacciones sin timeout: no presentes
+
+== 19. Veredicto ==
+  Grupos validados: 14/14
+  CP-LAND-16: PASSED
+  TECHNICAL_STATUS: PASSED
+  HUMAN_STATUS: PENDING
+  CAN_CONTINUE: false

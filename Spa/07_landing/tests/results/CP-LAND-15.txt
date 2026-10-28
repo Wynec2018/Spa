@@ -1,0 +1,75 @@
+CP-LAND-15 - Performance y hardening
+Fecha: 2026-10-27
+Skill: impeccable (optimize/harden)
+PHP: 8.3.35
+Chrome: 156.0.8078.48
+Node: 24.21.0
+Viewports: 1440x900, 390x844, 768x1024, 320x568
+
+== 1. Baseline ==
+  Mobile 390x844 slow 3G, 8 hojas CSS
+  LCP: 2432 ms
+  FCP: 2024 ms
+  CLS: 0
+  Long tasks: 1 (138 ms)
+
+== 2. Despues (headless sin GPU) ==
+  Desktop 1440x900, 5 corridas
+    LCP mediana: 864 ms (828-876 ms)
+    FCP: igual a LCP
+    CLS: 0
+    Long tasks: 0 en 4/5; outlier 375 ms
+  Mobile 390x844 slow 3G, 3 corridas
+    LCP mediana: 1704 ms (1644-1848 ms)
+    FCP: igual a LCP
+    CLS: 0
+    Long tasks: 0 en 2/3; outlier 123 ms
+  INP: sin handlers propios; ScriptDuration ~3 ms
+  Con GPU headless: LCP 1148 ms desktop / 2216 ms mobile slow 3G; CLS 0
+
+== 3. Presupuesto ==
+  HTML: 10,859 B (2,890 B gzip)
+  bundle.css: 22,301 B (4,488 B gzip), 7 fuentes
+  motion.css: 1,686 B (490 B gzip)
+  landing.js: 1,921 B (680 B gzip)
+  hero: 67,016 B
+  Hojas de estilo: 2
+  Scripts: 1
+  CSS/JS de terceros: 0
+
+== 4. Hardening responsive ==
+  320x568: scrollWidth 320, overflow false
+  390x844: scrollWidth 390, overflow false
+  768x1024: scrollWidth 768, overflow false
+  1440x900: scrollWidth 1440, overflow false
+  Texto al 200%: sin desborde en los 4 viewports
+  Nombre/precio/CTA/marca largos: sin desborde
+  Targets interactivos menores a 44x44: 0
+  Blur de header en mobile: no presente
+  Reduced motion: 15/15 visibles, 0 animaciones, scroll-behavior auto
+  Sin JavaScript: 15/15 visibles, sin overflow
+  Reveal en #servicios: 4/4 visibles (encabezado + 3 filas)
+
+== 5. Edge cases ==
+  DB caida -> 200 con avisos y sin error tecnico
+  Sede sin datos -> estados vacios
+  Sede con datos -> servicios y camas renderizados
+  Contacto normalizado y CTA inseguro bloqueado
+  WhatsApp corto y email largo descartados
+  Precio grande formateado: Bs 1.234.567.890,50
+  404 con noindex, viewport y headers
+
+== 6. Validacion ==
+  validate_structure.php: PASSED
+    Archivos requeridos: 51
+    Carpetas requeridas: 26
+    Archivos de codigo revisados: 37
+  validate_checkpoint.php CP-LAND-15: PASSED
+  PHP lint archivos modificados: OK
+  Fecha de validacion: 2026-10-27 01:12:10
+
+== 7. Veredicto ==
+  CP-LAND-15: PASSED
+  TECHNICAL_STATUS: PASSED
+  HUMAN_STATUS: PENDING
+  CAN_CONTINUE: false

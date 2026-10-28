@@ -1,0 +1,76 @@
+CP-LAND-13 - Auditoria motion
+Fecha: 2026-10-25
+Skills: review-animations + improve-animations (read-only)
+Chrome: 155.0.8059.85
+Viewports: 1440x900, 1024x768, 768x1024, 390x844, 320x568
+
+== 1. Recon ==
+  Stack: CSS puro + IntersectionObserver; sin librerias de animacion
+  Superficie: hero-enter, scroll reveal, stagger, hover/press, reduced motion
+  Personalidad: editorial wellness calido, landing de anuncios
+  Frecuencia: hero/reveal una vez por visita; hover/press ocasional; sin teclado
+
+== 2. Hero ==
+  Contenido: 700ms, cubic-bezier(0.16, 1, 0.3, 1)
+  Media: 900ms + 120ms delay, cubic-bezier(0.16, 1, 0.3, 1)
+  Propiedades animadas: transform, opacity
+  Sin scale(0), ease-in, transition: all ni animaciones infinitas
+
+== 3. Scroll reveal ==
+  Elementos: 15
+  Duracion: 600ms
+  Propiedades: opacity, transform (translateY 1.25rem -> 0)
+  Stagger servicios/beneficios: 0/60/120ms
+  Stagger testimonios: 0/80ms
+  Servicios tras scroll: header + 3 filas reveladas
+  Log: header/first ~998ms; second start ~1042ms; third start ~1106ms
+  Log: ends ~1572ms / 1639ms / 1706ms
+
+== 4. Reduced motion ==
+  has-motion: false
+  Elementos visibles: 15/15
+  opacity: 1
+  transform: none
+  hero animation: none
+  scroll-behavior: auto
+  animaciones activas: 0
+
+== 5. Cambio dinamico de preferencia ==
+  Antes: has-motion=true, 15 ocultos
+  A reduce: has-motion=false, 15/15 revelados, hero none, scroll auto
+  A no-preference: has-motion=false, 15/15 visibles, hero-enter vuelve
+
+== 6. Performance ==
+  CLS: 0
+  Long tasks: 0
+  Animaciones: solo transform/opacity
+  LCP normal: 700ms
+  LCP reduced: 672ms
+
+== 7. Barrido de fuente ==
+  transition: all: no presente
+  ease-in: no presente
+  scale(0): no presente
+  animation infinita: no presente
+  animate.css/gsap/framer-motion/motion.dev/jquery: no presentes
+  hover gating: @media (hover: hover) and (pointer: fine)
+  reduced motion: @media (prefers-reduced-motion: reduce)
+
+== 8. Hallazgos ==
+  MEDIUM: stagger solo cubre 3 servicios/beneficios y 2 testimonios; no bloquea con datos actuales
+  LOW: duraciones hardcodeadas en motion.css
+  LOW: reveal con opacity 0 sigue focusable; handoff a CP-LAND-14
+  LOW: entrada del hero con opacity; LCP 700ms vs 672ms reduced
+
+== 9. Validacion ==
+  validate_structure.php: PASSED (49 archivos, 26 carpetas, 36 archivos de codigo)
+  validate_checkpoint.php CP-LAND-13: PASSED
+  PHP lint validate_checkpoint.php: OK
+  node --check landing.js: OK
+  git diff --check: OK
+
+== Veredicto ==
+CP-LAND-13: PASSED
+TECHNICAL_STATUS: PASSED
+HUMAN_STATUS: PENDING
+CAN_CONTINUE: false

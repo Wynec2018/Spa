@@ -1,0 +1,86 @@
+@keyframes hero-enter {
+    from {
+        opacity: 0;
+        transform: translateY(1.5rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .hero__content {
+        animation: hero-enter 700ms var(--ease-out) both;
+    }
+
+    .hero__media {
+        animation: hero-enter 900ms var(--ease-out) 120ms both;
+    }
+}
+
+.has-motion [data-reveal] {
+    opacity: 0;
+    transform: translateY(1.25rem);
+    transition:
+        opacity 600ms var(--ease-out),
+        transform 600ms var(--ease-out);
+}
+
+.has-motion [data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.has-motion [data-reveal]:focus-within {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+
+.has-motion .services__list > [data-reveal]:nth-child(2),
+.has-motion .benefits__list > [data-reveal]:nth-child(2) {
+    transition-delay: 60ms;
+}
+
+.has-motion .services__list > [data-reveal]:nth-child(3),
+.has-motion .benefits__list > [data-reveal]:nth-child(3) {
+    transition-delay: 120ms;
+}
+
+.has-motion .testimonials__grid > [data-reveal]:nth-child(2) {
+    transition-delay: 80ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .button:not(.button--link):hover {
+        transform: translateY(-1px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .hero__content,
+    .hero__media {
+        animation: none;
+    }
+
+    .has-motion [data-reveal] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .button:hover,
+    .button:active {
+        transform: none;
+    }
+
+    .skip-link {
+        transition: none;
+    }
+}

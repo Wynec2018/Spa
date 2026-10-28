@@ -1,0 +1,88 @@
+CP-LAND-14 - UI/UX/accesibilidad
+Fecha: 2026-10-25
+Skill: web-design-guidelines (Vercel)
+Fuente: https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md
+Chrome: 155.0.8059.85
+Viewports: 1440x900, 390x844, 320x568
+
+== 1. Arbol de accesibilidad ==
+  banner: 1
+  main: 1
+  contentinfo: 1
+  region: 6
+  heading: 12 (1 h1, 5 h2, 6 h3)
+  link: 6
+  image: 1
+  list: 3
+  listitem: 8
+  figure: 2
+  blockquote: 2
+  figcaption: 2
+  IDs duplicados: 0
+  aria-labelledby sin referencia: 0
+
+== 2. Skip link y teclado ==
+  Primer Tab: Saltar al contenido
+  Enter: activeElement = MAIN#contenido
+  Siguiente Tab: Ver servicios (CTA del hero)
+  Orden: skip -> marca -> CTA header -> CTA hero -> CTA final -> Ver disponibilidad
+  main:focus-visible: outline 2px solid #4f5d45, offset -2px
+
+== 3. Foco ==
+  CTA final (fondo #23251f): outline #f7f2ea
+  Contraste de foco CTA final: 13.9:1
+  CTA final con foco: contenedor reveal opacity 1, transform none
+  Outline general: 2px solid #4f5d45
+  Outline: none sin reemplazo: no presente
+
+== 4. Contraste ==
+  Texto normal minimo: 5.66:1
+  Titulos: 13.9:1
+  Botones: 6.92:1
+  CTA final: 13.9:1
+  Fallos WCAG AA en muestras: 0
+
+== 5. Responsive y targets ==
+  390x844: scrollWidth 390, overflow false
+  320x568: scrollWidth 320, overflow false
+  Targets menores a 44x44: 0
+  Marca en 320px: 44x44
+  touch-action: manipulation
+  -webkit-tap-highlight-color: rgba(79, 93, 69, 0.18)
+
+== 6. Anclas y header sticky ==
+  scroll-margin-top escritorio: 96px
+  scroll-margin-top movil: 88px
+  #servicios: top 96px, header bottom 81px, gap 15px
+  Ancla cubierta por header: no
+
+== 7. Reduced motion ==
+  has-motion: false
+  Elementos visibles: 15/15
+  Animaciones: 0
+  scroll-behavior: auto
+  Hero/reveal animation: none
+
+== 8. Correcciones aplicadas ==
+  app.php: main#contenido con tabindex="-1"
+  motion.css: reveal con :focus-within
+  landing.css: CTA oscuro con outline claro; marca con min-width 44px
+  layout.css: scroll-margin-top global
+  base.css: touch-action, tap highlight y foco de main
+  components.css: skip link conserva color al hover/focus
+  header/footer: translate="no" en la marca
+  LandingService: NumberFormatter es_BO con fallback
+  llamada_accion: aviso de pestaña nueva para WhatsApp
+
+== 9. Validacion ==
+  validate_structure.php: PASSED (49 archivos, 26 carpetas, 36 archivos de codigo)
+  validate_checkpoint.php CP-LAND-14: PASSED
+  PHP lint archivos modificados: OK
+  node --check landing.js: OK
+  git diff --check: OK
+
+== Veredicto ==
+CP-LAND-14: PASSED
+TECHNICAL_STATUS: PASSED
+HUMAN_STATUS: PENDING
+CAN_CONTINUE: false
