@@ -31,6 +31,21 @@ Sin Laravel, MySQL, React/Vue/Angular, jQuery, Bootstrap/Tailwind ni Node.
 - `tools/`: validadores de estructura y checkpoint.
 - `tests/`: fixtures y evidencia.
 
+## Ejecucion local
+
+1. Copiar `.env.example` a `.env` en `Spa/07_landing/`.
+2. Completar `DB_PASSWORD` con la clave del rol `spa_readonly` y
+   `LANDING_BRANCH_ID` con el `id` de `core.branch`.
+3. Arrancar el servidor desde la raiz del repositorio:
+
+```text
+php -S localhost:8087 -t Spa/07_landing/public
+```
+
+Abrir `http://localhost:8087`. `App::run()` carga `.env` sin sobrescribir
+variables ya definidas en el entorno; `.env` no se versiona y no se expone
+porque el document root es `public/`.
+
 ## Validacion
 
 ```text

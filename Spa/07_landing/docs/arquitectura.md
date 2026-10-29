@@ -47,6 +47,8 @@ Datos (CP-LAND-07/08)
 
 ## Reglas
 
+- `App::run()` carga `Spa/07_landing/.env` (si existe) sin sobrescribir
+  variables ya presentes en el entorno; las credenciales nunca se versionan.
 - Runtime de solo lectura con el rol `spa_readonly`.
 - Transacciones `READ ONLY` y `set_config('app.branch_id', ..., true)`.
 - `SET LOCAL app.branch_id` en una transaccion de lectura para RLS.
